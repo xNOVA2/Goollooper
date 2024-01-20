@@ -35,7 +35,7 @@ export default function Page() {
               />
               <h1 className="text-lg font-extrabold pt-2">9,043</h1>
               <p className="text-sm font-bold text-subTitleColor">
-                Total Task Created
+                Total Task Create
               </p>
             </div>
           </section>
