@@ -3,7 +3,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
 import { dummyUsers } from "@/types/data";
-
+import userIcon from '@/public/assets/Image/IconPNG.png'
 export default function Page() {
   return (
     <DashboardLayout Active={1}>
@@ -29,7 +29,7 @@ export default function Page() {
 
             <div className="flex flex-col items-start space-y-1 ml-4">
               <Image
-                src={"/assets/Image/task.svg"}
+                src={userIcon}
                 alt="Users Icon"
                 width={40}
                 height={50}
