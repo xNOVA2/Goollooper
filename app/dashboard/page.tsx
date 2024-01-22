@@ -18,7 +18,7 @@ export default function Page() {
           <section className="flex items-center mt-10 justify-start gap-60">
             <div className="flex flex-col items-start space-y-1">
               <Image
-                src={"/assets/Image/usersIcons.svg"}
+                src={"/assets/Image/Icon.png"}
                 alt="Users Icon"
                 width={40}
                 height={50}
