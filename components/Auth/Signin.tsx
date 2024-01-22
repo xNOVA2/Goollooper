@@ -7,8 +7,10 @@ import { SigninFields } from "@/types/type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInSchema } from "@/validation/AuthValidation/auth";
 import Tooltip from "../Tooltip/ToolTip";
+import { useRouter } from "next/navigation";
 
 function Signin() {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -17,6 +19,7 @@ function Signin() {
 
   const onSubmit: SubmitHandler<SigninFields> = async (data) => {
     console.log(data);
+    router.push('/dashboard');
   };
   return (
     <>

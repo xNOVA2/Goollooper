@@ -24,7 +24,7 @@ export default function ForgetPassword() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative mt-3">
-        <p className="absolute text-xm text-PrimaryColor px-3 mt-2">Email*</p>
+        <p className="absolute text-xm text-PrimaryColor px-3 mt-2">Email Address*</p>
         <div className="flex">
           <Input
             {...register("email")}

@@ -19,8 +19,12 @@ const config = {
     },
     extend: {
       colors: {
+        deleleColor:'#FF5C5C',
         subTitleColor:'#6A6A6A',
-        backGroundColor:'#F5F7F9',
+        subTitleSecondaryColor:'#979797',
+        backGroundColor:'#F5F7F9', 
+        InputFieldColor:'#FAFAFA',
+        backGroundSecondaryColor:'#F1F3F6',
         PrimaryColor:'#FF7606',
         SecondaryColor:'#F48C06',
         border: "hsl(var(--border))",

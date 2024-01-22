@@ -5,7 +5,9 @@ export default function DashboardLayout({children,Active}:{children?: React.Reac
   return (
     <div >
         
-        <SideBar Active={Active} children={children} />
+        <SideBar Active={Active} >
+          {children}
+        </SideBar>
        
     </div>
   )

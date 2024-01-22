@@ -2,10 +2,11 @@ import Image from "next/image";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
+import { dummyUsers } from "@/types/data";
 
 export default function Page() {
   return (
-    <DashboardLayout>
+    <DashboardLayout Active={1}>
       <div className="flex flex-col gap-4">
         <div className="m-2 border-1 bg-white w-full h-[300px] rounded p-5">
           <h1 className="font-bold text-4xl">Dashboard</h1>
@@ -14,7 +15,7 @@ export default function Page() {
           </p>
           <hr className="mt-7" />
 
-          <section className="flex items-center mt-10 justify-start">
+          <section className="flex items-center mt-10 justify-start gap-60">
             <div className="flex flex-col items-start space-y-1">
               <Image
                 src={"/assets/Image/usersIcons.svg"}
@@ -35,7 +36,7 @@ export default function Page() {
               />
               <h1 className="text-lg font-extrabold pt-2">9,043</h1>
               <p className="text-sm font-bold text-subTitleColor">
-                Total Task Create
+                Total Task Created
               </p>
             </div>
           </section>
@@ -50,7 +51,7 @@ export default function Page() {
 
             <div className="mt-2 flex flex-col items-stretch space-y-14 w-full">
               {/* Assuming Users component handles dynamic data */}
-              <Users />
+              <Users users={dummyUsers}/>
               <Pagination />
             </div>
           </div>

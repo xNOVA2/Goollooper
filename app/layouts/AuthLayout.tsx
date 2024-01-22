@@ -3,6 +3,7 @@ import Picture from "@/public/assets/Image/BgPicture.png"; // Import your image 
 import Logo from "@/public/assets/Image/Logo.svg";
 
 import { AuthModule } from "@/types/type";
+import Link from "next/link";
 
 const AuthLayout: React.FC<AuthModule> = ({
   title,
@@ -28,12 +29,12 @@ const AuthLayout: React.FC<AuthModule> = ({
               <h1 className="text-3xl font-bold ">{title}</h1>
               <p className="text-sm text-gray-400 pt-3">{subText}</p>
 
-              <hr className="mt-3" />
+              <hr className="mt-6" />
             </div>
 
             <div className="p-6 ">
               {children}
-              <p className="flex justify-center mt-1 text-PrimaryColor">{additionalText}</p>
+              <p className="flex justify-center mt-2 "> <Link href={'/'} className="text-PrimaryColor no-underline"> {additionalText}</Link></p>
             </div>
           </div>
         </div>

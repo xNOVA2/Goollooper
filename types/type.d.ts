@@ -28,3 +28,24 @@ interface ResetPassword {
 }
 
 export type ResetPassword = z.infer<typeof ResetPasswordSchema>
+
+
+export interface User {
+    fullName: string;
+    emailAddress: string;
+    premium?: string;
+    Tasker?:string
+    phoneNumber: string;
+    gender: string;
+    userSince: string; 
+    status: string;
+
+  }
+  enum YesNo {
+    Yes = 'YES',
+    No = 'NO',
+  }
+ export interface UsersProps {
+    users: User[];
+    isSubAdmin?:boolean
+  }
