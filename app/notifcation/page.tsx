@@ -1,9 +1,6 @@
 import React from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { DatePicker } from "@/components/DatePicker/DatePicker";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import Editor from "@/components/Editor/Editor";
 import { PushNotificationData } from "@/types/data";
 import { Button } from "@/components/ui/button";
