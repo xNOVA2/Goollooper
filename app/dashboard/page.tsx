@@ -1,10 +1,14 @@
+"use client";
 import Image from "next/image";
-import DashboardLayout from "../layouts/DashboardLayout";
+
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
+import withAuth from "@/components/WithAuth/withAuth";
+import DashboardLayout from "../layouts/DashboardLayout";
+import userIcon from "@/public/assets/Image/IconPNG.png";
 import { dummyUsers } from "@/types/data";
-import userIcon from '@/public/assets/Image/IconPNG.png'
-export default function Page() {
+
+function Page() {
   return (
     <DashboardLayout Active={1}>
       <div className="flex flex-col gap-4">
@@ -24,16 +28,13 @@ export default function Page() {
                 height={50}
               />
               <h1 className="text-lg font-extrabold pt-2">10,324</h1>
-              <p className="text-sm font-bold text-subTitleColor">Total Users</p>
+              <p className="text-sm font-bold text-subTitleColor">
+                Total Users
+              </p>
             </div>
 
             <div className="flex flex-col items-start space-y-1 ml-4">
-              <Image
-                src={userIcon}
-                alt="Users Icon"
-                width={40}
-                height={50}
-              />
+              <Image src={userIcon} alt="Users Icon" width={40} height={50} />
               <h1 className="text-lg font-extrabold pt-2">9,043</h1>
               <p className="text-sm font-bold text-subTitleColor">
                 Total Task Created
@@ -51,7 +52,7 @@ export default function Page() {
 
             <div className="mt-2 flex flex-col items-stretch space-y-14 w-full">
               {/* Assuming Users component handles dynamic data */}
-              <Users users={dummyUsers}/>
+              <Users users={dummyUsers} />
               <Pagination />
             </div>
           </div>
@@ -60,3 +61,5 @@ export default function Page() {
     </DashboardLayout>
   );
 }
+
+export default withAuth(Page);

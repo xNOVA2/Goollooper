@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Inter,Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
+
+import ReduxProvider from "@/store/ReduxProvider";
 import "./globals.css";
 
 const inter = Poppins({ weight: "400", subsets: ["latin"] });
@@ -15,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <ReduxProvider>
+      <html lang="en">
+        <body className={inter.className}>{children}</body>
+      </html>
+    </ReduxProvider>
   );
 }

@@ -4,7 +4,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,17 +14,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInSchema } from "@/validation/AuthValidation/auth";
 import { setUser } from "@/store/actions/userAction";
 import { onLogin } from "@/api";
-
+import { useAppDispatch } from "@/lib/hooks";
 
 function Signin() {
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SigninFields>({ resolver: zodResolver(SignInSchema) });
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<SigninFields> = async (data: SiginFields) => {
     try {
@@ -35,7 +34,7 @@ function Signin() {
         dispatch(setUser(loginRes?.data?.data));
         toast.success(loginRes?.msg);
         setLoading(false);
-        router.push('/dashboard');
+        router.push("/dashboard");
       } else {
         toast.warning(loginRes?.msg);
       }
@@ -60,10 +59,11 @@ function Signin() {
               className="h-16 rounded-lg bg-backGroundColor pt-7 text-gray-400"
             />
             <div className="absolute ">
-              {errors.email?.message && <Tooltip message={errors.email?.message as string} />}
+              {errors.email?.message && (
+                <Tooltip message={errors.email?.message as string} />
+              )}
             </div>
           </div>
-
         </div>
         <div className="relative mt-3">
           <p className="absolute  text-xm text-PrimaryColor px-3 mt-2">
@@ -77,11 +77,11 @@ function Signin() {
               className="h-16 rounded-lg bg-backGroundColor pt-7 text-gray-400"
             />
             <div className="absolute">
-              {errors.password?.message && <Tooltip message={errors.password?.message} />}
-
+              {errors.password?.message && (
+                <Tooltip message={errors.password?.message} />
+              )}
             </div>
           </div>
-
         </div>
         <div className="flex justify-between mt-3">
           <div className="flex items-center space-x-2">
