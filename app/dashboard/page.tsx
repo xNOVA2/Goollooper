@@ -39,7 +39,6 @@ function Page() {
         setUserCount(statsRes?.data?.data?.userCount);
         setTaskCount(statsRes?.data?.data?.taskCount);
       }
-      console.log(usersRes?.data?.data?.pagination);
 
       if (usersRes?.data?.data?.data?.length) {
         setUsers(usersRes?.data?.data?.data);
