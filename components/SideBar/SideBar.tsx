@@ -1,16 +1,25 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
+
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+
 import Logo1 from "@/public/assets/Image/Logo.svg";
 import Logo2 from "@/public/assets/Image/Logo2.svg";
-
 import DashboardSVG from "@/public/assets/Image/Dashboard.svg";
 import UserSVG from "@/public/assets/Image/users.svg";
 import SubAdminSVG from "@/public/assets/Image/SubAdmin.svg";
 import SupportSVG from "@/public/assets/Image/Support.svg";
 import GuidelineSVG from "@/public/assets/Image/Guideline.svg";
 import NotificationSVG from "@/public/assets/Image/PushNotification.svg";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import Link from "next/link";
 
 export default function SideBar({
   children,
@@ -80,9 +89,13 @@ export default function SideBar({
                     width={20}
                     height={20}
                     className="fill-red-700"
-                    style={{ fill: 'red', color: 'red' }}
+                    style={{ fill: "red", color: "red" }}
                   />{" "}
-                  <span className={`mx-2 text-sm font-medium ${Active === item.id ? 'text-PrimaryColor' : null}`}>
+                  <span
+                    className={`mx-2 text-sm font-medium ${
+                      Active === item.id ? "text-PrimaryColor" : null
+                    }`}
+                  >
                     {item.category}
                   </span>
                 </Link>
@@ -96,17 +109,28 @@ export default function SideBar({
       <div className=" overflow-x-hidden overflow-y-auto ">
         {/* Your main content goes here */}
         <nav className="relative  items-center flex justify-end  px-9 pt-9  mr-1 pb-2">
-          <Avatar className="cursor-pointer">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar className="cursor-pointer">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Change Password</DropdownMenuItem>
+              <DropdownMenuItem>Logout</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
         <div className="flex-1 overflow-x-hidden overflow-y-auto ml-64 bg-backGroundColor  pl-1">
-            {children}
+          {children}
         </div>
       </div>
-      
-     
     </>
   );
 }
