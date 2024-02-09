@@ -1,7 +1,7 @@
-"use client";   
+"use client";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 import { RootState } from "@/store/reducers/rootReducer";
 
@@ -13,10 +13,13 @@ const withAuth = <P extends object>(
       (state: RootState) => state.userReducer.user !== null
     );
     const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
       if (!isAuthenticated) {
         router.push("/");
+      } else if (pathname === "/") {
+        router.push("/dashboard");
       }
     }, [isAuthenticated, router]);
 
