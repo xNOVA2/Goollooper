@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
@@ -6,16 +7,17 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddSubAdmin from "./AddSubAdmin";
 
 interface SearchProps {
   isSubAdmin: boolean;
+  value?: string;
+  onChange?: (e: string) => void;
 }
 
-export default function Search({ isSubAdmin }: SearchProps) {
+export default function Search({ isSubAdmin, value, onChange }: SearchProps) {
   return (
     <div className="flex justify-between items-center">
       <div className="flex justify-start gap-3 mt-5">
@@ -32,6 +34,8 @@ export default function Search({ isSubAdmin }: SearchProps) {
           <Input
             className=" bg-backGroundSecondaryColor  px-9"
             placeholder="Searching"
+            value={value}
+            onChange={(e) => onChange && onChange(e.target.value)}
           />
           <Image
             src={"/assets/Image/Search.svg"}
@@ -78,7 +82,6 @@ export default function Search({ isSubAdmin }: SearchProps) {
                 </div>
               </DialogHeader>
             </DialogContent>
-        
           </Dialog>
         )}
       </div>

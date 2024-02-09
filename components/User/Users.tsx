@@ -139,11 +139,11 @@ function UserModal({ user }: { user: User }) {
                 height={70}
               />
               <h1 className="mt-2 font-bold text-black text-xl">
-                Lincoln Korsgaard
+                {user.firstName} {user.lastName}
               </h1>
 
               <div className="mt-3 text-center">
-                <p>Not a Tasker</p>
+                <p>{user?.tasks?.length ? "Tasker" : "Not a Tasker"}</p>
               </div>
             </div>
             <div className="mt-24">
@@ -165,7 +165,7 @@ function UserModal({ user }: { user: User }) {
                 </div>
                 <div className="p-2  flex justify-between bg-backGroundColor">
                   <h1 className="text-black font-bold text-md">Age</h1>
-                  25
+                  {user?.age}
                 </div>
               </div>
             </div>
