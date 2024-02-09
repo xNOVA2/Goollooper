@@ -92,6 +92,7 @@ export interface User {
   role: number;
   volunteer?: string[];
   services?: string[];
+  tasks?: string[];
   subscription?: {
     subscription: string;
     plan: string;
@@ -122,7 +123,7 @@ export interface User {
   insuranceFiles?: string[];
   isProfileCompleted?: boolean;
   isVerified?: boolean;
-  isActive?: boolean;
+  isActive: boolean;
   fcmTokens?: string[];
   refreshToken?: string;
   otpCode?: number | null;
@@ -133,7 +134,7 @@ export interface User {
   callToken?: string;
   callDeviceType?: string;
   isDeleted?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   deletedAt?: Date | null;
 }
