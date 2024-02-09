@@ -32,7 +32,7 @@ function Signin() {
       setLoading(true);
       let loginRes: any = await onLogin(data);
       if (loginRes?.data?.code === 200) {
-        dispatch(setUser(loginRes?.data?.data));
+        dispatch(setUser(loginRes?.data));
         toast.success(loginRes?.msg);
         setLoading(false);
         router.push("/dashboard");

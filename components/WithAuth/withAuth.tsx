@@ -23,7 +23,7 @@ const withAuth = <P extends object>(
       }
     }, [isAuthenticated, router]);
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated && pathname !== "/" && pathname !== "/forget") {
       return null;
     }
 

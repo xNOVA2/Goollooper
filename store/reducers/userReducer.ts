@@ -4,10 +4,14 @@ import { SET_USER } from "../actions/actionTypes";
 
 interface UserState {
   user: User | null;
+  accessToken: string | null;
+  refreshToken: string | null;
 }
 
 const initialState: UserState = {
   user: null,
+  accessToken: null,
+  refreshToken: null,
 };
 
 const userReducer = (
@@ -16,7 +20,12 @@ const userReducer = (
 ) => {
   switch (action.type) {
     case SET_USER:
-      return { ...state, user: action.payload };
+      return {
+        ...state,
+        user: action.payload?.data,
+        accessToken: action.payload?.accessToken,
+        refreshToken: action.payload?.refreshToken,
+      };
     default:
       return state;
   }
