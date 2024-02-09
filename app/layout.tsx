@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import ReduxProvider from "@/store/ReduxProvider";
 import "./globals.css";
@@ -19,7 +21,10 @@ export default function RootLayout({
   return (
     <ReduxProvider>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <ToastContainer />
+          {children}
+        </body>
       </html>
     </ReduxProvider>
   );
