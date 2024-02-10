@@ -25,6 +25,10 @@ export default function RootLayout({
           <ToastContainer />
           {children}
         </body>
+        <script
+          type="text/javascript"
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoQH4pdrX59zY5xcJrAUEgEqF5r4qRHes&libraries=places"
+        />
       </html>
     </ReduxProvider>
   );
