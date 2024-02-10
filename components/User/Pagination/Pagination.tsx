@@ -14,6 +14,11 @@ export default function Pagination({
   limit?: number;
   onPageChange: (page: number) => void;
 }) {
+
+  if (!totalItems) {
+    return null;
+  }
+
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);

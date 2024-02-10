@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -18,6 +19,12 @@ interface SearchProps {
 }
 
 export default function Search({ isSubAdmin, value, onChange }: SearchProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="flex justify-between items-center">
       <div className="flex justify-start gap-3 mt-5">
@@ -58,9 +65,12 @@ export default function Search({ isSubAdmin, value, onChange }: SearchProps) {
             Download CSV
           </button>
         ) : (
-          <Dialog>
+          <Dialog open={isOpen}>
             <DialogTrigger>
-              <button className="flex items-center px-7 bg-backGroundSecondaryColor py-2 gap-2 rounded-lg">
+              <button
+                className="flex items-center px-7 bg-backGroundSecondaryColor py-2 gap-2 rounded-lg"
+                onClick={onToggle}
+              >
                 <span>+</span>
                 Add Sub Admin
               </button>
@@ -77,7 +87,7 @@ export default function Search({ isSubAdmin, value, onChange }: SearchProps) {
                 </div>
                 <div className="">
                   <div>
-                    <AddSubAdmin />
+                    <AddSubAdmin onClose={onToggle} />
                   </div>
                 </div>
               </DialogHeader>
