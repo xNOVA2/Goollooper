@@ -30,3 +30,15 @@ export const getSubadmin = function (
 export const onAddSubAdmin = function (body: any) {
   return Api.post("/sub-admin/create", body);
 };
+
+export const getGuidline = function (type: number) {
+  return Api.get(`/guideline?type=${type}`);
+};
+
+export const addGuidline = function (body: any) {
+  return Api.post("/guideline/create", body);
+};
+
+export const updateGuidline = function (id: string, body: any) {
+  return Api.patch(`/guideline/update/${id}`, body);
+};
