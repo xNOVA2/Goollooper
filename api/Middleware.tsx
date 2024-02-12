@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 import { RootState, store } from "@/store/store";
 import { removeUser } from "@/store/actions/userAction";
@@ -8,7 +9,7 @@ const development = "http://localhost:5000";
 const dev = "http://goollooper.yameenyousuf.com/api";
 const production = "http://44.202.123.121/api";
 
-const BASE_URL = `${dev}/admin`;
+export const BASE_URL = `${dev}/admin`;
 
 const Api = axios.create({
   baseURL: BASE_URL,
@@ -29,6 +30,7 @@ Api.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
+      error?.response?.data?.data && toast.error(error?.response?.data?.data);
       const router = useRouter();
       store.dispatch(removeUser());
       router.push("/");

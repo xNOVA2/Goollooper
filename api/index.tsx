@@ -1,5 +1,11 @@
-import { Api } from "./Middleware";
-import { SiginFields } from "@/types/type";
+import axios from "axios";
+
+import { Api, BASE_URL } from "./Middleware";
+import {
+  ForgetFields,
+  SiginFields,
+  ResetPassword as ResetPasswordType,
+} from "@/types/type";
 
 // auth
 
@@ -12,6 +18,21 @@ export const logout = function (body: {
   fcmToken?: string;
 }) {
   return Api.post("/auth/logout", body);
+};
+
+export const forgetPassword = function (body: ForgetFields) {
+  return Api.post("/auth/forget-password", body);
+};
+
+export const resetPassword = function (
+  body: ResetPasswordType,
+  token: string | null
+) {
+  return axios.post(BASE_URL + "/auth/reset-password", body, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const getStats = function () {
