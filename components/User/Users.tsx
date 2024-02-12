@@ -120,7 +120,7 @@ export function Users({ users, isSubAdmin }: UsersProps) {
 
 function UserModal({ user }: { user: User }) {
   return (
-    <DialogContent className="h-[83%] w-[30%]">
+    <DialogContent className="h-[50%] w-[30%] overflow-auto">
       <DialogHeader>
         <DialogTitle className="mx-auto pb-4">Users Profile</DialogTitle>
         <hr className="" />
@@ -192,7 +192,7 @@ function UserModal({ user }: { user: User }) {
 
 function SubAdminModal({ user }: { user: User }) {
   return (
-    <DialogContent className="h-[46%] w-[30%]">
+    <DialogContent className=" w-[30%] ">
       <DialogHeader>
         <DialogTitle className="mx-auto">Sub Admin Profile</DialogTitle>
         <hr />

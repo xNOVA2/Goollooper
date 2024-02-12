@@ -69,7 +69,7 @@ export default function Page() {
             {/* Adding overflow-auto to handle the content overflow */}
             {/* <Users users={dummyUsers2}  isSubAdmin={true}/> */}
             {subadmin?.length ? (
-              <Users users={subadmin} isSubAdmin={false} />
+              <Users users={subadmin} isSubAdmin={true} />
             ) : null}
           </div>
         </div>
