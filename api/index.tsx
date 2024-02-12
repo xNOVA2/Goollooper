@@ -7,6 +7,13 @@ export const onLogin = function (body: SiginFields) {
   return Api.post("/auth/login", body);
 };
 
+export const logout = function (body: {
+  refreshToken: string;
+  fcmToken?: string;
+}) {
+  return Api.post("/auth/logout", body);
+};
+
 export const getStats = function () {
   return Api.get("/stats");
 };

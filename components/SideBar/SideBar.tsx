@@ -1,6 +1,10 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
@@ -21,6 +25,10 @@ import SupportSVG from "@/public/assets/Image/Support.svg";
 import GuidelineSVG from "@/public/assets/Image/Guideline.svg";
 import NotificationSVG from "@/public/assets/Image/PushNotification.svg";
 
+import { removeUser } from "@/store/actions/userAction";
+import { RootState } from "@/store/reducers/rootReducer";
+import { logout } from "@/api";
+
 export default function SideBar({
   children,
   Active,
@@ -28,6 +36,12 @@ export default function SideBar({
   children?: React.ReactNode;
   Active?: number;
 }) {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const refreshToken = useSelector(
+    (state: RootState) => state.userReducer.refreshToken
+  );
+
   const AllLinks = [
     {
       Logo: DashboardSVG,
@@ -66,6 +80,25 @@ export default function SideBar({
       path: "/notifcation",
     },
   ];
+
+  const onLogout = async () => {
+    try {
+      let logotRes: any = await logout({
+        refreshToken,
+      });
+      dispatch(removeUser());
+      toast.success(logotRes?.data?.msg);
+      router.push("/");
+    } catch (error: Error | any) {
+      if (typeof error?.response?.data?.data === "object") {
+        error?.response?.data?.data?.map((err: string) => {
+          toast.error(err);
+        });
+      } else {
+        toast.error(error?.response?.data?.msg);
+      }
+    }
+  };
 
   return (
     <>
@@ -123,7 +156,9 @@ export default function SideBar({
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Change Password</DropdownMenuItem>
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={onLogout}>
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
