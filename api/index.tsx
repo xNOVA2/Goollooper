@@ -42,3 +42,11 @@ export const addGuidline = function (body: any) {
 export const updateGuidline = function (id: string, body: any) {
   return Api.patch(`/guideline/update/${id}`, body);
 };
+
+export const getNotification = function (page: number = 1, limit: number = 10) {
+  return Api.get(`/notification?page=${page}&limit=${limit}`);
+};
+
+export const sendNotification = function (body: any) {
+  return Api.post("/notification/send", body);
+};
