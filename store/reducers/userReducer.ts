@@ -1,6 +1,6 @@
 import { User } from "@/types/type";
 
-import { SET_USER } from "../actions/actionTypes";
+import { REMOVE_USER, SET_USER } from "../actions/actionTypes";
 
 interface UserState {
   user: User | null;
@@ -25,6 +25,13 @@ const userReducer = (
         user: action.payload?.data,
         accessToken: action.payload?.accessToken,
         refreshToken: action.payload?.refreshToken,
+      };
+    case REMOVE_USER:
+      return {
+        ...state,
+        user: null,
+        accessToken: null,
+        refreshToken: null,
       };
     default:
       return state;

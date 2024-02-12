@@ -16,7 +16,7 @@ export const getUsers = function (
   limit: number = 10,
   email?: string
 ) {
-  return Api.get(`/user?page=${page}&limit=${limit}&email=${email}`);
+  return Api.get(`/user?page=${page}&limit=${limit}&email=${email || ""}`);
 };
 
 export const getSubadmin = function (
