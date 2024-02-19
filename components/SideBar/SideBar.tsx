@@ -155,7 +155,9 @@ export default function SideBar({
             <DropdownMenuContent>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Change Password</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={"/change-password"}>Change Password</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" onClick={onLogout}>
                 Logout
               </DropdownMenuItem>

@@ -35,6 +35,10 @@ export const resetPassword = function (
   });
 };
 
+export const changePassword = function (body: ResetPasswordType) {
+  return Api.post("/auth/reset-password", body);
+};
+
 export const getStats = function () {
   return Api.get("/stats");
 };

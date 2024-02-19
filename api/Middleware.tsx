@@ -30,9 +30,9 @@ Api.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      error?.response?.data?.data && toast.error(error?.response?.data?.data);
-      const router = useRouter();
+      error?.response?.data?.msg && toast.error(error?.response?.data?.msg);
       store.dispatch(removeUser());
+      const router = useRouter();
       router.push("/");
     }
     return Promise.reject(error);
