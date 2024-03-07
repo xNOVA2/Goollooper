@@ -1,7 +1,17 @@
 import DashboardLayout from "@/app/layouts/DashboardLayout";
 import GuidelineLayout from "@/app/layouts/GuidelineLayout";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function page() {
   return (
@@ -20,9 +30,36 @@ export default function page() {
                 />
               </div>
               <div className="mt-5 flex justify-end">
-                <Button className="px-20 rounded-full bg-PrimaryColor">
-                  Add Sub Category
-                </Button>
+              <Dialog>
+              <DialogTrigger asChild>
+                <button className="w-[30%] py-2 rounded-full  bg-PrimaryColor text-white ">
+                  Add
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Add Interest</DialogTitle>
+                  <DialogDescription>
+                    You can add Interest from here
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="Title" className="text-right">
+                      Title
+                    </Label>
+                    <Input
+                      id="Title"
+                      value="Pedro Duarte"
+                      className="col-span-3"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Save changes</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
               </div>
 
               <div className="min-h-screen">
