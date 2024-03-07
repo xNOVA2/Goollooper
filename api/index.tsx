@@ -82,3 +82,13 @@ export const getNotification = function (page: number = 1, limit: number = 10) {
 export const sendNotification = function (body: any) {
   return Api.post("/notification/send", body);
 };
+
+export const sendMedia = async (media: any) => {
+  let formData = new FormData();
+  formData.append("media", media);
+  return Api.post("/media/upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

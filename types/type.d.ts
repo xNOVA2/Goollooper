@@ -138,3 +138,71 @@ export interface User {
   updatedAt: Date;
   deletedAt?: Date | null;
 }
+
+// Chat
+
+enum EMessageStatus {
+  SENT = "sent",
+  DELIVERED = "delivered",
+  SEEN = "seen",
+}
+
+enum MessageType {
+  message = "message",
+  request = "request",
+  pause = "pause",
+  relieve = "relieve",
+  proceed = "proceed",
+  invoice = "invoice",
+  complete = "complete",
+  system = "system",
+}
+
+export enum EChatType {
+  GROUP = "group",
+  ONE_TO_ONE = "one-to-one",
+}
+
+export interface IReceivedBy {
+  user: string | Types.ObjectId;
+  status: EMessageStatus;
+  createdAt: Date;
+  deleted: boolean;
+  deletedAt?: Date;
+}
+export interface Message {
+  body: string;
+  createdAt?: Date;
+  mediaUrls?: string[];
+  mediaType?: string;
+  sentBy: string | Types.ObjectId;
+  type?: MessageType;
+  receivedBy?: IReceivedBy[];
+  requestId?: string | Types.ObjectId;
+  deleted?: boolean;
+  deletedAt?: Date;
+}
+
+export interface IParticipant {
+  user: string | Types.ObjectId;
+  status: string;
+  isMuted: boolean;
+  isBlocked: boolean;
+}
+
+export interface Chat {
+  _id?: string | Types.ObjectId;
+  groupName?: string;
+  isChatSupport: boolean;
+  isTicketClosed: boolean;
+  groupImageUrl?: string;
+  chatType: EChatType;
+  createdBy?: string | Types.ObjectId;
+  messages: Message[];
+  lastUpdatedAt: Date;
+  participants: IParticipant[] | User[];
+  task: string | Types.ObjectId;
+  // requests: IRequest[];
+  deleted: boolean;
+  deletedAt?: Date;
+}
