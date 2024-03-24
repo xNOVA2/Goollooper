@@ -1,15 +1,11 @@
 import SideBar from "@/components/SideBar/SideBar";
 
-
-export default function DashboardLayout({children,Active}:{children?: React.ReactNode;Active?: number;}) {
-  return (
-    <div >
-        
-        <SideBar Active={Active} >
-          {children}
-        </SideBar>
-       
-    </div>
-  )
+export default function DashboardLayout({
+  children,
+  Active,
+}: {
+  children?: React.ReactNode;
+  Active?: number;
+}) {
+  return <SideBar Active={Active}>{children}</SideBar>;
 }
-
