@@ -94,7 +94,7 @@ export function Users({ users, isSubAdmin }: UsersProps) {
             <TableCell className="font-medium">{user.email}</TableCell>
             {!isSubAdmin && <TableCell className="">Yes</TableCell>}
             {!isSubAdmin && (
-              <TableCell>{user?.tasks?.length ? "Yes" : "No"}</TableCell>
+              <TableCell>{user?.role === 3 ? "Yes" : "No"}</TableCell>
             )}
             <TableCell>{user.phone}</TableCell>
             <TableCell>{user.gender}</TableCell>
@@ -143,7 +143,7 @@ function UserModal({ user }: { user: User }) {
               </h1>
 
               <div className="mt-3 text-center">
-                <p>{user?.tasks?.length ? "Tasker" : "Not a Tasker"}</p>
+                <p>{user?.role === 3 ? "Tasker" : "Not a Tasker"}</p>
               </div>
             </div>
             <div className="mt-24">
@@ -169,20 +169,103 @@ function UserModal({ user }: { user: User }) {
                 </div>
               </div>
             </div>
-            <div className="mt-6">
-              <h1 className="text-xl font-bold text-black mb-3">Gallery</h1>
-              <div className="flex flex-wrap gap-3">
-                {user?.gallery?.map((image: string) => (
-                  <Image
-                    src={IMAGE_URL + image}
-                    alt="user Picture"
-                    width={150}
-                    height={150}
-                    className="rounded-2xl"
-                  />
-                ))}
+            {user?.role === 2 ? (
+              <div className="mt-6">
+                <h1 className="text-xl font-bold text-black mb-3">Gallery</h1>
+                <div className="flex flex-wrap gap-3">
+                  {user?.gallery?.map((image: string) => (
+                    <Image
+                      src={IMAGE_URL + image}
+                      alt="user Picture"
+                      width={150}
+                      height={150}
+                      className="rounded-2xl"
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <>
+                <div className="mt-6">
+                  <h1 className="text-xl font-bold text-black mb-3">
+                    Visuals validation
+                  </h1>
+                  <div className="flex flex-wrap gap-3">
+                    {user?.visuals?.map((image: string) => (
+                      <Image
+                        src={IMAGE_URL + image}
+                        alt="user visuals"
+                        width={150}
+                        height={150}
+                        className="rounded-2xl"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <h1 className="text-xl font-bold text-black mb-3">
+                    Brand Information
+                  </h1>
+                  <div className="flex flex-wrap gap-3">
+                    <Image
+                      src={IMAGE_URL + user?.company?.logo}
+                      alt="user visuals"
+                      width={250}
+                      height={250}
+                      className="rounded-2xl"
+                    />
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <h1 className="text-xl font-bold text-black mb-3">
+                    Professional Certifications
+                  </h1>
+                  <div className="flex flex-wrap gap-3">
+                    {user?.certificates?.map((image: string) => (
+                      <Image
+                        src={IMAGE_URL + image}
+                        alt="user certificate"
+                        width={250}
+                        height={250}
+                        className="rounded-2xl"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <h1 className="text-xl font-bold text-black mb-3">
+                    Licensing
+                  </h1>
+                  <div className="flex flex-wrap gap-3">
+                    {user?.licenses?.map((image: string) => (
+                      <Image
+                        src={IMAGE_URL + image}
+                        alt="user license"
+                        width={250}
+                        height={250}
+                        className="rounded-2xl"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <h1 className="text-xl font-bold text-black mb-3">
+                    Insurances
+                  </h1>
+                  <div className="flex flex-wrap gap-3">
+                    {user?.insurances?.map((image: string) => (
+                      <Image
+                        src={IMAGE_URL + image}
+                        alt="user insurance"
+                        width={250}
+                        height={250}
+                        className="rounded-2xl"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </DialogDescription>
       </DialogHeader>
