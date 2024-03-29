@@ -206,3 +206,16 @@ export interface Chat {
   deleted: boolean;
   deletedAt?: Date;
 }
+
+export interface SubServices {
+  _id: string;
+  parent: string;
+  title: string;
+}
+
+export interface Service {
+  _id: string;
+  title: string;
+  type: string;
+  subServices?: SubServices[];
+}

@@ -92,3 +92,23 @@ export const sendMedia = async (media: any) => {
     },
   });
 };
+
+export const getServices = function (
+  page: number = 1,
+  limit: number = 10,
+  type?: string
+) {
+  return Api.get(`/service?page=${page}&limit=${limit}&type=${type}`);
+};
+
+export const getService = function (id: string) {
+  return Api.get(`/service/show/${id}`);
+};
+
+export const addService = function (body: any) {
+  return Api.post("/service/create", body);
+};
+
+export const deleteService = function (id: string) {
+  return Api.delete(`/service/delete/${id}`);
+};
