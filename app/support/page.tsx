@@ -46,6 +46,7 @@ const UserList = ({
     <div className="flex flex-col gap-4">
       {chats?.map((msg: any) => (
         <UserAvatar
+        key={msg._id}
           name={
             msg?.participants.find((userObj: any) => userObj?._id !== user?._id)
               ?.firstName
@@ -160,6 +161,7 @@ const MessageScreen = ({
             <>
               {msg?.mediaUrls?.map((media: string) => (
                 <div
+                key={msg.requestId + media}
                   className={`flex ${
                     isAdminMsg
                       ? "items-end justify-end mb-4"
@@ -262,7 +264,7 @@ const MessageScreen = ({
   );
 };
 
-export default function Support() {
+export default function SupportPage() {
   const accessToken = useSelector(
     (state: RootState) => state.userReducer.accessToken
   );

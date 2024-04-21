@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";

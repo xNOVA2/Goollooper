@@ -9,7 +9,7 @@ import Search from "@/components/Searching/Search";
 import { getSubadmin } from "@/api";
 import { User } from "@/types/type";
 
-export default function Page() {
+export default function SubadminPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [subadmin, setSubadmin] = useState<User[]>([]);

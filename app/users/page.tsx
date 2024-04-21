@@ -9,7 +9,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import { getUsers } from "@/api";
 import { User } from "@/types/type";
 
-export default function Page() {
+export default function UsersPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
