@@ -1,7 +1,7 @@
 import ForgetPassword from "@/components/Auth/forget";
 import AuthLayout from "../layouts/AuthLayout";
 
-export default function page() {
+export default function ForgetPage() {
   return (
     <AuthLayout
       title="Forget Password"

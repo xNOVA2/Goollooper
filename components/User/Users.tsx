@@ -175,6 +175,7 @@ function UserModal({ user }: { user: User }) {
                 <div className="flex flex-wrap gap-3">
                   {user?.gallery?.map((image: string) => (
                     <Image
+                      key={user._id + image}
                       src={IMAGE_URL + image}
                       alt="user Picture"
                       width={150}
@@ -193,6 +194,7 @@ function UserModal({ user }: { user: User }) {
                   <div className="flex flex-wrap gap-3">
                     {user?.visuals?.map((image: string) => (
                       <Image
+                        key={user._id + image}
                         src={IMAGE_URL + image}
                         alt="user visuals"
                         width={150}
@@ -223,6 +225,7 @@ function UserModal({ user }: { user: User }) {
                   <div className="flex flex-wrap gap-3">
                     {user?.certificates?.map((image: string) => (
                       <Image
+                        key={user._id + image}
                         src={IMAGE_URL + image}
                         alt="user certificate"
                         width={250}
@@ -239,6 +242,7 @@ function UserModal({ user }: { user: User }) {
                   <div className="flex flex-wrap gap-3">
                     {user?.licenses?.map((image: string) => (
                       <Image
+                        key={user._id + image}
                         src={IMAGE_URL + image}
                         alt="user license"
                         width={250}
@@ -255,6 +259,7 @@ function UserModal({ user }: { user: User }) {
                   <div className="flex flex-wrap gap-3">
                     {user?.insurances?.map((image: string) => (
                       <Image
+                        key={user._id + image}
                         src={IMAGE_URL + image}
                         alt="user insurance"
                         width={250}

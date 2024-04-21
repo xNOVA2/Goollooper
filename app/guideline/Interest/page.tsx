@@ -22,7 +22,7 @@ import { addService, deleteService, getServices } from "@/api";
 import { Service } from "@/types/type";
 import { toast } from "react-toastify";
 
-export default function page() {
+export default function InterestPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [services, setServices] = useState<Service[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -158,6 +158,7 @@ export default function page() {
             {services?.length
               ? services.map((service: Service) => (
                   <Task
+                    key={service._id}
                     title={service.title}
                     id={service._id}
                     link={`/guideline/Interest`}

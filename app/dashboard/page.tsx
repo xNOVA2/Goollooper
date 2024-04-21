@@ -13,7 +13,7 @@ import { dummyUsers } from "@/types/data";
 import { User } from "@/types/type";
 import { getStats, getUsers } from "@/api";
 
-function Page() {
+function DashboardPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [userCount, setUserCount] = useState<number>(0);
   const [taskCount, setTaskCount] = useState<number>(0);
@@ -114,4 +114,4 @@ function Page() {
   );
 }
 
-export default withAuth(Page);
+export default withAuth(DashboardPage);

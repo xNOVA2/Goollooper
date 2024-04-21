@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { addService, deleteService, getService } from "@/api";
 import { SubServices } from "@/types/type";
 
-export default function page({ params }: any) {
+export default function VolunteerSubpage({ params }: any) {
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [title, setTitle] = useState<string>("");

@@ -16,7 +16,7 @@ interface Option {
   label: string;
 }
 
-export default function page() {
+export default function NotificationPage() {
   const [notifications, setNotifications] = useState([]);
   const [options, setOptions] = useState<Option[]>([]);
   const [search, setSearch] = useState<string>("");
@@ -140,7 +140,7 @@ export default function page() {
           <p className="mb-5 text-lg font-semibold">History</p>
           <div className="flex flex-col space-y-4 border-l-2 border-dashed p-3">
             {notifications?.map((item: any) => (
-              <div className="flex items-center gap-4 px-3">
+              <div className="flex items-center gap-4 px-3" key={item._id}>
                 <p className="text-xs ">
                   {new Date(item?.createdAt)?.toLocaleDateString()}
                 </p>

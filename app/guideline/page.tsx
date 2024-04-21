@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 import { addGuidline, getGuidline, updateGuidline } from "@/api";
 
-export default function page() {
+export default function TermsPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [termsAndCondition, setTermsAndCondition] = useState<string>("");
   const [id, setId] = useState<string>("");
