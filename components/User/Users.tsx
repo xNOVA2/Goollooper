@@ -44,10 +44,10 @@ const TableHeaderrForUsers = [
 ];
 export function Users({ users, isSubAdmin }: UsersProps) {
   return (
-    <Table className="border-collapse">
+    <Table className="border-collapse"> 
       <TableCaption></TableCaption>
       <TableHeader>
-        <TableRow>
+        <TableRow className="border-y border-collapse">
           <TableHead>Full Name</TableHead>
           <TableHead>Email Address</TableHead>
           {!isSubAdmin ? (
@@ -120,7 +120,7 @@ export function Users({ users, isSubAdmin }: UsersProps) {
 
 function UserModal({ user }: { user: User }) {
   return (
-    <DialogContent className="h-[50%] w-[30%] overflow-auto">
+    <DialogContent className="h-[85%] w-[30%] overflow-auto">
       <DialogHeader>
         <DialogTitle className="mx-auto pb-4">Users Profile</DialogTitle>
         <hr className="" />

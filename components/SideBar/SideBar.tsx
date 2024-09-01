@@ -19,11 +19,18 @@ import {
 import Logo1 from "@/public/assets/Image/Logo.svg";
 import Logo2 from "@/public/assets/Image/Logo2.svg";
 import DashboardSVG from "@/public/assets/Image/Dashboard.svg";
+import DashboardFilledSVG from "@/public/assets/Image/dashboard-filled.svg";
 import UserSVG from "@/public/assets/Image/users.svg";
+import UserFilledSVG from "@/public/assets/Image/users-filled.svg";
 import SubAdminSVG from "@/public/assets/Image/SubAdmin.svg";
+import SubAdminFilledSVG from "@/public/assets/Image/subadmin-filled.svg";
 import SupportSVG from "@/public/assets/Image/Support.svg";
+import SupportFilledSVG from "@/public/assets/Image/support-filled.svg";
 import GuidelineSVG from "@/public/assets/Image/Guideline.svg";
+import GuidelineFilledSVG from "@/public/assets/Image/guidline-filled.svg";
 import NotificationSVG from "@/public/assets/Image/PushNotification.svg";
+import NotificationFilledSVG from "@/public/assets/Image/pushNotification-filled.svg";
+import ProfileDropdownIcon from "@/public/assets/Image/ProfileDropdownIcon.svg";
 
 import { removeUser } from "@/store/actions/userAction";
 import { RootState } from "@/store/reducers/rootReducer";
@@ -44,38 +51,44 @@ export default function SideBar({
 
   const AllLinks = [
     {
-      Logo: DashboardSVG,
+      Icon: DashboardSVG,
+      IconActive: DashboardFilledSVG,
       category: "Dashboard",
       id: 1,
       path: "/dashboard",
     },
     {
-      Logo: UserSVG,
+      Icon: UserSVG,
+      IconActive: UserFilledSVG,
       category: "Users",
       id: 2,
       path: "/users",
     },
     {
-      Logo: SubAdminSVG,
-      category: "SubAdmin",
+      Icon: SubAdminSVG,
+      IconActive: SubAdminFilledSVG,
+      category: "Sub Admin",
       id: 3,
       path: "/SubAdmin",
     },
     {
-      Logo: SupportSVG,
+      Icon: SupportSVG,
+      IconActive: SupportFilledSVG,
       category: "Support",
       id: 4,
       path: "/support",
     },
     {
-      Logo: GuidelineSVG,
+      Icon: GuidelineSVG,
+      IconActive: GuidelineFilledSVG,
       category: "Guideline",
       id: 5,
       path: "/guideline",
     },
     {
-      Logo: NotificationSVG,
-      category: "PushNotification",
+      Icon: NotificationSVG,
+      IconActive: NotificationFilledSVG,
+      category: "Push Notification",
       id: 6,
       path: "/notifcation",
     },
@@ -102,48 +115,51 @@ export default function SideBar({
 
   return (
     <>
-      <aside className="fixed min-h-screen w-64 flex-col overflow-y-auto  py-8 z-10 bg-white">
+      <aside className="fixed min-h-screen w-64 flex-col pt-7 pb-8 z-10 bg-white border-r border-border">
         <div className="flex items-center space-x-2 px-5">
           <Image src={Logo1} alt="" width={50} height={20} />
           <Image src={Logo2} alt="" width={100} height={60} />
         </div>
 
-        <div className="mt-6 flex flex-1 flex-col justify-between px-5">
-          <nav className="space-y-6">
-            {AllLinks.map((item) => (
-              <div className="space-y-3" key={item.id}>
-                <Link
-                  className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
-                  href={item.path}
-                >
-                  <Image
-                    src={`/assets/Image/${item.category}.svg`}
-                    alt="Icon"
-                    width={20}
-                    height={20}
-                    className="fill-red-700"
-                    style={{ fill: "red", color: "red" }}
-                  />{" "}
-                  <span
-                    className={`mx-2 text-sm font-medium ${
-                      Active === item.id ? "text-PrimaryColor" : null
-                    }`}
+        <div className="mt-6 flex flex-1 flex-col justify-between">
+          <nav className="space-y-2">
+            {AllLinks.map((item) => {
+              return (
+                <div className="space-y-3" key={item.id}>
+                  <Link
+                    className={`flex transform items-center px-7 py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 ${ Active === item.id ? "border-r-4 border-PrimaryColor" : "" }`}
+                    href={item.path}
                   >
-                    {item.category}
-                  </span>
-                </Link>
-              </div>
-            ))}
+                    <Image
+                      src={ Active === item.id ? item.IconActive : item.Icon }
+                      alt="Icon"
+                      width={20}
+                      height={20}
+                      className="fill-red-700"
+                      style={{ fill: "red", color: "red" }}
+                    />
+
+                    <span
+                      className={`mx-2 text-sm font-medium ${
+                        Active === item.id ? "text-PrimaryColor" : null
+                      }`}
+                    >
+                      {item.category}
+                    </span>
+                  </Link>
+                </div>
+            );
+          })}
           </nav>
         </div>
       </aside>
 
       {/* Add the main content here */}
-      <div className=" overflow-x-hidden overflow-y-auto ">
+      <div>
         {/* Your main content goes here */}
-        <nav className="relative  items-center flex justify-end  px-9 pt-9  mr-1 pb-2">
+        <nav className="relative bg-white border-b border-border items-center flex justify-end  px-10  py-4">
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="outline-none flex items-center gap-3">
               <Avatar className="cursor-pointer">
                 <AvatarImage
                   src="https://github.com/shadcn.png"
@@ -151,20 +167,32 @@ export default function SideBar({
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
+              <Image src={ProfileDropdownIcon} alt="Arrow" width={11} height={11} />
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuContent className="text-center mt-4 mr-10 w-[14.875em] h-[14.125em]">
+              <div className="flex w-full justify-center">
+                <Avatar className="w-[4.188em] h-[4.188em] mb-3 mt-4">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                    className="w-[4.188em] h-[4.188em]"
+                  />
+                  <AvatarFallback className="w-[4.188em] h-[4.188em]">CN</AvatarFallback>
+                </Avatar>
+              </div>
+              <DropdownMenuLabel className="text-[0.875rem]">Talan Smith</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem className="my-1 mx-10 text-md flex text-[0.875rem] justify-center" style={{ backgroundColor: 'transparent', cursor: 'pointer' }}>
                 <Link href={"/change-password"}>Change Password</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" onClick={onLogout}>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="my-1 mx-10 text-md flex text-[0.875rem] justify-center" onClick={onLogout} style={{ color: '#F41D1D', backgroundColor: 'transparent', cursor: 'pointer' }}>
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
-        <div className="flex-1 overflow-x-hidden overflow-y-auto ml-64 bg-backGroundColor  pl-1">
+        <div className="flex-1 ml-64">
           {children}
         </div>
       </div>

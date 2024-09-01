@@ -38,7 +38,7 @@ const GooglePlacesAutocompleteWrapper = React.forwardRef<
   };
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("", className)}>
       <GooglePlacesAutocomplete
         apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}
         {...props}

@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      zIndex: {
+        '-10': '-10',
+        '-20': '-20',
+      },
       colors: {
         deleleColor:'#FF5C5C',
         subTitleColor:'#6A6A6A',

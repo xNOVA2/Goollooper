@@ -56,7 +56,7 @@ export default function SubadminPage() {
   return (
     <DashboardLayout Active={3}>
       <div
-        className="flex-grow flex flex-col m-2 border-1 bg-white rounded p-5"
+        className="flex-grow flex flex-col m-2 border border-border bg-white rounded p-5"
         onFocus={() => fetchData(currentPage)}
       >
         <div>

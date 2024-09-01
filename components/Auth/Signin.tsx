@@ -16,6 +16,7 @@ import { SignInSchema } from "@/validation/AuthValidation/auth";
 import { setUser } from "@/store/actions/userAction";
 import { onLogin } from "@/api";
 import { useAppDispatch } from "@/lib/hooks";
+import { Checkbox } from "../ui/checkbox";
 
 function Signin() {
   const router = useRouter();
@@ -49,7 +50,7 @@ function Signin() {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="relative">
-          <p className="absolute  text-xm text-PrimaryColor px-3 mt-2">
+          <p className="absolute text-[0.875rem] leading-[1.098rem] text-PrimaryColor pt-[0.688em] pl-[1.313em]">
             Email Address*
           </p>
           <div className="flex">
@@ -57,7 +58,7 @@ function Signin() {
               {...register("email")}
               type="email"
               placeholder="@mail.com"
-              className="h-16 rounded-lg bg-backGroundColor pt-7 text-gray-400"
+              className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-gray-400 h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
             />
             <div className="absolute ">
               {errors.email?.message && (
@@ -66,8 +67,8 @@ function Signin() {
             </div>
           </div>
         </div>
-        <div className="relative mt-3">
-          <p className="absolute  text-xm text-PrimaryColor px-3 mt-2">
+        <div className="relative mt-[0.75em]">
+          <p className="absolute text-[0.875rem] leading-[1.098rem] text-PrimaryColor pt-[0.688em] pl-[1.313em]">
             Password*
           </p>
           <div className="flex">
@@ -75,7 +76,7 @@ function Signin() {
               {...register("password")}
               type="password"
               placeholder="********"
-              className="h-16 rounded-lg bg-backGroundColor pt-7 text-gray-400"
+              className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-gray-400 h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
             />
             <div className="absolute">
               {errors.password?.message && (
@@ -84,23 +85,22 @@ function Signin() {
             </div>
           </div>
         </div>
-        <div className="flex justify-between mt-3">
+        <div className="flex justify-between mt-[0.875em] mb-[1.813em]">
           <div className="flex items-center space-x-2">
-            <Input type="checkbox" className="w-4 h-4 rounded-xl" />
-            <label htmlFor="" className="text-sm">
+            <Checkbox id="login-checkbox" className="w-[1.063em] h-[1.063em] rounded-md border-border data-[state=checked]:bg-PrimaryColor" />
+            <label htmlFor="login-checkbox" className="text-[0.875rem] leading-[1.313rem]">
               Remember me
             </label>
           </div>
 
           <div>
-            <Link className="text-red-600 " href={"/forget"}>
-              {" "}
+            <Link className="text-red-600 text-[0.875rem] leading-[1.313rem] font-normal " href={"/forget"}>
               Forget Password
             </Link>
           </div>
         </div>
         <Button
-          className="w-full rounded-full bg-SecondaryColor py-8 mt-5"
+          className="w-full h-[4.125rem] text-[1.125rem] rounded-full bg-SecondaryColor"
           type="submit"
         >
           Login

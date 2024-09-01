@@ -49,14 +49,16 @@ export default function UsersPage() {
     }
   };
 
+  console.log(users);
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   return (
     <DashboardLayout Active={2}>
-      <div className="flex-grow flex flex-col m-2 border-1 bg-white rounded p-5">
-        <div>
+      <div className="flex-grow flex flex-col mt-4 ml-3 border border-border bg-white rounded p-5">
+        <div className="mt-3">
           <h1 className="font-bold text-4xl">Users</h1>
           <p className="text-subTitleColor mt-5">
             You can see the overall Users of Goollooper here
