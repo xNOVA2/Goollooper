@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddSubAdmin from "./AddSubAdmin";
+import { Filter } from "../Filter/Filter";
 
 interface SearchProps {
   isSubAdmin: boolean;
@@ -27,19 +28,11 @@ export default function Search({ isSubAdmin, value, onChange }: SearchProps) {
 
   return (
     <div className="flex justify-between items-center">
-      <div className="flex justify-start gap-3 mt-5">
-        <button className="flex items-center px-7 bg-backGroundSecondaryColor py-2 gap-2 rounded-lg">
-          <Image
-            src={"/assets/Image/filter.svg"}
-            alt="Filter Icon"
-            width={14}
-            height={10}
-          />
-          Filter
-        </button>
-        <div className="relative">
+      <div className="flex justify-start gap-3 mt-5 mb-3">
+        <Filter />
+        <div className="relative outline-none">
           <Input
-            className=" bg-backGroundSecondaryColor  px-9"
+            className=" bg-backGroundSecondaryColor px-9"
             placeholder="Searching"
             value={value}
             onChange={(e) => onChange && onChange(e.target.value)}
@@ -49,7 +42,7 @@ export default function Search({ isSubAdmin, value, onChange }: SearchProps) {
             alt="Filter Icon"
             width={14}
             height={10}
-            className="absolute top-3 left-4"
+            className="absolute top-3 left-4 outline-none"
           />
         </div>
       </div>
@@ -75,22 +68,15 @@ export default function Search({ isSubAdmin, value, onChange }: SearchProps) {
                 Add Sub Admin
               </button>
             </DialogTrigger>
-            <DialogContent className="min-w-[800px] h-[75%]">
-              <DialogHeader>
-                <DialogTitle>Add Sub Admin</DialogTitle>
+            <DialogContent className="min-w-[800px] h-[85%] overflow-x-hidden overflow-y-auto">
+              <DialogHeader className="mt-5 border-b border-collapse border-border pb-7">
+                <DialogTitle className="text-3xl">Add Sub Admin</DialogTitle>
                 <DialogDescription>
                   This will be reflected to sub admin list and they have <br />
                   the ability to control the admin.
                 </DialogDescription>
-                <div className="pt-7">
-                  <hr />
-                </div>
-                <div className="">
-                  <div>
-                    <AddSubAdmin onClose={onToggle} />
-                  </div>
-                </div>
               </DialogHeader>
+              <AddSubAdmin onClose={onToggle} />
             </DialogContent>
           </Dialog>
         )}

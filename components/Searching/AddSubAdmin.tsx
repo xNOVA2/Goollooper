@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { onAddSubAdmin } from "@/api";
 import { calculateAge } from "@/lib/utils";
 import GooglePlacesAutocompleteWrapper from "../PlacesAutoComplete";
+import { RadioGroup, RadioItem } from "@radix-ui/react-dropdown-menu";
 
 export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,6 +19,12 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
   const [phone, setPhone] = useState<string>("");
   const [dob, setDob] = useState<string>("");
   const [location, setLocation] = useState<any>("");
+
+  const [selectedCheckbox, setSelectedCheckbox] = useState('bordered-checkbox-2');
+
+  const handleCheckboxChange = (event: any) => {
+    setSelectedCheckbox(event.target.id);
+  };
 
   const onSubmit = async () => {
     if (!firstName || !email || !password) {
@@ -78,9 +85,9 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
     <>
       <div className="flex justify-between">
         <div className="pt-5">
-          <h1 className="font-bold text-3xl mb-7">Personal Data</h1>
-          <label htmlFor="" className="font-bold ">
-            First Name*
+          <h1 className="font-semibold text-2xl mb-7">Personal Data</h1>
+          <label htmlFor="" className="font-semibold ">
+            First Name
           </label>
           <Input
             placeholder="Type here"
@@ -89,7 +96,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
             onChange={(e) => setFirstName(e.target.value)}
           />
           <br />
-          <label htmlFor="" className="font-bold ">
+          <label htmlFor="" className="font-semibold ">
             Last Name
           </label>
           <Input
@@ -99,7 +106,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
             onChange={(e) => setLastName(e.target.value)}
           />
           <br />
-          <label htmlFor="" className="font-bold ">
+          <label htmlFor="" className="font-semibold ">
             Date of birth
           </label>
           <Input
@@ -110,7 +117,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
             onChange={(e) => setDob(e.target.value)}
           />
           <br />
-          <label htmlFor="" className="font-bold ">
+          <label htmlFor="" className="font-semibold ">
             Location{" "}
           </label>
           {/* <Input
@@ -123,9 +130,9 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
         </div>
         {/* // Account Information */}
         <div className="p-5">
-          <h1 className="font-bold text-3xl mb-7">Account Information</h1>
-          <label htmlFor="" className="font-bold ">
-            Email Address*
+          <h1 className="font-semibold text-2xl mb-7">Account Information</h1>
+          <label htmlFor="" className="font-semibold ">
+            Email Address
           </label>
           <Input
             placeholder="Type here"
@@ -134,7 +141,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
             onChange={(e) => setEmail(e.target.value)}
           />
           <br />
-          <label htmlFor="" className="font-bold ">
+          <label htmlFor="" className="font-semibold ">
             Phone Number
           </label>
           <Input
@@ -144,8 +151,8 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
             onChange={(e) => setPhone(e.target.value)}
           />
           <br />
-          <label htmlFor="" className="font-bold ">
-            Password*
+          <label htmlFor="" className="font-semibold ">
+            Password
           </label>
           <Input
             placeholder="Type here"
@@ -153,6 +160,46 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <br />
+          <label htmlFor="" className="font-semibold ">
+            Role
+          </label>
+          <div className="mt-2">
+            <div className="flex items-center gap-2 py-1">
+              <input
+                id="admin"
+                type="checkbox"
+                value=""
+                name="checkbox-admin"
+                className="w-4 h-4 outline-none hover:cursor-pointer"
+                checked={selectedCheckbox === 'admin'}
+                onChange={handleCheckboxChange}
+              />
+              <label
+                htmlFor="admin"
+                className="w-full text-sm font-semibold text-gray-900"
+              >
+                Admin
+              </label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                id="support"
+                type="checkbox"
+                value=""
+                name="checkbox-support"
+                className="w-4 h-4 outline-none hover:cursor-pointer"
+                checked={selectedCheckbox === 'support'}
+                onChange={handleCheckboxChange}
+              />
+              <label
+                htmlFor="support"
+                className="w-full text-sm font-semibold text-gray-900"
+              >
+                Support
+              </label>
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-4 items-center mt-2 ">
