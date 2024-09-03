@@ -1,11 +1,12 @@
 import { combineReducers } from "redux";
 
 import userReducer from "./userReducer";
+import paymentReducer from "../Slices/PaymentSlice";
 
 const rootReducer = combineReducers({
-  userReducer,
+  user: userReducer,
+  payment: paymentReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
-
 export default rootReducer;

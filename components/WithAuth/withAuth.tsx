@@ -10,7 +10,7 @@ const withAuth = <P extends object>(
 ) => {
   const AuthComponent: React.FC<P> = (props) => {
     const isAuthenticated = useSelector(
-      (state: RootState) => state.userReducer.user !== null
+      (state: RootState) => state.user.user !== null
     );
     const router = useRouter();
     const pathname = usePathname();

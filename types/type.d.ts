@@ -34,6 +34,7 @@ enum YesNo {
 export interface UsersProps {
   users: User[];
   isSubAdmin?: boolean;
+  isPayment?: boolean;
 }
 
 enum UserLocationType {
@@ -77,7 +78,18 @@ export interface User {
   firstName?: string;
   lastName?: string;
   username?: string;
-  email: string;
+  email?: string;
+  amount?: number;
+  type?: string;
+  status?: string;
+  user?: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: number;
+    profileImage?: string;
+  };
   password?: string;
   gender?: string;
   age?: number;

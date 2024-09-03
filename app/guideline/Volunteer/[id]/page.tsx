@@ -93,30 +93,30 @@ export default function VolunteerSubpage({ params }: any) {
       <DashboardLayout>
         <GuidelineLayout>
           <div>
-            <div className="bg-white  h-full mx-4 rounded-md  p-5 ">
-              <div className=" ">
-                <h1 className="font-bold text-3xl">{name}</h1>
+            <div className="bg-white h-full mx-4 rounded-md border border-border  px-[1.75em] ">
+              <div className="">
+                <h1 className="font-semibold text-[1.875rem] leading-[2.813rem] pt-[3.375rem]">{name}</h1>
               </div>
               <div className="mt-3">
                 <Input
                   placeholder="type here"
-                  className="py-8 px-10 border-0 bg-backGroundColor"
+                  className="h-[4.125rem] mt-[1rem] mb-[1.25rem] pl-[2.375rem] pt-[1.313rem] pb-[1.5rem] text-[0.875rem] leading-[1.313rem] shadow-custom bg-white border border-border"
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
                 />
               </div>
               <div className="mt-5 flex justify-end">
                 <Button
-                  className="px-20 rounded-full bg-PrimaryColor"
+                  className="h-[2.375rem] px-[4rem] text-[0.875rem] leading-[1.313rem] rounded-full bg-PrimaryColor"
                   onClick={onAdd}
                 >
                   Add Sub Category
                 </Button>
               </div>
 
-              <div className="min-h-screen">
-                <h1 className="font-bold text-4xl mt-5 text-black ">List</h1>
-                <div className="flex flex-wrap gap-5 mt-6">
+              <div className="h-[35vh]">
+                <h1 className="font-semibold text-[1.875rem] leading-[2.813rem] mt-[4.438rem] mb-[0.938rem] text-black ">List</h1>
+                <div className="flex flex-wrap gap-[1.563em]">
                   {subServices?.map((item) => (
                     <Category
                       key={item?._id}
@@ -145,13 +145,13 @@ const Category = ({
   onClick: (id: string) => void;
 }) => {
   return (
-    <div className="relative inline-block px-4 py-3 m-2 shadow-md border-white bg-white border-1 rounded-md">
+    <div className="relative inline-block px-4 py-3 m-2 shadow-custom bg-white border border-border rounded-md">
       <span>{text}</span>
       <svg
         onClick={() => onClick(id)}
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute top-0 right-0 cursor-pointer"
-        style={{ right: -10, top: -1 }}
+        className="absolute top-0 right-0  cursor-pointer"
+        style={{ right: -10, top: -10 }}
         width="22"
         height="22"
         viewBox="0 0 22 22"
@@ -160,7 +160,7 @@ const Category = ({
         <circle cx="11" cy="11" r="11" fill="#FF5C5C" />
         <path
           d="M13.9972 13.9133L8.22852 8.14453"
-          stroke="#363738"
+          stroke="#ffffff"
           stroke-width="1.5"
           stroke-miterlimit="10"
           stroke-linecap="round"
@@ -168,7 +168,7 @@ const Category = ({
         />
         <path
           d="M13.9406 8.19824L8.14453 13.9943"
-          stroke="#363738"
+          stroke="#ffffff"
           stroke-width="1.5"
           stroke-miterlimit="10"
           stroke-linecap="round"

@@ -11,9 +11,9 @@ import { ChatDetails } from "@/components/support/ChatDetails";
 
 export default function SupportPage() {
   const accessToken = useSelector(
-    (state: RootState) => state.userReducer.accessToken
+    (state: RootState) => state.user.accessToken
   );
-  const user = useSelector((state: RootState) => state.userReducer.user);
+  const user = useSelector((state: RootState) => state.user.user);
   const [chats, setChats] = useState<Chat[]>([]);
   const [messages, setMessages] = useState<any>([]);
   const [chatData, setChatData] = useState<Chat | null | any>(null);

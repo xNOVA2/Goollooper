@@ -28,29 +28,28 @@ const Task: React.FC<ServiceProps> = ({ title, id, link, onDelete }) => {
   };
 
   return (
-    <div className="flex justify-between bg-backGroundSecondaryColor items-center px-5">
+    <div className="flex justify-between rounded-sm h-[3.5em] bg-backGroundSecondaryColor items-center pl-[1.063em] pr-[0.25em]">
       <div>
-        <p className="text-sm text-black font-semibold">{title}</p>
+        <p className="text-[0.875rem] leading-[1.116rem] text-subTitleColor font-semibold">{title}</p>
       </div>
       <div>
-        <Button className="bg-backGroundColor">
+        <Button className="bg-backGroundColor px-[0.85rem] py-[1.5rem] rounded-sm">
           <Link href={`${link}/${id}`}>
             <Image
               src={"/assets/Image/Pancel.svg"}
               alt=""
-              width={13}
-              height={20}
+              width={24}
+              height={24}
             />
           </Link>
         </Button>
         <Dialog open={isOpen}>
-          <DialogTrigger className="bg-backGroundColor">
-            {" "}
+          <DialogTrigger className="bg-backGroundColor p-[0.75em] rounded-sm ml-[0.25em]">
             <Image
               src={"/assets/Image/trash.svg"}
               alt=""
-              width={13}
-              height={20}
+              width={24}
+              height={24}
               onClick={() => setIsOpen(!isOpen)}
             />
           </DialogTrigger>

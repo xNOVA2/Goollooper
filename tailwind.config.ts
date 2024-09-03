@@ -18,9 +18,8 @@ const config = {
       },
     },
     extend: {
-      zIndex: {
-        '-10': '-10',
-        '-20': '-20',
+      boxShadow: {
+        'custom': '0px 4px 30px 0px #DDDDDD40',
       },
       colors: {
         deleleColor:'#FF5C5C',
