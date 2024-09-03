@@ -1,9 +1,9 @@
 "use client";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -30,6 +30,8 @@ import GuidelineSVG from "@/public/assets/Image/Guideline.svg";
 import GuidelineFilledSVG from "@/public/assets/Image/guidline-filled.svg";
 import NotificationSVG from "@/public/assets/Image/PushNotification.svg";
 import NotificationFilledSVG from "@/public/assets/Image/pushNotification-filled.svg";
+import PaymentSVG from "@/public/assets/Image/Payment.svg";
+import PaymentFilledSVG from "@/public/assets/Image/payment-filled.svg";
 import ProfileDropdownIcon from "@/public/assets/Image/ProfileDropdownIcon.svg";
 
 import { removeUser } from "@/store/actions/userAction";
@@ -46,8 +48,19 @@ export default function SideBar({
   const router = useRouter();
   const dispatch = useDispatch();
   const refreshToken = useSelector(
-    (state: RootState) => state.userReducer.refreshToken
+    (state: RootState) => state.user.refreshToken
   );
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; 
+    // Render nothing on the server
+  }
 
   const AllLinks = [
     {
@@ -92,6 +105,13 @@ export default function SideBar({
       id: 6,
       path: "/notifcation",
     },
+    {
+      Icon: PaymentSVG,
+      IconActive: PaymentFilledSVG,
+      category: "Payments",
+      id: 7,
+      path: "/payments",
+    }
   ];
 
   const onLogout = async () => {
@@ -115,32 +135,32 @@ export default function SideBar({
 
   return (
     <>
-      <aside className="fixed min-h-screen w-64 flex-col pt-7 pb-8 z-10 bg-white border-r border-border">
-        <div className="flex items-center space-x-2 px-5">
-          <Image src={Logo1} alt="" width={50} height={20} />
-          <Image src={Logo2} alt="" width={100} height={60} />
+      <aside className="fixed min-h-screen w-64 flex-col pt-[1.438em] pb-8 z-10 bg-white border-r border-border">
+        <div className="flex items-center space-x-[0.625em] px-[1.5em]">
+          <Image src={Logo1} alt="" width={37} height={37} className=""/>
+          <Image src={Logo2} alt="" width={87} height={60} />
         </div>
 
-        <div className="mt-6 flex flex-1 flex-col justify-between">
+        <div className="mt-[1.813em] flex flex-1 flex-col justify-between">
           <nav className="space-y-2">
             {AllLinks.map((item) => {
               return (
                 <div className="space-y-3" key={item.id}>
                   <Link
-                    className={`flex transform items-center px-7 py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 ${ Active === item.id ? "border-r-4 border-PrimaryColor" : "" }`}
+                    className={`flex transform items-center px-[1.5em] py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 ${ Active === item.id ? "border-r-4 border-PrimaryColor" : "" }`}
                     href={item.path}
                   >
                     <Image
                       src={ Active === item.id ? item.IconActive : item.Icon }
                       alt="Icon"
-                      width={20}
-                      height={20}
+                      width={21}
+                      height={21}
                       className="fill-red-700"
                       style={{ fill: "red", color: "red" }}
                     />
 
                     <span
-                      className={`mx-2 text-sm font-medium ${
+                      className={`mx-2 text-[0.875rem] leading-[1.313rem] font-normal ${
                         Active === item.id ? "text-PrimaryColor" : null
                       }`}
                     >

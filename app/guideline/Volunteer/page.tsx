@@ -116,13 +116,13 @@ export default function VolunteerPage() {
   return (
     <DashboardLayout>
       <GuidelineLayout>
-        <div className="bg-white  h-full mx-4 rounded-md  ">
-          <div className="flex gap-2 p-5 justify-between">
-            <h1 className="font-bold text-3xl ">Volunteer</h1>
+        <div className="bg-white h-full mx-4 px-[1.754em] border border-border rounded-md  ">
+          <div className="flex justify-between">
+            <h1 className="font-bold text-[1.875rem] leading-[3rem] mt-[1.754rem]">Volunteer</h1>
             <Dialog open={isOpen}>
               <DialogTrigger asChild>
                 <button
-                  className="w-[30%] rounded-full bg-PrimaryColor text-white"
+                  className="w-[16.125rem] h-[2.375rem] mt-[1.313rem] text-[0.875rem] leading-[1.25rem] rounded-full bg-PrimaryColor text-white"
                   onClick={() => setIsOpen(!isOpen)}
                 >
                   Add
@@ -154,7 +154,7 @@ export default function VolunteerPage() {
               </DialogContent>
             </Dialog>
           </div>
-          <div className="flex flex-col gap-4 p-5">
+          <div className="flex flex-col gap-[0.5em] mt-[1.188em]">
             {services?.length
               ? services.map((service: Service) => (
                   <Task

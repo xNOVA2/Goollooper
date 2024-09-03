@@ -96,7 +96,7 @@ function DashboardPage() {
             <div className="flex flex-col items-stretch space-y-14 w-full">
               {users?.length ? (
                 <>
-                  <Users users={users} />
+                  <Users users={users} isSubAdmin={false} isPayment={false} />
                   <Pagination
                     currentPage={currentPage}
                     totalPages={pageData.totalPages}

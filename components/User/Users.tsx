@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -9,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { User, UsersProps } from "@/types/type";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -19,45 +21,82 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { IMAGE_URL } from "@/lib/constants";
+import { Button } from "../ui/button";
 
-const TableHeaderr = [
-  {
-    FullName: "Full Name",
-    emailAddress: "Email Address",
-    phoneNumber: "Phone Number",
-    gender: "Gender",
-    userSince: "User Since",
-    Status: "Status",
-  },
-];
-const TableHeaderrForUsers = [
-  {
-    FullName: "Full Name",
-    emailAddress: "Email Address",
-    PremiumUser: "Premium User",
-    Tasker: "Tasker",
-    phoneNumber: "Phone Number",
-    gender: "Gender",
-    userSince: "User Since",
-    Status: "Status",
-  },
-];
-export function Users({ users, isSubAdmin }: UsersProps) {
+import { updatePaymentStatus,withdrawPayment } from "@/store/Slices/PaymentSlice";
+import { AppDispatch } from "@/store/store";
+import { useDispatch } from "react-redux";
+import { ConfirmationModal } from "../ConfirmationModal";
+
+// const TableHeaderr = [
+//   {
+//     FullName: "Full Name",
+//     emailAddress: "Email Address",
+//     phoneNumber: "Phone Number",
+//     gender: "Gender",
+//     userSince: "User Since",
+//     Status: "Status",
+//   },
+// ];
+// const TableHeaderrForUsers = [
+//   {
+//     FullName: "Full Name",
+//     emailAddress: "Email Address",
+//     PremiumUser: "Premium User",
+//     Tasker: "Tasker",
+//     phoneNumber: "Phone Number",
+//     gender: "Gender",
+//     userSince: "User Since",
+//     Status: "Status",
+//   },
+// ];
+export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleUpdatePayment = async (id: string) => {
+    try {
+      const result = await dispatch(updatePaymentStatus(id)).unwrap();
+      console.log("Updated the status of", id, result);
+    } catch (error) {
+      console.error("Error updating payment status:", error);
+    }
+  };
+
+  const handleWithdraw = async (amount: number) => {
+    try {
+      const result = await dispatch(withdrawPayment(amount)).unwrap();
+      console.log("Withdrawn the payment of", amount, result);
+    } catch (error) {
+      console.error("Error withdrawing payment:", error);
+    }
+  };  
+
   return (
     <Table className="border-collapse"> 
       <TableCaption></TableCaption>
       <TableHeader>
         <TableRow className="border-y border-collapse">
           <TableHead>Full Name</TableHead>
-          <TableHead>Email Address</TableHead>
-          {!isSubAdmin ? (
+          { isPayment? (
             <>
-              <TableHead>Premium User</TableHead>
-              <TableHead>Tasker</TableHead>
+              <TableHead>Amount</TableHead>
+              <TableHead>Type</TableHead>
             </>
-          ) : null}
-          <TableHead>Phone Number</TableHead>
-          <TableHead>Gender</TableHead>
+          ) : (
+            <>
+              <TableHead>Email Address</TableHead>
+              {!isSubAdmin ? (
+                <>
+                  <TableHead>Premium User</TableHead>
+                  <TableHead>Tasker</TableHead>
+                </>
+              ) : null}
+              <TableHead>Phone Number</TableHead>
+              <TableHead>Gender</TableHead>
+            </>
+          )}
+          
           <TableHead>User Since</TableHead>
           <TableHead>Status</TableHead>
         </TableRow>
@@ -70,8 +109,12 @@ export function Users({ users, isSubAdmin }: UsersProps) {
                 <DialogTrigger className="flex items-center gap-2">
                   <Image
                     src={
-                      user.profileImage
-                        ? IMAGE_URL + user.profileImage
+                      isPayment
+                        ? user?.user?.profileImage
+                          ? `${IMAGE_URL}${user.user.profileImage}`
+                          : "/assets/Image/userPhoto.png"
+                        : user.profileImage
+                        ? `${IMAGE_URL}${user.profileImage}`
                         : "/assets/Image/userPhoto.png"
                     }
                     alt="User-Profile-Pic"
@@ -80,37 +123,68 @@ export function Users({ users, isSubAdmin }: UsersProps) {
                     className="rounded-full"
                   />
                   <p className="text-xs">
-                    {user.firstName} {user.lastName}
+                    {isPayment ? user?.user?.firstName : user.firstName} 
+                    {isPayment ? user?.user?.lastName : user.lastName}
                   </p>{" "}
                 </DialogTrigger>
-                {!isSubAdmin ? (
-                  <UserModal user={user} />
-                ) : (
-                  <SubAdminModal user={user} />
+                {!isPayment && (
+                  !isSubAdmin ? (
+                    <UserModal user={user} />
+                  ) : (
+                    <SubAdminModal user={user} />
+                  )
                 )}
               </Dialog>
             </TableCell>
 
-            <TableCell className="font-medium">{user.email}</TableCell>
-            {!isSubAdmin && <TableCell className="">Yes</TableCell>}
-            {!isSubAdmin && (
-              <TableCell>{user?.role === 3 ? "Yes" : "No"}</TableCell>
+            {!isPayment && (
+              <>
+                <TableCell className="font-medium">{user.email}</TableCell>
+                {!isSubAdmin && <TableCell className="">Yes</TableCell>}
+                {!isSubAdmin && (
+                  <TableCell>{user?.role === 3 ? "Yes" : "No"}</TableCell>
+                )}
+              </>
             )}
-            <TableCell>{user.phone}</TableCell>
-            <TableCell>{user.gender}</TableCell>
+
+            {!isPayment ? (
+              <>
+                <TableCell>{user.phone}</TableCell>
+                <TableCell>{user.gender}</TableCell>
+              </>
+            ) : (
+              <>
+                <TableCell>{user?.amount}</TableCell>
+                <TableCell>{user?.type}</TableCell>
+              </>
+            )}
             <TableCell>
               {new Date(user?.createdAt)?.toLocaleDateString()}
             </TableCell>
-            <TableCell
-              className={`${
-                user.isActive
-                  ? "text-green-500 font-bold "
-                  : "text-red-500 font-bold"
-              }`}
-            >
-              {user.isActive ? "Active" : "Inactive"}
-            </TableCell>
-            <TableCell>|</TableCell>
+            {isPayment ? (
+              <TableCell>{user?.status}</TableCell>
+            ) : (
+              <TableCell
+                className={`${
+                  user.isActive
+                    ? "text-green-500 font-bold "
+                    : "text-red-500 font-bold"
+                }`}
+              >
+                {user.isActive ? "Active" : "Inactive"}
+              </TableCell>
+            )}
+            {isPayment ? (
+              <TableCell>
+                <ConfirmationModal
+                  isAccept={true}
+                  // amount={user.gooollooperAmount}
+                  onAccept={handleWithdraw}
+                />
+              </TableCell>
+            ) : (
+              <TableCell>|</TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>

@@ -9,7 +9,7 @@ const development = "http://localhost:5000";
 const dev = "http://goollooper.yameenyousuf.com/api";
 const production = "http://44.202.123.121/api";
 
-export const BASE_URL = `${dev}/admin`;
+export const BASE_URL = `${dev}`;
 
 const Api = axios.create({
   baseURL: BASE_URL,
@@ -19,7 +19,7 @@ const Api = axios.create({
 });
 
 Api.interceptors.request.use(async (config: any) => {
-  const accessToken: RootState = store.getState()?.userReducer?.accessToken;
+  const accessToken: RootState = store.getState()?.user?.accessToken;
   config.headers.Authorization = `Bearer ${accessToken}`;
   return config;
 });
