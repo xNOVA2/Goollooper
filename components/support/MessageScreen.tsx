@@ -31,8 +31,8 @@ export const MessageScreen = ({
     };
   
     return (
-      <div className="flex flex-col w-full">
-        <ScrollArea className="flex-grow p-7 h-full">
+      <div className="flex flex-col">
+        <ScrollArea className="p-7 h-calc-message-screen">
           {/* Admin Messages on the left */}
           {/* <p className="flex justify-center text-xs mb-5">8:00 AM</p> */}
           {messages?.map((msg: Message) => {
@@ -71,7 +71,7 @@ export const MessageScreen = ({
                         isAdminMsg
                           ? "bg-backGroundColor w-[70%]"
                           : "bg-PrimaryColor text-white w-[55%]"
-                      }  text-sm rounded-xl p-2`}
+                        }  text-[0.75rem] leading-[1.25rem] rounded-[0.625rem] px-[0.938rem] py-[0.688rem]`}
                     >
                       {msg?.body}
                     </p>
@@ -106,12 +106,12 @@ export const MessageScreen = ({
   
         {/* Admin Input Field at the bottom */}
         <div className="px-4">
-          <div className="flex gap-1 items-center">
+          <div className="flex items-center">
             <Image
               src={"/assets/Image/Link.svg"}
               alt="Message Icon"
-              width={25}
-              height={25}
+              width={18}
+              height={17}
               className="mr-2 cursor-pointer"
               onClick={() => fileInputRef?.current?.click()}
             />
@@ -126,15 +126,15 @@ export const MessageScreen = ({
             <Input
               type="text"
               placeholder="Type a message..."
-              className="bg-backGroundColor rounded-full flex-grow p-2 mr-2 border"
+              className="bg-backGroundColor rounded-full flex-grow h-[1.875rem] mx-[0.75rem] pl-[1rem] py-[0.313rem] border text-[0.75rem] leading-[1.25rem]"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
             <Image
               src={"/assets/Image/send.svg"}
               alt="Message Icon"
-              width={25}
-              height={25}
+              width={17}
+              height={17}
               className="cursor-pointer"
               onClick={handleSendMessage}
             />

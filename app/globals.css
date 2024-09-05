@@ -31,7 +31,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* --ring: 222.2 84% 4.9%; */
  
     --radius: 0.5rem;
   }
@@ -63,7 +63,7 @@
  
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* --ring: 212.7 26.8% 83.9%; */
   }
 }
  
@@ -74,4 +74,151 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+.ql-editor p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+ /* .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
+  content: 'Normal';
+  font-size: 14px !important;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
+  content: 'Large';
+  font-size: 16px !important;
+} */
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
+  content: 'Huge';
+  font-size: 18px !important;
+}
+
+.ql-toolbar .ql-stroke {
+  fill: none;
+  stroke-width: 1px !important;
+}
+
+.ql-toolbar .ql-fill {
+  stroke: none;
+}
+
+textarea:focus, input:focus{
+    outline: none !important;
+}
+
+.ql-toolbar button svg {
+  height: 160% !important;
+}
+
+.ql-toolbar {
+  box-shadow: 0px 4px 40px -20px #0000001A !important;
+}
+
+.ql-toolbar .ql-formats {
+  display: flex !important;
+  justify-content: space-between !important;
+} 
+textarea:focus{
+  outline: none;
+}
+*:focus {
+  outline: none;
+}
+textarea:focus {
+  border: none !important;
+  overflow: auto !important;
+  outline: none !important;
+
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none; /*remove the resize handle on the bottom right*/
+}
+
+textarea{
+  resize: none; /*remove the resize handle on the bottom right*/
+}
+::-webkit-scrollbar {
+  width: 5px; /* Set the width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Set the background color of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* Set the color of the thumb */
+  border-radius: 10px; /* Set the border radius of the thumb */
+  border: 3px solid #555; /* Set the border properties of the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Change the color of the thumb on hover */
+}
+
+.ql-toolbar{ border: none !important;}
+.ql-container.ql-snow{ border: none !important;}
+
+
+.ql-toolbar.ql-snow .ql-formats button svg {
+  display: none !important;
+}
+
+.ql-toolbar.ql-snow button.ql-bold::before {
+  content: url('/assets/Image/bold.svg');
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.ql-toolbar.ql-snow button.ql-italic::before {
+  content: url('/assets/Image/italic.svg');
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.ql-toolbar.ql-snow button.ql-underline::before {
+  content: url('/assets/Image/underline.svg');
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.ql-toolbar.ql-snow button.ql-align.normal::before {
+  content: url('/assets/Image/normal-align.svg');
+  display: block;
+}
+
+.ql-toolbar.ql-snow button.ql-align.left::before {
+  content: url('/assets/Image/left-align.svg');
+  display: block;
+}
+
+.ql-toolbar.ql-snow button.ql-align.right::before {
+  content: url('/assets/Image/right-align.svg');
+  display: block;
+}
+
+.ql-toolbar.ql-snow button.ql-align.middle::before {
+  content: url('/assets/Image/middle-align.svg');
+  display: block;
+}
+
+.ql-toolbar.ql-snow button.ql-link::before {
+  content: url('/assets/Image/link-editor.svg');
+  display: block;
+  /* width: 35px;
+  height: 21px; */
+}
+
+.ql-toolbar.ql-snow button.ql-image::before {
+  content: url('/assets/Image/attachment.svg');
+  display: block;
+  width: 28.8px;
+  height: 28.8px;
 }
