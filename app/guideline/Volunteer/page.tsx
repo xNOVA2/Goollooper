@@ -116,7 +116,7 @@ export default function VolunteerPage() {
   return (
     <DashboardLayout>
       <GuidelineLayout>
-        <div className="bg-white h-full mx-4 px-[1.754em] border border-border rounded-md  ">
+        <div className="bg-white h-full mr-2 px-[1.754em] border border-border rounded-md  ">
           <div className="flex justify-between">
             <h1 className="font-bold text-[1.875rem] leading-[3rem] mt-[1.754rem]">Volunteer</h1>
             <Dialog open={isOpen}>

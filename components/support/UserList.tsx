@@ -28,6 +28,7 @@ export const UserList = ({
             chatData={msg}
             chatId={msg?._id}
             onUserClick={onClick}
+            isList={true}
           />
         ))}
       </div>

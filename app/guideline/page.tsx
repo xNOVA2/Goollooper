@@ -8,6 +8,7 @@ import Editor from "@/components/Editor/Editor";
 import { Button } from "@/components/ui/button";
 
 import { addGuidline, getGuidline, updateGuidline } from "@/api";
+import QuillToolbar from "@/components/Editor/Toolbar";
 
 export default function TermsPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -71,15 +72,22 @@ export default function TermsPage() {
   return (
     <DashboardLayout Active={5}>
       <GuidelineLayout>
-        <div className="bg-white h-[450px] mx-4 rounded-md overflow-y-scroll">
-          <Editor value={termsAndCondition} onChange={setTermsAndCondition} />
+        <div className="h-calc-screen bg-white rounded-md mr-2 pt-[0.5em] pb-4 border border-border">
+          <div className="w-[49.6vw]">
+            <QuillToolbar />
+
+            <Editor value={termsAndCondition} onChange={setTermsAndCondition} />
+          </div>
+          <div className="flex flex-row justify-between pt-4">
+            <div></div>
+            <Button
+              className="rounded-full bg-PrimaryColor mr-[2.375em]"
+              onClick={onSubmit}
+            >
+              {id ? "Update" : "Add"}
+            </Button>
+          </div>
         </div>
-        <Button
-          className="rounded-full bg-PrimaryColor float-right mr-10 mt-10 w-40"
-          onClick={onSubmit}
-        >
-          {id ? "Update" : "Add"}
-        </Button>
       </GuidelineLayout>
     </DashboardLayout>
   );

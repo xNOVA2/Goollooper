@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 export const SearchBar = () => {
     // Replace this with your actual search component
     return (
-      <div className="ml-8 mr-5">
+      <div className="ml-[1.938em] mr-[1.25em] h-[2.25em]">
         <div className="relative">
           <Input
             className=" bg-backGroundSecondaryColor  px-9"

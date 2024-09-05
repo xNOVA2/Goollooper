@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { addService, deleteService, getService } from "@/api";
 import { SubServices } from "@/types/type";
+import { Category } from "@/components/Category";
 
 export default function InterestSubpage({ params }: any) {
   const [loading, setLoading] = useState<boolean>(false);
@@ -93,14 +94,48 @@ export default function InterestSubpage({ params }: any) {
       <DashboardLayout>
         <GuidelineLayout>
           <div>
-            <div className="bg-white  h-full mx-4 rounded-md  p-5 ">
+            <div className="bg-white mr-2 rounded-md border border-border px-[1.75em] py-[1.438em]">
+              <div className="flex flex-row justify-between items-center">
+                <h1 className="text-[1.875em] leading-[2.813] font-bold">Interest / Categories</h1>
+                <Button className="w-[7.75rem] h-[2.375rem] text-[0.875rem] leading-[1.25rem] font-medium bg-PrimaryColor rounded-full">Save</Button>
+              </div>
+              <div>
+                <h4 className="text-[0.625rem] leading-[0.938rem] font-normal">Main Category</h4>
+                <Input
+                  placeholder="type here"
+                  className="h-[4.125rem] mt-[1rem] mb-[1.25rem] pl-[2.375rem] pt-[1.313rem] pb-[1.313rem] text-[0.875rem] leading-[1.313rem] shadow-custom bg-white border border-border focus-visible:outline-none focus-visible:ring-0"
+                  // value={title}
+                  // onChange={(event) => setTitle(event.target.value)}
+                />
+                <Input
+                  placeholder="type here"
+                  className="h-[4.125rem] mt-[1rem] mb-[1.25rem] pl-[2.375rem] pt-[1.313rem] pb-[1.313rem] text-[0.875rem] leading-[1.313rem] shadow-custom bg-white border border-border focus-visible:outline-none focus-visible:ring-0"
+                  // value={title}
+                  // onChange={(event) => setTitle(event.target.value)}
+                />
+                <div className="flex justify-between">
+                  <div></div>
+                  <Button className="w-[10.625rem] h-[2.375rem] text-[0.875rem] leading-[1.25rem] font-medium bg-PrimaryColor rounded-full">Add keywords</Button>
+                </div>
+                <div className="flex flex-wrap gap-5 mt-6">
+                  {subServices?.map((item) => (
+                    <Category
+                      key={item?._id}
+                      id={item?._id}
+                      text={item?.title}
+                      onClick={onDeleteSubCategory}
+                    />
+                  ))}
+                </div>
+              </div>
+
               <div className=" ">
                 <h1 className="font-bold text-3xl">{name}</h1>
               </div>
               <div className="mt-3">
                 <Input
                   placeholder="type here"
-                  className="py-8 px-10 border-0 bg-backGroundColor"
+                  className="h-[4.125rem] mt-[1rem] mb-[1.25rem] pl-[2.375rem] pt-[1.313rem] pb-[1.313rem] text-[0.875rem] leading-[1.313rem] shadow-custom bg-white border border-border focus-visible:outline-none focus-visible:ring-0"
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
                 />
@@ -114,19 +149,17 @@ export default function InterestSubpage({ params }: any) {
                 </Button>
               </div>
 
-              <div className="min-h-screen">
-                <h1 className="font-bold text-4xl mt-5 text-black ">List</h1>
-                <div className="flex flex-wrap gap-5 mt-6">
-                  {subServices?.map((item) => (
-                    <Category
-                      key={item?._id}
-                      id={item?._id}
-                      text={item?.title}
-                      onClick={onDeleteSubCategory}
-                    />
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-5 mt-6">
+                {subServices?.map((item) => (
+                  <Category
+                    key={item?._id}
+                    id={item?._id}
+                    text={item?.title}
+                    onClick={onDeleteSubCategory}
+                  />
+                ))}
               </div>
+
             </div>
           </div>
         </GuidelineLayout>
@@ -135,46 +168,3 @@ export default function InterestSubpage({ params }: any) {
   );
 }
 
-const Category = ({
-  id,
-  text,
-  onClick,
-}: {
-  id: string;
-  text: string;
-  onClick: (id: string) => void;
-}) => {
-  return (
-    <div className="relative inline-block px-4 py-3 m-2 shadow-md border-white bg-white border-1 rounded-md">
-      <span>{text}</span>
-      <svg
-        onClick={() => onClick(id)}
-        xmlns="http://www.w3.org/2000/svg"
-        className="absolute top-0 right-0 cursor-pointer"
-        style={{ right: -10, top: -1 }}
-        width="22"
-        height="22"
-        viewBox="0 0 22 22"
-        fill="none"
-      >
-        <circle cx="11" cy="11" r="11" fill="#FF5C5C" />
-        <path
-          d="M13.9972 13.9133L8.22852 8.14453"
-          stroke="#363738"
-          stroke-width="1.5"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M13.9406 8.19824L8.14453 13.9943"
-          stroke="#363738"
-          stroke-width="1.5"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-    </div>
-  );
-};

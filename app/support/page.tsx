@@ -149,14 +149,12 @@ export default function SupportPage() {
   return (
     <>
       <DashboardLayout Active={4}>
-        <div className="flex-grow flex flex-col m-2 border border-border bg-white rounded">
-          <div className="flex-grow flex">
-            {/* Left Side: User List and Search */}
-            <ChatList chats={chats} user={user} onClick={onUserClick} />
+        <div className="h-calc-screen flex flex-row m-2 border border-border bg-white rounded">
+          {/* Left Side: User List and Search */}
+          <ChatList chats={chats} user={user} onClick={onUserClick} />
 
-            {/* Right Side: Chat Screen */}
-            <ChatDetails chatData={chatData} messages={messages} user={user} handleSendMessage={handleSendMessage}/>
-          </div>
+          {/* Right Side: Chat Screen */}
+          <ChatDetails chatData={chatData} messages={messages} user={user} handleSendMessage={handleSendMessage} />
         </div>
       </DashboardLayout>
     </>

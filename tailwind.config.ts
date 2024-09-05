@@ -20,6 +20,13 @@ const config = {
     extend: {
       boxShadow: {
         'custom': '0px 4px 30px 0px #DDDDDD40',
+        'toolbar-shadow': '0px 4px 40px -20px #0000001A',
+      },
+      height: {
+        'calc-screen': 'calc(100vh - 90px);',
+        'calc-editor-screen': 'calc(100vh - 220px);',
+        'calc-chatlist-screen': 'calc(100vh - 350px);',
+        'calc-message-screen': 'calc(100vh - 225px);',
       },
       colors: {
         deleleColor:'#FF5C5C',

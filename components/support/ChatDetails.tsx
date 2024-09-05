@@ -16,27 +16,28 @@ export const ChatDetails = (
 ) => {
     return (
         <>
-            {chatData && (
-              <div className="w-[63%]">
-                <div className="flex gap-1 border-b border-border p-5">
-                  <UserAvatar
-                    // name="Mekanna Cruz"
+        {chatData && (
+          <div className="flex-grow">
+            <div className="flex gap-1 border-b border-border pt-[1.438em] pb-[1.25em] pl-[1.75em]">
+              <UserAvatar
                     name={
                       chatData?.participants?.find(
                         (userObj: any) => userObj?._id !== user?._id
                       )?.firstName
-                    }
+                }
                     image={
                       chatData?.participants?.find(
                         (userObj: any) => userObj?._id !== user?._id
                       )?.profileImage
                     }
-                    text={chatData?.isTicketClosed ? "mark as complete" : ""}
-                  />
-                </div>
+                isTicketClosed={chatData?.isTicketClosed}
+                chatId={chatData?._id}
+                isList={false}
+              />
+            </div>
 
-                <MessageScreen
-                  messages={messages}
+            <MessageScreen
+              messages={messages}
                   user={user}
                   onSend={handleSendMessage}
                 />

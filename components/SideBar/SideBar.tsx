@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -133,9 +133,12 @@ export default function SideBar({
     }
   };
 
+  const currentActivePath = usePathname();
+  const basePath = currentActivePath.split('/').slice(0, 2).join('/');
+
   return (
     <>
-      <aside className="fixed min-h-screen w-64 flex-col pt-[1.438em] pb-8 z-10 bg-white border-r border-border">
+      <aside className="fixed min-h-screen w-[15.688em] flex-col pt-[1.438em] pb-8 z-10 bg-white border-r border-border">
         <div className="flex items-center space-x-[0.625em] px-[1.5em]">
           <Image src={Logo1} alt="" width={37} height={37} className=""/>
           <Image src={Logo2} alt="" width={87} height={60} />
@@ -147,11 +150,11 @@ export default function SideBar({
               return (
                 <div className="space-y-3" key={item.id}>
                   <Link
-                    className={`flex transform items-center px-[1.5em] py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 ${ Active === item.id ? "border-r-4 border-PrimaryColor" : "" }`}
+                    className={`flex transform items-center px-[1.5em] py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 ${ basePath === item.path ? "border-r-4 border-PrimaryColor" : "" }`}
                     href={item.path}
                   >
                     <Image
-                      src={ Active === item.id ? item.IconActive : item.Icon }
+                      src={ basePath === item.path ? item.IconActive : item.Icon }
                       alt="Icon"
                       width={21}
                       height={21}
@@ -161,7 +164,7 @@ export default function SideBar({
 
                     <span
                       className={`mx-2 text-[0.875rem] leading-[1.313rem] font-normal ${
-                        Active === item.id ? "text-PrimaryColor" : null
+                        basePath === item.path ? "text-PrimaryColor" : null
                       }`}
                     >
                       {item.category}
@@ -212,7 +215,7 @@ export default function SideBar({
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
-        <div className="flex-1 ml-64">
+        <div className="flex-1 ml-[15.688em]">
           {children}
         </div>
       </div>
