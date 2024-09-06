@@ -58,21 +58,6 @@ const PaymentsPage = () => {
         fetchData();
     }, [dispatch]);
 
-    
-
-    const calculateTotalAmount = (type: string): number => {
-        return payments.reduce((total: number, payment: any) => {
-            if (payment.type === type) {
-                return total + payment.amount;
-            }
-            return total;
-        }, 0);
-    };
-
-    const totalGoollooperAmount = calculateTotalAmount('Megablast') + 
-                                calculateTotalAmount('Task Add Request') + 
-                                calculateTotalAmount('Subscription') + 
-                                calculateTotalAmount('Application Fee');
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -117,7 +102,7 @@ const PaymentsPage = () => {
                     <div className="flex flex-col items-start space-y-1 ml-4">
                         <Image src={AmountIcon} alt="Users Icon" width={42} height={42} />
                         <div className="flex flex-row gap-4">
-                            <h1 className="text-[1.625rem] leading-[2.438rem] font-bold pt-[0.313rem]">${formatAmount(totalGoollooperAmount)}</h1>
+                            <h1 className="text-[1.625rem] leading-[2.438rem] font-bold pt-[0.313rem]">${formatAmount(39908)}</h1>
                             <ConfirmationModal isAccept={false} />
                         </div>
                         <p className="text-[0.875rem] leading-[1.313rem] text-subTitleColor">

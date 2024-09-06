@@ -39,6 +39,7 @@ interface PaymentState {
         available: number;
         pending: number;
     } | null;
+    currentActiveChat: string | null;
 }
 
 const initialState: PaymentState = {
@@ -46,6 +47,7 @@ const initialState: PaymentState = {
     status: 'idle',
     error: null,
     stripeBalance: null,
+    currentActiveChat: null,
 };
 
 interface FetchPaymentsParams {
@@ -117,7 +119,14 @@ export const withdrawPayment = createAsyncThunk(
 const paymentSlice = createSlice({
     name: "payment",
     initialState,
-    reducers: {},
+    reducers: {
+        setCurrentActiveChat(state, action: PayloadAction<string>) {
+            state.currentActiveChat = action.payload;
+        },
+        clearCurrentActiveChat(state) {
+            state.currentActiveChat = null;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchPayments.pending, (state) => {
@@ -165,5 +174,5 @@ const paymentSlice = createSlice({
             });
     },
 });
-
+export const { setCurrentActiveChat, clearCurrentActiveChat } = paymentSlice.actions;
 export default paymentSlice.reducer;

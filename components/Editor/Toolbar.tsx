@@ -9,6 +9,7 @@ export const modules = {
 };
 
 export const options = [
+  "font",
   "header",
   "bold",
   "italic",
@@ -29,6 +30,9 @@ export const QuillToolbar = () => (
           height={35}
           className="bg-PrimaryColor p-2 rounded-md mr-3"
         />
+        <select className="ql-font">
+          <option selected value="Space Grostak"></option>
+        </select>
 
         <div className="flex items-center gap-1 border-x border-border px-2">
           <button className="ql-bold mx-1" />

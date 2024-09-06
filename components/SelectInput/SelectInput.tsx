@@ -29,7 +29,7 @@ const SelectInput = ({
       onInputChange={handleInputChange}
       onChange={handleChange}
       isMulti={isMulti}
-      className="h-16 rounded-lg bg-InputFieldColor pt-7 text-gray-400"
+      className="h-16 rounded-lg pt-7 text-gray-400"
       placeholder={placeholder || "Select..."}
     />
   );

@@ -27,6 +27,7 @@ const config = {
         'calc-editor-screen': 'calc(100vh - 220px);',
         'calc-chatlist-screen': 'calc(100vh - 350px);',
         'calc-message-screen': 'calc(100vh - 225px);',
+        'calc-interest-list-screen': 'calc(100vh - 305px);',
       },
       colors: {
         deleleColor:'#FF5C5C',

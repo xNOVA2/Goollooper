@@ -31,6 +31,14 @@ export default function SupportPage() {
       setChats(data);
     });
 
+    try {
+      socketServcies.on("closeChatSupportTicket/66c5cbc2750212bbdbe13157", (data: any) => {
+        console.log("socket chat closed data:", { data });
+      });
+    } catch (error: any) {
+      console.log("Mark as error", error);
+    }
+
     return () => {
       socketServcies.disconnect();
     };
@@ -144,6 +152,17 @@ export default function SupportPage() {
     }
   };
 
+  const handMarkAsComplete = (chatID: string) => {
+    console.log("Mark as complete", chatID);
+    try {
+      socketServcies.emit("closeChatSupportTicket", { chat: chatID });
+    } catch (error: any) {
+      console.log("Mark as complete error", error);
+    }
+    console.log("Mark as complete success", chatID);
+  };
+    
+
   // const handleSendPhoto = async (image) => {};
 
   return (
@@ -154,7 +173,7 @@ export default function SupportPage() {
           <ChatList chats={chats} user={user} onClick={onUserClick} />
 
           {/* Right Side: Chat Screen */}
-          <ChatDetails chatData={chatData} messages={messages} user={user} handleSendMessage={handleSendMessage} />
+          <ChatDetails chatData={chatData} messages={messages} user={user} handleSendMessage={handleSendMessage} handleMarkAsComplete={handMarkAsComplete} />
         </div>
       </DashboardLayout>
     </>

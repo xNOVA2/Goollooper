@@ -19,6 +19,10 @@ import { ScrollArea } from "../ui/scroll-area";
 // Font.whitelist = ['mirza', 'roboto'];
 // Quill.register(Font, true);
 
+var Font = Quill.import("formats/font");
+Font.whitelist = ["Roboto", "Raleway", "Montserrat", "Lato", "Rubik"];
+Quill.register(Font, true);
+
 const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => <p>Loading ...</p>,

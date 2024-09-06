@@ -82,7 +82,7 @@ export default function ChangePassword() {
       </div>
 
       <Button
-        className="w-full h-[4.125rem] text-[1.125rem] rounded-full bg-SecondaryColor"
+        className="w-full h-[4.125rem] text-[1.125rem] leading-[1.412rem] mt-[1.688rem] mb-[1.875rem] rounded-full bg-SecondaryColor"
         type="submit"
       >
         Set Password

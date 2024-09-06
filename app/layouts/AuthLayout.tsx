@@ -15,7 +15,7 @@ const AuthLayout: React.FC<AuthModule> = ({
   
   return (
     <div className="flex justify-start h-screen overflow-hidden">
-      <section className="w-1/2 h-full z-[-10]">
+      <section className="w-1/2 h-full">
         <Image alt="" className="object-cover w-full h-full" src={Picture} />
       </section>
 
@@ -23,7 +23,7 @@ const AuthLayout: React.FC<AuthModule> = ({
         <div className="fixed top-0 right-0 flex justify-end pt-[3.125em] pr-[3.5em]">
           <Image width={100} height={100} src={Logo} alt="Logo" className="w-[7.438em] h-[7.438em]" />
         </div>
-        <div className="w-[24.688em] h-[28.75em] px-[1.75em] bg-white border border-border rounded-md ">
+        <div className="w-[24.688em] px-[1.75em] bg-white border border-border rounded-md ">
             <div className="pt-[2em] mb-[1.688em] pb-[1.688em] border-b border-border">
               <h1 className="text-3xl font-bold ">{title}</h1>
               <p className="text-sm text-gray-400 pt-3">{subText}</p>
@@ -31,7 +31,7 @@ const AuthLayout: React.FC<AuthModule> = ({
 
             <div>
               {children}
-              <p className="flex justify-center mt-2 "> <Link href={'/'} className="text-PrimaryColor no-underline"> {additionalText}</Link></p>
+              <p className="flex justify-center mb-[1.563em]"> <Link href={'/'} className="text-PrimaryColor no-underline"> {additionalText}</Link></p>
             </div>
         </div>
       </section>

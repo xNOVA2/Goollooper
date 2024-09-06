@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
@@ -25,11 +25,7 @@ function DashboardPage() {
     limit: 5,
   });
 
-  useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
-
-  const fetchData = async (page: number) => {
+  const fetchData = useCallback(async (page: number) => {
     try {
       setLoading(true);
       let statsRes = await getStats();
@@ -51,7 +47,11 @@ function DashboardPage() {
     } catch (error: Error | any) {
       setLoading(false);
     }
-  };
+  }, [pageData.limit]);
+
+  useEffect(() => {
+    fetchData(currentPage);
+  }, [currentPage, fetchData]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

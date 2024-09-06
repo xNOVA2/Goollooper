@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Input } from "../ui/input";
 
-export const SearchBar = () => {
+export const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
     // Replace this with your actual search component
     return (
       <div className="ml-[1.938em] mr-[1.25em] h-[2.25em]">
@@ -9,6 +9,7 @@ export const SearchBar = () => {
           <Input
             className=" bg-backGroundSecondaryColor  px-9"
             placeholder="Searching"
+            onChange={(e) => onSearch(e.target.value)}
           />
           <Image
             src={"/assets/Image/Search.svg"}

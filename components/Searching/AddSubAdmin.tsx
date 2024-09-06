@@ -83,15 +83,15 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
 
   return (
     <>
-      <div className="flex justify-between">
-        <div className="pt-5">
+      <div className="w-full flex flex-row gap-[1.125em]">
+        <div className="mt-[1.5em]">
           <h1 className="font-semibold text-2xl mb-7">Personal Data</h1>
           <label htmlFor="" className="font-semibold ">
             First Name
           </label>
           <Input
             placeholder="Type here"
-            className="bg-backGroundColor border-0 w-[350px] mt-2"
+            className="bg-backGroundColor w-[26em] h-[2.625em] mt-[0.438em] text-[0.875rem] leading-[1.313rem]"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
@@ -101,7 +101,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           </label>
           <Input
             placeholder="Type here"
-            className="bg-backGroundColor border-0 w-[350px] mt-2"
+            className="bg-backGroundColor w-[26em] h-[2.625em] mt-[0.438em] text-[0.875rem] leading-[1.313rem]"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
@@ -112,7 +112,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           <Input
             type="date"
             placeholder="Type here"
-            className="bg-backGroundColor border-0 w-[350px] mt-2"
+            className="bg-backGroundColor w-[26em] h-[2.625em] mt-[0.438em] text-[0.875rem] leading-[1.313rem]"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
           />
@@ -120,23 +120,22 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           <label htmlFor="" className="font-semibold ">
             Location{" "}
           </label>
-          {/* <Input
+          <Input
             placeholder="Type here"
-            className="bg-backGroundColor border-0 w-[350px] mt-2"
+            className="bg-backGroundColor w-[26em] h-[2.625em] mt-[0.438em] text-[0.875rem] leading-[1.313rem]"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-          /> */}
-          <GooglePlacesAutocompleteWrapper onSelect={setLocation} />
+          />
         </div>
         {/* // Account Information */}
-        <div className="p-5">
+        <div className="mt-[1.5em]">
           <h1 className="font-semibold text-2xl mb-7">Account Information</h1>
           <label htmlFor="" className="font-semibold ">
             Email Address
           </label>
           <Input
             placeholder="Type here"
-            className="bg-backGroundColor border-0 w-[350px] mt-2"
+            className="bg-backGroundColor w-[26em] h-[2.625em] mt-[0.438em] text-[0.875rem] leading-[1.313rem]"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -146,7 +145,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           </label>
           <Input
             placeholder="Type here"
-            className="bg-backGroundColor border-0 w-[350px] mt-2"
+            className="bg-backGroundColor w-[26em] h-[2.625em] mt-[0.438em] text-[0.875rem] leading-[1.313rem]"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
@@ -156,7 +155,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           </label>
           <Input
             placeholder="Type here"
-            className="bg-backGroundColor border-0 w-[350px] mt-2"
+            className="bg-backGroundColor w-[26em] h-[2.625em] mt-[0.438em] text-[0.875rem] leading-[1.313rem]"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
