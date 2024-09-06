@@ -21,7 +21,7 @@ export function DatePicker() {
     <Popover>
       <PopoverTrigger asChild>
         
-          <Image className="cursor-pointer mr-2 h-4 w-4" src={'/assets/Image/Date.svg'} alt="" width={15} height={15}  />
+          <Image className="cursor-pointer mr-2 h-[1.5em] w-[1.5em]" src={'/assets/Image/Date.svg'} alt="" width={15} height={15}  />
     
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

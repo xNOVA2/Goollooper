@@ -21,7 +21,7 @@ const withAuth = <P extends object>(
       } else if (pathname === "/") {
         router.push("/dashboard");
       }
-    }, [isAuthenticated, router]);
+    }, [isAuthenticated, router, pathname]);
 
     if (!isAuthenticated && pathname !== "/" && pathname !== "/forget") {
       return null;

@@ -5,7 +5,7 @@ export default function ForgetPage() {
   return (
     <AuthLayout
       title="Forget Password"
-      subText="Enter your email address and we’ll send you password reset instructions."
+      subText="Enter your email address and we&#8217;ll send you password reset instructions."
       additionalText="Back to Login"
     >
       <ForgetPassword />

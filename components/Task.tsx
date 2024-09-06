@@ -28,7 +28,7 @@ const Task: React.FC<ServiceProps> = ({ title, id, link, onDelete }) => {
   };
 
   return (
-    <div className="flex justify-between rounded-sm h-[3.5em] bg-backGroundSecondaryColor items-center pl-[1.063em] pr-[0.25em]">
+    <div className="flex justify-between rounded-sm mt-[0.5em] h-[3.5em] bg-backGroundSecondaryColor items-center pl-[1.063em] pr-[0.25em]">
       <div>
         <p className="text-[0.875rem] leading-[1.116rem] text-subTitleColor font-semibold">{title}</p>
       </div>

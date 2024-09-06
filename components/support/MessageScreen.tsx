@@ -1,9 +1,29 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { Message, User } from "@/types/type";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { IMAGE_URL } from "@/lib/constants";
+
+const groupMessagesByTime = (messages: Message[]): [string, Message[]][] => {
+  const groups: { [key: string]: Message[] } = {};
+  
+  messages.forEach((message) => {
+    if (message.createdAt) {
+      const date = new Date(message.createdAt);
+      const roundedMinutes = Math.floor(date.getMinutes() / 10) * 10;
+      date.setMinutes(roundedMinutes, 0, 0);
+      const key = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+      groups[key].push(message);
+    }
+  });
+
+  return Object.entries(groups);
+}
 
 export const MessageScreen = ({
     messages,
@@ -16,6 +36,8 @@ export const MessageScreen = ({
   }) => {
     const fileInputRef = useRef<any>(null);
     const [message, setMessage] = useState<string>("");
+
+    const groupedMessages = useMemo(() => groupMessagesByTime(messages), [messages]);
   
     const handleSendMessage = () => {
       onSend(message, "message");
@@ -35,7 +57,10 @@ export const MessageScreen = ({
         <ScrollArea className="p-7 h-calc-message-screen">
           {/* Admin Messages on the left */}
           {/* <p className="flex justify-center text-xs mb-5">8:00 AM</p> */}
-          {messages?.map((msg: Message) => {
+          {groupedMessages.map(([time, msgs]) => (
+            <div key={`${time}-${Math.random()}`}>
+              <p className="flex justify-center text-xs mb-5">{time}</p>
+          {msgs?.map((msg: Message) => {
             let isAdminMsg = msg?.sentBy === user?._id;
             return (
               <>
@@ -81,6 +106,8 @@ export const MessageScreen = ({
               </>
             );
           })}
+            </div>
+          ))}
           {/* <div className="flex items-start mb-4 ">
             <div className="">
               <p className="bg-PrimaryColor text-white rounded-xl p-2 text-sm flex flex-wrap w-[70%]">

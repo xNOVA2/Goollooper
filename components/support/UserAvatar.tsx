@@ -2,6 +2,10 @@ import { IMAGE_URL } from "@/lib/constants";
 import { Chat } from "@/types/type";
 import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+
+const selectCurrentActiveChat = (state: RootState) => state.payment.currentActiveChat;
 
 export const UserAvatar = ({
     name,
@@ -9,9 +13,10 @@ export const UserAvatar = ({
     text,
     chatData,
     chatId,
-  isList = false,
-  isTicketClosed,
+    isList = false,
+    isTicketClosed,
     onUserClick,
+    handleMarkAsComplete,
   }: {
     name: string;
     image?: string;
@@ -21,11 +26,14 @@ export const UserAvatar = ({
     isList: boolean;
     isTicketClosed?: boolean;
     onUserClick?: (chatData: Chat | null) => void;
+    handleMarkAsComplete?: (chatId: string) => void;
   }) => {
+    const currentActiveChat = useSelector(selectCurrentActiveChat);
+    
     return (
       <div
         className={`flex items-center 
-          ${isList ? "gap-[0.75em]  py-1 hover:bg-backGroundSecondaryColor pl-8 pr-5 hover:cursor-pointer" :
+          ${ (currentActiveChat === chatId && isList) ? "gap-[0.75em] py-1 bg-backGroundSecondaryColor pl-8 pr-5 hover:cursor-pointer" : isList ? "gap-[0.75em] py-1 hover:bg-backGroundSecondaryColor pl-8 pr-5 hover:cursor-pointer" :
             "gap-[1.063em]"}`}
         onClick={() => (isList && onUserClick ? onUserClick(chatData || null) : {})}
       >
@@ -47,11 +55,17 @@ export const UserAvatar = ({
           </div>
           {!isList && (
             <div className="flex items-center space-x-2">
-              {!isTicketClosed ?
-                <Checkbox id="login-checkbox" className="w-[1.063em] h-[1.063em] rounded-md border-border data-[state=checked]:bg-PrimaryColor" />
-                :
-                <Checkbox id="login-checkbox" checked={isTicketClosed} className="w-[1.063em] h-[1.063em] rounded-md border-border data-[state=checked]:bg-PrimaryColor" />
-              }
+              <Checkbox
+                id="login-checkbox"
+                className="w-[1.063em] h-[1.063em] rounded-md border-border data-[state=checked]:bg-PrimaryColor"
+                // checked={isTicketClosed}
+                onCheckedChange={ () => {
+                  if (handleMarkAsComplete && chatId) {
+                    handleMarkAsComplete(chatId);
+                  }
+                }}
+                disabled={isTicketClosed}
+              />
               <label htmlFor="login-checkbox" className="text-[0.875rem] leading-[1.313rem]">
                 Mark as complete
               </label>

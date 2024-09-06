@@ -1,5 +1,9 @@
+"use client";
+import React, { useEffect } from "react";
 import { UserAvatar } from "./UserAvatar";
 import { MessageScreen } from "./MessageScreen";
+import { useDispatch } from "react-redux";
+import { setCurrentActiveChat } from "@/store/Slices/PaymentSlice";
 
 export const ChatDetails = (
     {
@@ -7,13 +11,23 @@ export const ChatDetails = (
         messages,
         user,
         handleSendMessage,
+        handleMarkAsComplete,
     }: {
         chatData: any;
         messages: any;
         user: any;
         handleSendMessage: (message: string | any, type: string) => void;
+        handleMarkAsComplete?: (chatId: string) => void;
     }
 ) => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (chatData && chatData._id) {
+            dispatch(setCurrentActiveChat(chatData._id));
+        }
+    }, [chatData, dispatch]);
+    
     return (
         <>
         {chatData && (
@@ -31,6 +45,7 @@ export const ChatDetails = (
                       )?.profileImage
                     }
                 isTicketClosed={chatData?.isTicketClosed}
+                handleMarkAsComplete={handleMarkAsComplete}
                 chatId={chatData?._id}
                 isList={false}
               />

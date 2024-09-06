@@ -21,6 +21,7 @@ import { Label } from "@/components/ui/label";
 import { addService, deleteService, getServices } from "@/api";
 import { Service } from "@/types/type";
 import { toast } from "react-toastify";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function InterestPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -154,7 +155,7 @@ export default function InterestPage() {
               </DialogContent>
             </Dialog>
           </div>
-          <div className="flex flex-col gap-[0.5em] mt-[1.188em]">
+          <ScrollArea className="flex flex-col h-calc-interest-list-screen mt-[1.188em]">
             {services?.length
               ? services.map((service: Service) => (
                   <Task
@@ -166,7 +167,7 @@ export default function InterestPage() {
                   />
                 ))
               : null}
-          </div>
+          </ScrollArea>
           <div className="p-4 ">
             <Pagination
               currentPage={currentPage}

@@ -33,12 +33,12 @@ export default function PushInfomation({
   return (
     <>
       <div>
-        <div className="p-7">
+        <div className="pt-[1.438em]">
           <div className="flex items-center space-x-10 ">
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="terms"
-                className=""
+                className="w-[1.063em] h-[1.063em] rounded-md border-border data-[state=checked]:bg-PrimaryColor"
                 checked={selectedCheckbox === "all"}
                 onCheckedChange={() => setSelectedCheckbox("all")}
               />
@@ -48,7 +48,7 @@ export default function PushInfomation({
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="terms"
-                className=""
+                className="w-[1.063em] h-[1.063em] rounded-md border-border data-[state=checked]:bg-PrimaryColor"
                 checked={selectedCheckbox === "selected"}
                 onCheckedChange={() => setSelectedCheckbox("selected")}
               />
@@ -57,34 +57,36 @@ export default function PushInfomation({
           </div>
         </div>
       </div>
-      <div className="mt-6">
-        <div className="relative mt-3 px-6 ">
-          <p className="absolute text-xm text-PrimaryColor px-3 mt-2">Title</p>
+      <div className="mt-[2em]">
+        <div className="relative">
+          <p className="absolute text-xm text-PrimaryColor pl-[1.313rem] mt-2">Title</p>
           <div className="flex">
             <Input
               type="text"
               placeholder="Title here"
-              className="h-16 rounded-lg bg-InputFieldColor pt-7 text-gray-400"
+              className="h-16 rounded-lg bg-InputFieldColor pl-[1.313rem] pt-7 text-gray-400"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
             <div className="absolute"></div>
           </div>
         </div>
-        <div className="relative mt-3 px-6 ">
-          <p className="absolute  text-xm text-PrimaryColor px-3 mt-2">To</p>
-          <div>
-            <SelectInput
-              options={options}
-              handleInputChange={setSearch}
-              handleChange={handleChange}
-              loading={userLoading}
-              isMulti={true}
-              placeholder="User email"
-            />
-            <div className="absolute"></div>
+        { selectedCheckbox === "selected" && (
+          <div className="relative mt-[1.5em] ">
+            <p className="absolute text-xm text-PrimaryColor mb-2">To</p>
+            <div>
+              <SelectInput
+                options={options}
+                handleInputChange={setSearch}
+                handleChange={handleChange}
+                loading={userLoading}
+                isMulti={true}
+                placeholder="User email"
+              />
+              <div className="absolute"></div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

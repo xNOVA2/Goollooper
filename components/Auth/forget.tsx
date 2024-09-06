@@ -44,7 +44,7 @@ export default function ForgetPassword() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative mt-3">
-        <p className="absolute text-xm text-PrimaryColor px-3 mt-2">
+        <p className="absolute text-[0.875rem] leading-[1.098rem] text-PrimaryColor pt-[0.688em] pl-[1.313em]">
           Email Address*
         </p>
         <div className="flex">
@@ -52,7 +52,7 @@ export default function ForgetPassword() {
             {...register("email")}
             type="email"
             placeholder="example@mail.com"
-            className="h-16 rounded-lg bg-backGroundColor pt-7 text-gray-400"
+            className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-gray-400 h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
           />
           <div className="absolute">
             {errors.email?.message && (
@@ -62,7 +62,7 @@ export default function ForgetPassword() {
         </div>
       </div>
       <Button
-        className="w-full rounded-full bg-SecondaryColor py-8 mt-5"
+        className="w-full h-[4.125rem] text-[1.125rem] mt-[1.688rem] mb-[0.75rem] rounded-full bg-SecondaryColor"
         type="submit"
       >
         Send Email

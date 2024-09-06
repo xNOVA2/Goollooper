@@ -53,13 +53,15 @@ export default function SideBar({
 
   const [isClient, setIsClient] = useState(false);
 
+  const currentActivePath = usePathname();
+  const basePath = currentActivePath.split('/').slice(0, 2).join('/');
+
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   if (!isClient) {
-    return null; 
-    // Render nothing on the server
+    return null;
   }
 
   const AllLinks = [
@@ -132,9 +134,6 @@ export default function SideBar({
       }
     }
   };
-
-  const currentActivePath = usePathname();
-  const basePath = currentActivePath.split('/').slice(0, 2).join('/');
 
   return (
     <>
