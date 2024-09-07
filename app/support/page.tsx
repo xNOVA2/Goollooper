@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import DashboardLayout from "@/app/layouts/DashboardLayout";
 import { sendMedia } from "@/api";
@@ -18,7 +18,7 @@ export default function SupportPage() {
   const [messages, setMessages] = useState<any>([]);
   const [chatData, setChatData] = useState<Chat | null | any>(null);
 
-  useEffect(() => {
+  const initializeSocket = useCallback(() => {
     socketServcies.initializeSocket(accessToken);
     const reqData = {
       userId: user?._id,
@@ -42,7 +42,12 @@ export default function SupportPage() {
     return () => {
       socketServcies.disconnect();
     };
-  }, []);
+  }, [accessToken, user?._id]);
+
+  useEffect(() => {
+    const cleanup = initializeSocket();
+    return cleanup;
+  }, [initializeSocket]);
 
   useEffect(() => {
     if (!chatData) return;
@@ -76,10 +81,10 @@ export default function SupportPage() {
         `readMessages/${chatData?._id}/${user?._id}`
       );
     };
-  }, [chatData]);
+  }, [chatData, user?._id]);
 
   console.log({ user });
-  const onUserClick = (chatDataObj: Chat | null) => {
+  const onUserClick = useCallback((chatDataObj: Chat | null) => {
     if (!chatDataObj) return;
     console.log({ chatDataObj });
 
@@ -95,9 +100,9 @@ export default function SupportPage() {
 
       setMessages(data?.messages?.reverse() || []);
     });
-  };
+  }, [user?._id]);
 
-  const handleSendMessage = async (data: string | any, type: string) => {
+  const handleSendMessage = useCallback(async (data: string | any, type: string) => {
     console.log({ data });
     if (type === "image") {
       try {
@@ -150,9 +155,9 @@ export default function SupportPage() {
         setMessages((prev: any) => [...prev, newMessage]);
       }
     }
-  };
+  }, [chatData, user]);
 
-  const handMarkAsComplete = (chatID: string) => {
+  const handleMarkAsComplete = useCallback((chatID: string) => {
     console.log("Mark as complete", chatID);
     try {
       socketServcies.emit("closeChatSupportTicket", { chat: chatID });
@@ -160,7 +165,17 @@ export default function SupportPage() {
       console.log("Mark as complete error", error);
     }
     console.log("Mark as complete success", chatID);
-  };
+  }, []);
+
+  const checkIsMarkAsComplete = useCallback((userID: string) => {
+    try {
+      socketServcies.on(`closeChatSupportTicket/${userID}`, (data: any) => {
+        console.log("socket chat closed data:", { data });
+      });
+    } catch (error: any) {
+      console.log("Mark as error", error);
+    }
+  }, []);
     
 
   // const handleSendPhoto = async (image) => {};
@@ -173,7 +188,7 @@ export default function SupportPage() {
           <ChatList chats={chats} user={user} onClick={onUserClick} />
 
           {/* Right Side: Chat Screen */}
-          <ChatDetails chatData={chatData} messages={messages} user={user} handleSendMessage={handleSendMessage} handleMarkAsComplete={handMarkAsComplete} />
+          <ChatDetails chatData={chatData} messages={messages} user={user} handleSendMessage={handleSendMessage} handleMarkAsComplete={handleMarkAsComplete} />
         </div>
       </DashboardLayout>
     </>

@@ -56,7 +56,7 @@ const PaymentsPage = () => {
         };
     
         fetchData();
-    }, [dispatch]);
+    }, [dispatch, currentPage, pageData.limit]);
 
 
     const handlePageChange = (page: number) => {
