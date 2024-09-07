@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 
+
 export const modules = {
   toolbar: {
     container: "#toolbar",
@@ -31,7 +32,8 @@ export const QuillToolbar = () => (
           className="bg-PrimaryColor p-2 rounded-md mr-3"
         />
         <select className="ql-font">
-          <option selected value="Space Grostak"></option>
+          <option value="spaceGrotesk">Space Grotesk</option>
+          <option value="roboto">Roboto</option>
         </select>
 
         <div className="flex items-center gap-1 border-x border-border px-2">

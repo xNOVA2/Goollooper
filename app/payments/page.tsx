@@ -1,5 +1,7 @@
 "use client";
 
+import dynamic from 'next/dynamic';
+
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import PendingIcon from "@/public/assets/Image/pending.png";
@@ -134,4 +136,4 @@ const PaymentsPage = () => {
     );
 };
 
-export default PaymentsPage;
+export default dynamic(() => Promise.resolve(PaymentsPage), { ssr: false });

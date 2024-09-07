@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import Task from "@/components/Task";
 import Pagination from "@/components/User/Pagination/Pagination";
@@ -35,11 +35,7 @@ export default function InterestPage() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
 
-  useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
-
-  const fetchData = async (page: number) => {
+  const fetchData = useCallback(async (page: number) => {
     try {
       setLoading(true);
       let seervicesRes = await getServices(page, pageData.limit, "interest");
@@ -53,11 +49,15 @@ export default function InterestPage() {
     } catch (error: Error | any) {
       setLoading(false);
     }
-  };
+  }, [pageData]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    fetchData(currentPage);
+  }, [currentPage, fetchData]);
 
   const onSubmit = async () => {
     if (!title) return toast.warning("Please enter title");

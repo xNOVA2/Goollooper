@@ -8,12 +8,14 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { on } from "events";
+import Image from "next/image";
 
 interface ConfirmationModalProps {
   isAccept?: boolean;
   userID?: string;
   amount?: number;
+  isDelete?: boolean;
+  taskID?: string;
   onAccept?: (id: any) => void;
 }
 
@@ -21,6 +23,8 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   isAccept,
   userID,
   amount,
+  isDelete,
+  taskID,
   onAccept,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,18 +36,33 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     if (onAccept && amount && !isAccept) {
         onAccept(amount);
     }
+    if (onAccept && taskID && isDelete) {
+      onAccept(taskID);
+    }
     setIsOpen(false);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="text-white rounded-full bg-PrimaryColor"
-          onClick={() => setIsOpen(true)}
-        >
-          {!isAccept ? "Withdraw" : "Accept"}
-        </Button>
+        {isDelete ? (
+            <Button className="bg-backGroundColor px-[0.85rem] py-[1.5rem] rounded-sm">
+              <Image
+              src={"/assets/Image/trash.svg"}
+              alt=""
+              width={24}
+              height={24}
+              onClick={() => setIsOpen(!isOpen)}
+              />  
+            </Button>
+        ) : (
+          <Button
+            className="text-white rounded-full bg-PrimaryColor"
+            onClick={() => setIsOpen(true)}
+          >
+            {!isAccept ? "Withdraw" : "Accept"}
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="w-[25.25em] h-[17.563em]">
         <div className="border-b border-border pb-[1.063em] pt-[1.313em] flex justify-center">
@@ -53,15 +72,15 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         </div>
         <div>
           <DialogDescription className="text-[1.125rem] leading-[1.688rem] font-medium text-black text-center">
-            {!isAccept ? "Are you sure you want to withdraw?" : "Are you sure you want to accept this request?"}
+            {isDelete ? "Are you sure you want to delete this category?" : !isAccept ? "Are you sure you want to withdraw?" : "Are you sure you want to accept this request?"}
           </DialogDescription>
         </div>
         <div className="flex flex-col gap-1 justify-center items-center">
           <Button
-            className="h-[2.375rem] w-[20.875rem] text-[0.875rem] leading-[1.25rem] bg-PrimaryColor text-white rounded-full"
+            className={`h-[2.375rem] w-[20.875rem] text-[0.875rem] leading-[1.25rem] ${isDelete ? "bg-deleleColor" : "bg-PrimaryColor"} text-white rounded-full`}
             onClick={handleAccept}
           >
-            {!isAccept ? "Withdraw" : "Accept"}
+            {isDelete ? "Delete" : !isAccept ? "Withdraw" : "Accept"}
           </Button>
           <Button
             variant="ghost"

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -28,19 +28,7 @@ export default function NotificationPage() {
   const [content, setContent] = useState<string>("");
   const [users, setUsers] = useState<Option[] | null>(null);
 
-  useEffect(() => {
-    fetchNotificationData();
-  }, []);
-
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      fetchData();
-    }, 500);
-
-    return () => clearTimeout(debounceTimer);
-  }, [search]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setUserLoading(true);
       let usersRes = await getUsers(1, 10, search);
@@ -53,7 +41,15 @@ export default function NotificationPage() {
     } catch (error: Error | any) {
       setUserLoading(false);
     }
-  };
+  }, [search]);
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      fetchData();
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [search, fetchData]);
 
   const fetchNotificationData = async () => {
     try {
@@ -98,6 +94,10 @@ export default function NotificationPage() {
       }
     }
   };
+
+  useEffect(() => {
+    fetchNotificationData();
+  }, []);
 
   return (
     <DashboardLayout Active={6}>
