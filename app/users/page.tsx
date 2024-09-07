@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
@@ -20,36 +20,40 @@ export default function UsersPage() {
     limit: 10,
   });
 
+  const fetchData = useCallback(async (page: number, searchTerm: string) => {
+    try {
+      setLoading(true);
+      let usersRes = await getUsers(page, pageData.limit, searchTerm);
+      setUsers(usersRes?.data?.data?.data || []);
+      setPageData(prevPageData => ({
+        ...prevPageData,
+        totalPages: usersRes?.data?.data?.pagination?.totalPages || 0,
+        totalItems: usersRes?.data?.data?.pagination?.totalItems || 0,
+      }));
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [pageData.limit]);
+
+  console.log(users);
+
   useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
+    fetchData(currentPage, search);
+  }, [currentPage, search, fetchData]);
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       setCurrentPage(1);
-      fetchData(currentPage);
     }, 500);
 
     return () => clearTimeout(debounceTimer);
   }, [search]);
 
-  const fetchData = async (page: number) => {
-    try {
-      setLoading(true);
-      let usersRes = await getUsers(page, pageData.limit, search);
-      setUsers(usersRes?.data?.data?.data);
-      setPageData({
-        ...pageData,
-        totalPages: usersRes?.data?.data?.pagination?.totalPages,
-        totalItems: usersRes?.data?.data?.pagination?.totalItems,
-      });
-      setLoading(false);
-    } catch (error: Error | any) {
-      setLoading(false);
-    }
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
   };
-
-  console.log(users);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -63,7 +67,7 @@ export default function UsersPage() {
           <p className="text-subTitleColor mt-5">
             You can see the overall Users of Goollooper here
           </p>
-          <Search isSubAdmin={false} value={search} onChange={setSearch} />
+          <Search isSubAdmin={false} value={search} onChange={handleSearchChange} />
           <div className="flex flex-col items-stretch space-y-14 flex-grow overflow-auto">
             {/* Adding overflow-auto to handle the content overflow */}
             {users?.length ? <Users users={users} isSubAdmin={false} /> : null}
