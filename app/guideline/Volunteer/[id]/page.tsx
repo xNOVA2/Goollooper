@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DashboardLayout from "@/app/layouts/DashboardLayout";
 import GuidelineLayout from "@/app/layouts/GuidelineLayout";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { addService, deleteService, getService } from "@/api";
 import { SubServices } from "@/types/type";
@@ -15,11 +15,7 @@ export default function VolunteerSubpage({ params }: any) {
   const [title, setTitle] = useState<string>("");
   const [subServices, setSubServices] = useState<SubServices[]>([]);
 
-  useEffect(() => {
-    fetchData();
-  }, [params?.id]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       let seervicesRes = await getService(params?.id);
@@ -30,7 +26,11 @@ export default function VolunteerSubpage({ params }: any) {
       setLoading(false);
       console.log(error);
     }
-  };
+  }, [params?.id]);
+
+  useEffect(() => {
+    fetchData();
+  }, [params?.id, fetchData]);
 
   const onAdd = async () => {
     if (!title) return toast.warning("Please enter title");
@@ -94,11 +94,47 @@ export default function VolunteerSubpage({ params }: any) {
       <DashboardLayout>
         <GuidelineLayout>
           <div>
-            <div className="bg-white h-full mx-4 rounded-md border border-border  px-[1.75em] ">
-              <div className="">
-                <h1 className="font-semibold text-[1.875rem] leading-[2.813rem] pt-[3.375rem]">{name}</h1>
+            <div className="bg-white h-full mr-2 rounded-md border border-border px-[1.75em] py-[1.438em] ">
+              <div className="flex flex-row justify-between items-center">
+                <h1 className="text-[1.875em] leading-[2.813] font-bold">Volunteer</h1>
+                <Button className="w-[7.75rem] h-[2.375rem] text-[0.875rem] leading-[1.25rem] font-medium bg-PrimaryColor rounded-full">Save</Button>
               </div>
-              <div className="mt-3">
+
+              <div>
+                <h4 className="text-[0.625rem] leading-[0.938rem] font-normal">Main Category</h4>
+                <Input
+                  placeholder="type here"
+                  className="h-[4.125rem] mt-[1rem] mb-[1.25rem] pl-[2.375rem] pt-[1.313rem] pb-[1.313rem] text-[0.875rem] leading-[1.313rem] shadow-custom bg-white border border-border focus-visible:outline-none focus-visible:ring-0"
+                  // value={title}
+                  // onChange={(event) => setTitle(event.target.value)}
+                />
+                <Input
+                  placeholder="type here"
+                  className="h-[4.125rem] mt-[1rem] mb-[1.25rem] pl-[2.375rem] pt-[1.313rem] pb-[1.313rem] text-[0.875rem] leading-[1.313rem] shadow-custom bg-white border border-border focus-visible:outline-none focus-visible:ring-0"
+                  // value={title}
+                  // onChange={(event) => setTitle(event.target.value)}
+                />
+                <div className="flex justify-between">
+                  <div></div>
+                  <Button className="w-[10.625rem] h-[2.375rem] text-[0.875rem] leading-[1.25rem] font-medium bg-PrimaryColor rounded-full">Add keywords</Button>
+                </div>
+                <div className="flex flex-wrap gap-5 mt-6">
+                  {subServices?.map((item) => (
+                    <Category
+                      key={item?._id}
+                      id={item?._id}
+                      text={item?.title}
+                      onClick={onDeleteSubCategory}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <h1 className="font-bold text-3xl">Sub Category</h1>
+              </div>
+
+              <div className="">
                 <Input
                   placeholder="type here"
                   className="h-[4.125rem] mt-[1rem] mb-[1.25rem] pl-[2.375rem] pt-[1.313rem] pb-[1.5rem] text-[0.875rem] leading-[1.313rem] shadow-custom bg-white border border-border"

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import Task from "@/components/Task";
 import Pagination from "@/components/User/Pagination/Pagination";
@@ -34,11 +34,7 @@ export default function VolunteerPage() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
 
-  useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
-
-  const fetchData = async (page: number) => {
+  const fetchData = useCallback(async (page: number) => {
     try {
       setLoading(true);
       let seervicesRes = await getServices(page, pageData.limit, "volunteer");
@@ -52,7 +48,11 @@ export default function VolunteerPage() {
     } catch (error: Error | any) {
       setLoading(false);
     }
-  };
+  }, [pageData]);
+
+  useEffect(() => {
+    fetchData(currentPage);
+  }, [currentPage, fetchData]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

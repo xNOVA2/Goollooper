@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import { Users } from "@/components/User/Users";
@@ -20,20 +20,7 @@ export default function SubadminPage() {
     limit: 10,
   });
 
-  useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
-
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      setCurrentPage(1);
-      fetchData(currentPage);
-    }, 500);
-
-    return () => clearTimeout(debounceTimer);
-  }, [search]);
-
-  const fetchData = async (page: number) => {
+  const fetchData = useCallback(async (page: number) => {
     try {
       setLoading(true);
       let subadminRes = await getSubadmin(page, pageData.limit, search);
@@ -47,7 +34,20 @@ export default function SubadminPage() {
     } catch (error: Error | any) {
       setLoading(false);
     }
-  };
+  }, [pageData, search]);
+
+  useEffect(() => {
+    fetchData(currentPage);
+  }, [currentPage, fetchData]);
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      setCurrentPage(1);
+      fetchData(currentPage);
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [search, fetchData, currentPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

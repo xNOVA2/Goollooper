@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DashboardLayout from "@/app/layouts/DashboardLayout";
 import GuidelineLayout from "@/app/layouts/GuidelineLayout";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { addService, deleteService, getService } from "@/api";
 import { SubServices } from "@/types/type";
@@ -15,11 +15,7 @@ export default function InterestSubpage({ params }: any) {
   const [title, setTitle] = useState<string>("");
   const [subServices, setSubServices] = useState<SubServices[]>([]);
 
-  useEffect(() => {
-    fetchData();
-  }, [params?.id]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       let seervicesRes = await getService(params?.id);
@@ -30,7 +26,11 @@ export default function InterestSubpage({ params }: any) {
       setLoading(false);
       console.log(error);
     }
-  };
+  }, [params?.id]); 
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const onAdd = async () => {
     if (!title) return toast.warning("Please enter title");
