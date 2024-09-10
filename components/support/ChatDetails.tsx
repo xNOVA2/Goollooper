@@ -17,7 +17,7 @@ export const ChatDetails = (
         messages: any;
         user: any;
         handleSendMessage: (message: string | any, type: string) => void;
-        handleMarkAsComplete?: (chatId: string) => void;
+        handleMarkAsComplete?: (userId: string, chatId: string) => void;
     }
 ) => {
     const dispatch = useDispatch();
@@ -28,6 +28,8 @@ export const ChatDetails = (
         }
     }, [chatData, dispatch]);
     
+    console.log({user});
+
     return (
         <>
         {chatData && (
@@ -48,6 +50,7 @@ export const ChatDetails = (
                 handleMarkAsComplete={handleMarkAsComplete}
                 chatId={chatData?._id}
                 isList={false}
+                currentUserId={user?._id}
               />
             </div>
 
@@ -55,6 +58,7 @@ export const ChatDetails = (
               messages={messages}
                   user={user}
                   onSend={handleSendMessage}
+                  isTicketClosed={chatData?.isTicketClosed}
                 />
               </div>
             )}

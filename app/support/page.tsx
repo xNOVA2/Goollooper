@@ -3,13 +3,17 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import DashboardLayout from "@/app/layouts/DashboardLayout";
 import { sendMedia } from "@/api";
-import socketServcies from "@/lib/socket";
+import socketServices from "@/lib/socket";
 import { RootState } from "@/store/reducers/rootReducer";
 import { Chat } from "@/types/type";
 import { ChatList } from "@/components/support/ChatList";
 import { ChatDetails } from "@/components/support/ChatDetails";
+import RoleGuard from "@/components/RoleGuard";
+import { useAuth } from "@/components/WithAuth/withAuth";
 
-export default function SupportPage() {
+const SupportPage = () => {
+  const isAuthenticated = useAuth('/');
+  
   const accessToken = useSelector(
     (state: RootState) => state.user.accessToken
   );
@@ -19,20 +23,20 @@ export default function SupportPage() {
   const [chatData, setChatData] = useState<Chat | null | any>(null);
 
   const initializeSocket = useCallback(() => {
-    socketServcies.initializeSocket(accessToken);
+    socketServices.initializeSocket(accessToken);
     const reqData = {
       userId: user?._id,
       chatSupport: true,
       page: 1,
     };
-    socketServcies.emit("getChats", reqData);
-    socketServcies.on(`getChats/${user?._id}`, (data: any) => {
+    socketServices.emit("getChats", reqData);
+    socketServices.on(`getChats/${user?._id}`, (data: any) => {
       console.log({ data });
       setChats(data);
     });
 
     try {
-      socketServcies.on("closeChatSupportTicket/66c5cbc2750212bbdbe13157", (data: any) => {
+      socketServices.on("closeChatSupportTicket/66c5cbc2750212bbdbe13157", (data: any) => {
         console.log("socket chat closed data:", { data });
       });
     } catch (error: any) {
@@ -40,7 +44,7 @@ export default function SupportPage() {
     }
 
     return () => {
-      socketServcies.disconnect();
+      socketServices.disconnect();
     };
   }, [accessToken, user?._id]);
 
@@ -52,7 +56,7 @@ export default function SupportPage() {
   useEffect(() => {
     if (!chatData) return;
     console.log("-------1");
-    socketServcies.on(
+    socketServices.on(
       `newMessage/${chatData._id}/${user?._id}`,
       (data: any) => {
         console.log(data, "new message received");
@@ -69,15 +73,15 @@ export default function SupportPage() {
     };
     console.log(reqData);
 
-    socketServcies.emit("readMessages", reqData);
-    socketServcies.on(
+    socketServices.emit("readMessages", reqData);
+    socketServices.on(
       `readMessages/${chatData?._id}/${user?._id}`,
       (data: any) => {
         console.log("-------");
       }
     );
     return () => {
-      socketServcies.removeAllListener(
+      socketServices.removeAllListener(
         `readMessages/${chatData?._id}/${user?._id}`
       );
     };
@@ -94,8 +98,8 @@ export default function SupportPage() {
       page: 1,
     };
     setChatData(chatDataObj);
-    socketServcies.emit("getChatMessages", reqData);
-    socketServcies.on(`getChatMessages/${user?._id}`, (data) => {
+    socketServices.emit("getChatMessages", reqData);
+    socketServices.on(`getChatMessages/${user?._id}`, (data) => {
       console.log("-------------", { data });
 
       setMessages(data?.messages?.reverse() || []);
@@ -119,7 +123,7 @@ export default function SupportPage() {
         };
         console.log({ reqData });
 
-        socketServcies.emit("sendMessage", reqData);
+        socketServices.emit("sendMessage", reqData);
         const newMessage = {
           body: "",
           senderId: user?._id,
@@ -149,7 +153,7 @@ export default function SupportPage() {
         };
         console.log("--------", reqData);
 
-        socketServcies.emit("sendMessage", reqData);
+        socketServices.emit("sendMessage", reqData);
         console.log("--------");
 
         setMessages((prev: any) => [...prev, newMessage]);
@@ -157,31 +161,22 @@ export default function SupportPage() {
     }
   }, [chatData, user]);
 
-  const handleMarkAsComplete = useCallback((chatID: string) => {
-    console.log("Mark as complete", chatID);
+  const handleMarkAsComplete = useCallback((userId: string, chatId: string) => {
     try {
-      socketServcies.emit("closeChatSupportTicket", { chat: chatID });
+      socketServices.emit("closeChatSupportTicket", { chatId: chatId, userId: userId });
     } catch (error: any) {
       console.log("Mark as complete error", error);
-    }
-    console.log("Mark as complete success", chatID);
-  }, []);
-
-  const checkIsMarkAsComplete = useCallback((userID: string) => {
-    try {
-      socketServcies.on(`closeChatSupportTicket/${userID}`, (data: any) => {
-        console.log("socket chat closed data:", { data });
-      });
-    } catch (error: any) {
-      console.log("Mark as error", error);
     }
   }, []);
     
 
   // const handleSendPhoto = async (image) => {};
+  if (!isAuthenticated) {
+    return null;
+  };
 
   return (
-    <>
+    <RoleGuard allowedRoles={[1, 4, 5]}>
       <DashboardLayout Active={4}>
         <div className="h-calc-screen flex flex-row m-2 border border-border bg-white rounded">
           {/* Left Side: User List and Search */}
@@ -191,6 +186,8 @@ export default function SupportPage() {
           <ChatDetails chatData={chatData} messages={messages} user={user} handleSendMessage={handleSendMessage} handleMarkAsComplete={handleMarkAsComplete} />
         </div>
       </DashboardLayout>
-    </>
+    </RoleGuard>
   );
 }
+
+export default SupportPage;

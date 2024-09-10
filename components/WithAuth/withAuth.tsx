@@ -1,36 +1,19 @@
 "use client";
+
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useRouter, usePathname } from "next/navigation";
-
+import { useRouter } from "next/navigation";
 import { RootState } from "@/store/reducers/rootReducer";
 
-const withAuth = <P extends object>(
-  WrappedComponent: React.ComponentType<P>
-) => {
-  const AuthComponent: React.FC<P> = (props) => {
-    const isAuthenticated = useSelector(
-      (state: RootState) => state.user.user !== null
-    );
-    const router = useRouter();
-    const pathname = usePathname();
+export const useAuth = (redirectPath: string) => {
+  const router = useRouter();
+  const isAuthenticated = useSelector((state: RootState) => state.user.user !== null);
 
-    useEffect(() => {
-      if (!isAuthenticated) {
-        router.push("/");
-      } else if (pathname === "/") {
-        router.push("/dashboard");
-      }
-    }, [isAuthenticated, router, pathname]);
-
-    if (!isAuthenticated && pathname !== "/" && pathname !== "/forget") {
-      return null;
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push(redirectPath);
     }
+  }, [isAuthenticated, router, redirectPath]);
 
-    return <WrappedComponent {...(props as P)} />;
-  };
-
-  return AuthComponent;
+  return isAuthenticated;
 };
-
-export default withAuth;

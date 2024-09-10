@@ -8,22 +8,27 @@ import DashboardLayout from "../layouts/DashboardLayout";
 
 import { getUsers } from "@/api";
 import { User } from "@/types/type";
+import RoleGuard from "@/components/RoleGuard";
+import { useAuth } from "@/components/WithAuth/withAuth";
 
-export default function UsersPage() {
+const UsersPage = () => {
+  const isAuthenticated = useAuth('/');
+  
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [roleFilter, setRoleFilter] = useState<number>(2);
   const [pageData, setPageData] = useState({
     totalPages: 0,
     totalItems: 0,
     limit: 10,
   });
 
-  const fetchData = useCallback(async (page: number, searchTerm: string) => {
+  const fetchData = useCallback(async (page: number, searchTerm: string, role: number | null) => {
     try {
       setLoading(true);
-      let usersRes = await getUsers(page, pageData.limit, searchTerm);
+      let usersRes = await getUsers(page, pageData.limit, searchTerm, role);
       setUsers(usersRes?.data?.data?.data || []);
       setPageData(prevPageData => ({
         ...prevPageData,
@@ -40,8 +45,8 @@ export default function UsersPage() {
   console.log(users);
 
   useEffect(() => {
-    fetchData(currentPage, search);
-  }, [currentPage, search, fetchData]);
+    fetchData(currentPage, search, roleFilter);
+  }, [currentPage, search, roleFilter, fetchData]);
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
@@ -49,7 +54,7 @@ export default function UsersPage() {
     }, 500);
 
     return () => clearTimeout(debounceTimer);
-  }, [search]);
+  }, [search, roleFilter]);
 
   const handleSearchChange = (value: string) => {
     setSearch(value);
@@ -59,7 +64,16 @@ export default function UsersPage() {
     setCurrentPage(page);
   };
 
+  const handleRoleFilterChange = (role: number) => {
+    setRoleFilter(role);
+  };
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
+    <RoleGuard allowedRoles={[1, 4]}>
     <DashboardLayout Active={2}>
       <div className="flex-grow flex flex-col mt-4 ml-3 border border-border bg-white rounded p-5">
         <div className="mt-3">
@@ -67,7 +81,7 @@ export default function UsersPage() {
           <p className="text-subTitleColor mt-5">
             You can see the overall Users of Goollooper here
           </p>
-          <Search isSubAdmin={false} value={search} onChange={handleSearchChange} />
+          <Search isSubAdmin={false} onRoleFilterChange={handleRoleFilterChange} roleFilter={roleFilter} value={search} onChange={handleSearchChange} />
           <div className="flex flex-col items-stretch space-y-14 flex-grow overflow-auto">
             {/* Adding overflow-auto to handle the content overflow */}
             {users?.length ? <Users users={users} isSubAdmin={false} /> : null}
@@ -86,5 +100,8 @@ export default function UsersPage() {
         </div>
       </div>
     </DashboardLayout>
+    </RoleGuard>
   );
 }
+
+export default UsersPage;

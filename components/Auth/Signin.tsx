@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Tooltip from "@/components/Tooltip/ToolTip";
-import withAuth from "@/components/WithAuth/withAuth";
 
 import { SiginFields, SigninFields } from "@/types/type";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -110,4 +109,4 @@ function Signin() {
   );
 }
 
-export default withAuth(Signin);
+export default Signin;

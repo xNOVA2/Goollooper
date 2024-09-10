@@ -46,9 +46,10 @@ export const getStats = function () {
 export const getUsers = function (
   page: number = 1,
   limit: number = 10,
-  email?: string
+  email?: string,
+  role?: number | null,
 ) {
-  return Api.get(`/admin/user?page=${page}&limit=${limit}&email=${email || ""}`);
+  return Api.get(`/admin/user?page=${page}&limit=${limit}&email=${email || ""}&role=${role || ""}`);
 };
 
 export const getSubadmin = function (

@@ -76,28 +76,12 @@
   }
 }
 
-/* @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Space+Grotesk:wght@300..700&display=swap'); */
-
-
 .ql-editor {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   line-height: 1.5;
 }
 
-.ql-font-space {
-  font-family: 'Space Grotesk', sans-serif;
-}
-
- /* .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
-  content: 'Normal';
-  font-size: 14px !important;
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
-  content: 'Large';
-  font-size: 16px !important;
-} */
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
   content: 'Huge';
@@ -129,6 +113,11 @@ textarea:focus, input:focus{
   display: flex !important;
   justify-content: space-between !important;
 } 
+
+.ql-toolbar .ql-formats::after {
+  content: none !important;
+}
+
 textarea:focus{
   outline: none;
 }
@@ -228,64 +217,5 @@ textarea{
   height: 28.8px;
 }
 
-.ql-picker {
-  border: solid 1px black;
-  border-radius: 8px;
-}
 
-.ql-snow .ql-picker {
-  width: 160px !important;
-  height: 34px !important;
-  margin-right: 15px;
-}
 
-.ql-picker.ql-font .ql-picker-label:before {
-  content: attr(data-value) !important;
-  font-size: 12px;
-  padding: 4px;
-}
-
-.ql-picker.ql-font .ql-picker-item {
-  font-size: 0;
-}
-
-.ql-picker.ql-font .ql-picker-item:before {
-  content: attr(data-value) !important;
-  font-size: 14px;
-}
-
-.ql-picker.ql-font .ql-active:before {
-  content: attr(data-value) !important;
-  font-size: 14px;
-}
-.ql-font-space-grotesk {
-  font-family: 'Space Grotesk', sans-serif;
-}
-
-.ql-snow .ql-picker.ql-font {
-  width: 160px !important;
-  height: 34px !important;
-  margin-right: 15px;
-  border: solid 1px black;
-  border-radius: 8px;
-}
-
-.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="space grotesk"],
-.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="space grotesk"]::before,
-.ql-snow .ql-picker.ql-font .ql-picker-option[data-value="space grotesk"] {
-  font-family: 'Space Grotesk', sans-serif !important;
-}
-
-.ql-picker.ql-font .ql-picker-label[data-value="roboto"]::before,
-.ql-picker.ql-font .ql-picker-item[data-value="roboto"]::before {
-  font-family: 'Roboto', sans-serif;
-  content: "Roboto" !important;
-}
-
-.ql-font-Space-Grotesk {
-  font-family: 'Space Grotesk', sans-serif !important;
-}
-
-.ql-editor.ql-font-Space-Grotesk {
-  font-family: 'Space Grotesk', sans-serif !important;
-}

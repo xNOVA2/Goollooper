@@ -11,13 +11,17 @@ import { Button } from "@/components/ui/button";
 import { getNotification, getUsers, sendNotification } from "@/api";
 import { User } from "@/types/type";
 import QuillToolbar from "@/components/Editor/Toolbar";
+import RoleGuard from "@/components/RoleGuard";
+import { useAuth } from "@/components/WithAuth/withAuth";
 
 interface Option {
   value: string;
   label: string;
 }
 
-export default function NotificationPage() {
+const NotificationPage = () => {
+  const isAuthenticated = useAuth('/');
+  
   const [notifications, setNotifications] = useState([]);
   const [options, setOptions] = useState<Option[]>([]);
   const [search, setSearch] = useState<string>("");
@@ -99,7 +103,12 @@ export default function NotificationPage() {
     fetchNotificationData();
   }, []);
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
+    <RoleGuard allowedRoles={[1, 4]}>
     <DashboardLayout Active={6}>
       <div className="flex">
         <div className="w-full mt-[0.875em] ml-[0.813em] mb-[0.875em] rounded-lg  flex-col">
@@ -158,5 +167,8 @@ export default function NotificationPage() {
         </div>
       </div>
     </DashboardLayout>
+    </RoleGuard>
   );
 }
+
+export default NotificationPage;

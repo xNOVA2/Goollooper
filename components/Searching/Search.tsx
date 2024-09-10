@@ -17,19 +17,34 @@ interface SearchProps {
   isSubAdmin: boolean;
   value?: string;
   onChange?: (e: string) => void;
+  onRoleFilterChange?: (role: number) => void;
+  roleFilter?: number | null;
 }
 
-export default function Search({ isSubAdmin, value, onChange }: SearchProps) {
+export default function Search({ isSubAdmin, value, onChange, onRoleFilterChange, roleFilter }: SearchProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const onToggle = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleRoleFilterChange = (role: number | null) => {
+    if (onRoleFilterChange && role !== null) {
+      onRoleFilterChange(role);
+    }
+  };
+
   return (
     <div className="flex justify-between items-center">
       <div className="flex justify-start gap-3 mt-5 mb-3">
-        <Filter />
+        <Filter 
+          options={[
+            { label: "User", value: 2 },
+            { label: "Service Provider", value: 3 }
+          ]}
+          value={roleFilter ?? null}
+          onChange={handleRoleFilterChange}
+        />
         <div className="relative outline-none">
           <Input
             className=" bg-backGroundSecondaryColor px-9"

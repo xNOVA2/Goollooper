@@ -5,16 +5,18 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
-import withAuth from "@/components/WithAuth/withAuth";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 import UserIcon from "@/public/assets/Image/IconPNG.png";
 import TaskIcon from "@/public/assets/Image/Task.svg";
-import { dummyUsers } from "@/types/data";
 import { User } from "@/types/type";
 import { getStats, getUsers } from "@/api";
+import RoleGuard from '@/components/RoleGuard';
+import { useAuth } from '@/components/WithAuth/withAuth';
 
 function DashboardPage() {
+  const isAuthenticated = useAuth('/');
+  
   const [loading, setLoading] = useState<boolean>(false);
   const [userCount, setUserCount] = useState<number>(0);
   const [taskCount, setTaskCount] = useState<number>(0);
@@ -49,7 +51,7 @@ function DashboardPage() {
       setLoading(false);
     }
   }, [pageData]);
-  
+
   useEffect(() => {
     fetchData(currentPage);
   }, [currentPage, fetchData]);
@@ -58,7 +60,12 @@ function DashboardPage() {
     setCurrentPage(page);
   };
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
+    <RoleGuard allowedRoles={[1, 4]}>
     <DashboardLayout Active={1}>
       <div className="flex flex-col gap-4">
         <div className="pl-[1.75em] mx-2 mt-3 border border-border bg-white rounded-md">
@@ -112,7 +119,8 @@ function DashboardPage() {
         </div>
       </div>
     </DashboardLayout>
+    </RoleGuard>
   );
 }
 
-export default dynamic(() => Promise.resolve(withAuth(DashboardPage)), { ssr: false });
+export default dynamic(() => Promise.resolve(DashboardPage), { ssr: false });

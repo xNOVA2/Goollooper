@@ -19,11 +19,15 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
   const [phone, setPhone] = useState<string>("");
   const [dob, setDob] = useState<string>("");
   const [location, setLocation] = useState<any>("");
-
-  const [selectedCheckbox, setSelectedCheckbox] = useState('bordered-checkbox-2');
+  const [selectRole, setSelectRole] = useState('bordered-checkbox-2');
 
   const handleCheckboxChange = (event: any) => {
-    setSelectedCheckbox(event.target.id);
+    const role = event.target.id;
+    if (role === "admin") {
+      setSelectRole("1");
+    } else {
+      setSelectRole("4");
+    }
   };
 
   const onSubmit = async () => {
@@ -41,6 +45,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
         phone: phone || null,
         age: calculateAge(dob) || null,
         location,
+        selectRole,
       };
       if (location) {
         data = {
@@ -171,7 +176,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
                 value=""
                 name="checkbox-admin"
                 className="w-4 h-4 outline-none hover:cursor-pointer"
-                checked={selectedCheckbox === 'admin'}
+                checked={selectRole === 'admin'}
                 onChange={handleCheckboxChange}
               />
               <label
@@ -188,7 +193,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
                 value=""
                 name="checkbox-support"
                 className="w-4 h-4 outline-none hover:cursor-pointer"
-                checked={selectedCheckbox === 'support'}
+                checked={selectRole === 'support'}
                 onChange={handleCheckboxChange}
               />
               <label
