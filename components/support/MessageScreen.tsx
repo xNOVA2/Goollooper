@@ -4,6 +4,7 @@ import { Message, User } from "@/types/type";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { IMAGE_URL } from "@/lib/constants";
+import { AlertCircle } from "lucide-react";
 
 const groupMessagesByTime = (messages: Message[]): [string, Message[]][] => {
   const groups: { [key: string]: Message[] } = {};
@@ -28,10 +29,12 @@ const groupMessagesByTime = (messages: Message[]): [string, Message[]][] => {
 export const MessageScreen = ({
     messages,
     user,
+    isTicketClosed,
     onSend,
   }: {
     messages: Message[];
     user: User;
+    isTicketClosed?: boolean;
     onSend: (message: string, type: string) => void;
   }) => {
     const fileInputRef = useRef<any>(null);
@@ -133,7 +136,15 @@ export const MessageScreen = ({
   
         {/* Admin Input Field at the bottom */}
         <div className="px-4">
-          <div className="flex items-center">
+          {isTicketClosed ? (
+            <div className="text-red-500 flex items-center justify-center w-full">
+              <p className="flex text-sm items-center">
+                <AlertCircle size={16} className="mr-2" />
+                This ticket is Mark as Complete and you can&apos;t send messages.
+              </p>
+            </div>
+          ) : (
+            <div className="flex items-center">
             <Image
               src={"/assets/Image/Link.svg"}
               alt="Message Icon"
@@ -166,6 +177,7 @@ export const MessageScreen = ({
               onClick={handleSendMessage}
             />
           </div>
+          )}
         </div>
       </div>
     );

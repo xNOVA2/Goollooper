@@ -63,6 +63,6 @@ class WSService {
   }
 }
 
-const socketServcies = new WSService();
+const socketServices = new WSService();
 
-export default socketServcies;
+export default socketServices;

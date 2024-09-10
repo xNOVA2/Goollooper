@@ -9,8 +9,12 @@ import { Button } from "@/components/ui/button";
 
 import { addGuidline, getGuidline, updateGuidline } from "@/api";
 import QuillToolbar from "@/components/Editor/Toolbar";
+import RoleGuard from "@/components/RoleGuard";
+import { useAuth } from "@/components/WithAuth/withAuth";
 
-export default function TermsPage() {
+const TermsPage = () => {
+  const isAuthenticated = useAuth('/');
+  
   const [loading, setLoading] = useState<boolean>(false);
   const [termsAndCondition, setTermsAndCondition] = useState<string>("");
   const [id, setId] = useState<string>("");
@@ -69,7 +73,12 @@ export default function TermsPage() {
     }
   };
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
+    <RoleGuard allowedRoles={[1, 4]}>
     <DashboardLayout Active={5}>
       <GuidelineLayout>
         <div className="h-calc-screen bg-white rounded-md mr-2 pt-[0.5em] pb-4 border border-border">
@@ -90,5 +99,8 @@ export default function TermsPage() {
         </div>
       </GuidelineLayout>
     </DashboardLayout>
+    </RoleGuard>
   );
 }
+
+export default TermsPage;

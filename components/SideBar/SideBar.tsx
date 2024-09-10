@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,10 +52,12 @@ export default function SideBar({
     (state: RootState) => state.user.refreshToken
   );
 
+  const userRole = useSelector((state: RootState) => state.user.user?.role);
+
   const [isClient, setIsClient] = useState(false);
 
   const currentActivePath = usePathname();
-  const basePath = currentActivePath.split('/').slice(0, 2).join('/');
+  const basePath = currentActivePath ? currentActivePath.split('/').slice(0, 2).join('/') : '';
 
   useEffect(() => {
     setIsClient(true);
@@ -71,6 +74,7 @@ export default function SideBar({
       category: "Dashboard",
       id: 1,
       path: "/dashboard",
+      allowedRoles: [1, 4],
     },
     {
       Icon: UserSVG,
@@ -78,6 +82,7 @@ export default function SideBar({
       category: "Users",
       id: 2,
       path: "/users",
+      allowedRoles: [1, 4],
     },
     {
       Icon: SubAdminSVG,
@@ -85,6 +90,7 @@ export default function SideBar({
       category: "Sub Admin",
       id: 3,
       path: "/SubAdmin",
+      allowedRoles: [1, 4],
     },
     {
       Icon: SupportSVG,
@@ -92,6 +98,7 @@ export default function SideBar({
       category: "Support",
       id: 4,
       path: "/support",
+      allowedRoles: [1, 4, 5],
     },
     {
       Icon: GuidelineSVG,
@@ -99,6 +106,7 @@ export default function SideBar({
       category: "Guideline",
       id: 5,
       path: "/guideline",
+      allowedRoles: [1, 4],
     },
     {
       Icon: NotificationSVG,
@@ -106,6 +114,7 @@ export default function SideBar({
       category: "Push Notification",
       id: 6,
       path: "/notifcation",
+      allowedRoles: [1, 4],
     },
     {
       Icon: PaymentSVG,
@@ -113,6 +122,7 @@ export default function SideBar({
       category: "Payments",
       id: 7,
       path: "/payments",
+      allowedRoles: [1],
     }
   ];
 
@@ -146,31 +156,33 @@ export default function SideBar({
         <div className="mt-[1.813em] flex flex-1 flex-col justify-between">
           <nav className="space-y-2">
             {AllLinks.map((item) => {
-              return (
-                <div className="space-y-3" key={item.id}>
-                  <Link
-                    className={`flex transform items-center px-[1.5em] py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 ${ basePath === item.path ? "border-r-4 border-PrimaryColor" : "" }`}
-                    href={item.path}
-                  >
-                    <Image
-                      src={ basePath === item.path ? item.IconActive : item.Icon }
-                      alt="Icon"
-                      width={21}
-                      height={21}
-                      className="fill-red-700"
-                      style={{ fill: "red", color: "red" }}
-                    />
-
-                    <span
-                      className={`mx-2 text-[0.875rem] leading-[1.313rem] font-normal ${
-                        basePath === item.path ? "text-PrimaryColor" : null
-                      }`}
+              if (item.allowedRoles.includes(userRole)) {
+                return (
+                  <div className="space-y-3" key={item.id}>
+                    <Link
+                      className={`flex transform items-center px-[1.5em] py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 ${ basePath === item.path ? "border-r-4 border-PrimaryColor" : "" }`}
+                      href={item.path}
                     >
-                      {item.category}
-                    </span>
-                  </Link>
-                </div>
-            );
+                      <Image
+                        src={ basePath === item.path ? item.IconActive : item.Icon }
+                        alt="Icon"
+                        width={21}
+                        height={21}
+                        className="fill-red-700"
+                        style={{ fill: "red", color: "red" }}
+                      />
+
+                      <span
+                        className={`mx-2 text-[0.875rem] leading-[1.313rem] font-normal ${
+                          basePath === item.path ? "text-PrimaryColor" : null
+                        }`}
+                      >
+                        {item.category}
+                      </span>
+                    </Link>
+                  </div>
+                );
+              }
           })}
           </nav>
         </div>

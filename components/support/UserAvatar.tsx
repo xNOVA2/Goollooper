@@ -16,6 +16,7 @@ export const UserAvatar = ({
     isList = false,
     isTicketClosed,
     onUserClick,
+    currentUserId,
     handleMarkAsComplete,
   }: {
     name: string;
@@ -25,8 +26,9 @@ export const UserAvatar = ({
     chatId?: string;
     isList: boolean;
     isTicketClosed?: boolean;
+    currentUserId?: string;
     onUserClick?: (chatData: Chat | null) => void;
-    handleMarkAsComplete?: (chatId: string) => void;
+    handleMarkAsComplete?: (userId: string, chatId: string) => void;
   }) => {
     const currentActiveChat = useSelector(selectCurrentActiveChat);
     
@@ -58,13 +60,12 @@ export const UserAvatar = ({
               <Checkbox
                 id="login-checkbox"
                 className="w-[1.063em] h-[1.063em] rounded-md border-border data-[state=checked]:bg-PrimaryColor"
-                // checked={isTicketClosed}
+                checked={isTicketClosed}
                 onCheckedChange={ () => {
-                  if (handleMarkAsComplete && chatId) {
-                    handleMarkAsComplete(chatId);
+                  if (handleMarkAsComplete && chatId && currentUserId) {
+                    handleMarkAsComplete(currentUserId, chatId);
                   }
                 }}
-                disabled={isTicketClosed}
               />
               <label htmlFor="login-checkbox" className="text-[0.875rem] leading-[1.313rem]">
                 Mark as complete

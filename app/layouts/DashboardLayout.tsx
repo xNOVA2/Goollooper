@@ -1,3 +1,5 @@
+"use client";
+
 import SideBar from "@/components/SideBar/SideBar";
 
 export default function DashboardLayout({

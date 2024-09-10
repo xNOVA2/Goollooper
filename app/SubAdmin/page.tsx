@@ -8,8 +8,12 @@ import Search from "@/components/Searching/Search";
 
 import { getSubadmin } from "@/api";
 import { User } from "@/types/type";
+import RoleGuard from "@/components/RoleGuard";
+import { useAuth } from "@/components/WithAuth/withAuth";
 
-export default function SubadminPage() {
+const SubadminPage = () => {
+  const isAuthenticated = useAuth('/');
+  
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [subadmin, setSubadmin] = useState<User[]>([]);
@@ -53,7 +57,14 @@ export default function SubadminPage() {
     setCurrentPage(page);
   };
 
+  console.log(subadmin);
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
+    <RoleGuard allowedRoles={[1, 4]}>
     <DashboardLayout Active={3}>
       <div
         className="flex-grow flex flex-col m-2 border border-border bg-white rounded p-5"
@@ -86,5 +97,8 @@ export default function SubadminPage() {
         </div>
       </div>
     </DashboardLayout>
+    </RoleGuard>
   );
 }
+
+export default SubadminPage;
