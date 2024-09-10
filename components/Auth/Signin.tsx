@@ -16,6 +16,8 @@ import { setUser } from "@/store/actions/userAction";
 import { onLogin } from "@/api";
 import { useAppDispatch } from "@/lib/hooks";
 import { Checkbox } from "../ui/checkbox";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 
 function Signin() {
   const router = useRouter();
@@ -27,6 +29,8 @@ function Signin() {
   } = useForm<SigninFields>({ resolver: zodResolver(SignInSchema) });
   const [loading, setLoading] = useState<boolean>(false);
 
+  const userRole = useSelector((state: RootState) => state.user.user?.role);
+
   const onSubmit: SubmitHandler<SigninFields> = async (data: SiginFields) => {
     try {
       setLoading(true);
@@ -35,7 +39,8 @@ function Signin() {
         dispatch(setUser(loginRes?.data));
         toast.success(loginRes?.msg);
         setLoading(false);
-        router.push("/dashboard");
+        if (userRole === 5) router.push("/support");
+        else router.push("/dashboard");
       } else {
         toast.warning(loginRes?.msg);
       }
