@@ -16,11 +16,12 @@ const RoleGuard = ({ allowedRoles, children }: React.PropsWithChildren<Props>) =
   useEffect(() => {
     const hasAccess = userRole && allowedRoles.includes(userRole);
     if (!hasAccess) {
-      router.push("/dashboard"); 
+        if(userRole === 5) router.push("/support");
+        else router.push("/dashboard");
     }
   }, [userRole, router, allowedRoles]);
 
-  return userRole ? <>{children}</> : null; 
+  return allowedRoles.includes(userRole) ? <>{children}</> : null; 
 };
 
 export default RoleGuard;
