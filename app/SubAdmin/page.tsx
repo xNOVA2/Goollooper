@@ -1,63 +1,44 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
 import Search from "@/components/Searching/Search";
 
-import { getSubadmin } from "@/api";
-import { User } from "@/types/type";
 import RoleGuard from "@/components/RoleGuard";
 import { useAuth } from "@/components/WithAuth/withAuth";
+import { RootState } from "@/store/reducers/rootReducer";
+import { useSelector } from "react-redux";
+import { fetchUserData } from "@/store/Slices/PaymentSlice";
+import { useAppDispatch } from "@/lib/hooks";
 
 const SubadminPage = () => {
+  const dispatch = useAppDispatch();
+  const { subadmins, pageData } = useSelector((state: RootState) => state.payment);
   const isAuthenticated = useAuth('/');
-  
-  const [loading, setLoading] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>("");
-  const [subadmin, setSubadmin] = useState<User[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageData, setPageData] = useState({
-    totalPages: 0,
-    totalItems: 0,
-    limit: 10,
-  });
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [search, setSearch] = React.useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = useCallback(async (page: number) => {
+  useEffect(() => {
     try {
-      setLoading(true);
-      let subadminRes = await getSubadmin(page, pageData.limit, search);
-      setSubadmin(subadminRes?.data?.data?.data);
-      setPageData({
-        ...pageData,
-        totalPages: subadminRes?.data?.data?.pagination?.totalPages,
-        totalItems: subadminRes?.data?.data?.pagination?.totalItems,
-      });
-      setLoading(false);
-    } catch (error: Error | any) {
-      setLoading(false);
+      dispatch(fetchUserData({ page: currentPage, limit: pageData.limit, isSubAdmin: true }));
+    } catch (error) {
+      console.error("Error fetching subadmin data:", error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [pageData, search]);
-
-  useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage, fetchData]);
-
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      setCurrentPage(1);
-      fetchData(currentPage);
-    }, 500);
-
-    return () => clearTimeout(debounceTimer);
-  }, [search, fetchData, currentPage]);
+  }, [dispatch, currentPage, pageData.limit]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  console.log(subadmin);
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setCurrentPage(1);
+  };
 
   if (!isAuthenticated) {
     return null;
@@ -68,19 +49,19 @@ const SubadminPage = () => {
     <DashboardLayout Active={3}>
       <div
         className="flex-grow flex flex-col m-2 border border-border bg-white rounded p-5"
-        onFocus={() => fetchData(currentPage)}
+        // onFocus={() => fetchData(currentPage)}
       >
         <div>
           <h1 className="font-bold text-4xl">Sub Admins</h1>
           <p className="text-subTitleColor mt-5">
             You can see the overall Sub Admins of Goollooper here
           </p>
-          <Search isSubAdmin={true} value={search} onChange={setSearch} />
+          <Search isSubAdmin={true} value={search} onChange={handleSearchChange} />
           <div className="flex flex-col items-stretch space-y-14 flex-grow overflow-auto">
             {/* Adding overflow-auto to handle the content overflow */}
             {/* <Users users={dummyUsers2}  isSubAdmin={true}/> */}
-            {subadmin?.length ? (
-              <Users users={subadmin} isSubAdmin={true} />
+            {subadmins?.length ? (
+              <Users users={subadmins} isSubAdmin={true} />
             ) : null}
           </div>
         </div>
@@ -89,10 +70,10 @@ const SubadminPage = () => {
         <div className="p-4 ">
           <Pagination
             currentPage={currentPage}
-            totalPages={pageData.totalPages}
-            totalItems={pageData.totalItems}
+            totalPages={pageData?.totalPages}
+            totalItems={pageData?.totalItems}
             onPageChange={handlePageChange}
-            limit={pageData.limit}
+            limit={pageData?.limit}
           />
         </div>
       </div>

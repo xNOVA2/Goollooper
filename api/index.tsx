@@ -49,7 +49,9 @@ export const getUsers = function (
   email?: string,
   role?: number | null,
 ) {
-  return Api.get(`/admin/user?page=${page}&limit=${limit}&email=${email || ""}&role=${role || ""}`);
+  const emailQuery = email ? `&email=${email}` : '';
+  const roleQuery = role !== null && role !== undefined ? `&role=${role}` : '';
+  return Api.get(`/admin/user?page=${page}&limit=${limit}${emailQuery}${roleQuery}`);
 };
 
 export const getSubadmin = function (
@@ -57,7 +59,8 @@ export const getSubadmin = function (
   limit: number = 10,
   email?: string
 ) {
-  return Api.get(`/admin/sub-admin?page=${page}&limit=${limit}&email=${email}`);
+  const emailQuery = email ? `&email=${email}` : '';
+  return Api.get(`/admin/sub-admin?page=${page}&limit=${limit}${emailQuery}`);
 };
 
 export const onAddSubAdmin = function (body: any) {
