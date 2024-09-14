@@ -1,63 +1,40 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
 import Search from "@/components/Searching/Search";
 import DashboardLayout from "../layouts/DashboardLayout";
 
-import { getUsers } from "@/api";
-import { User } from "@/types/type";
 import RoleGuard from "@/components/RoleGuard";
 import { useAuth } from "@/components/WithAuth/withAuth";
+import { useAppDispatch } from "@/lib/hooks";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/reducers/rootReducer";
+import { fetchUserData } from "@/store/Slices/PaymentSlice";
 
 const UsersPage = () => {
+  const dispatch = useAppDispatch();
+  const { users, pageData } = useSelector((state: RootState) => state.payment);
   const isAuthenticated = useAuth('/');
-  
-  const [loading, setLoading] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>("");
-  const [users, setUsers] = useState<User[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [roleFilter, setRoleFilter] = useState<number>(2);
-  const [pageData, setPageData] = useState({
-    totalPages: 0,
-    totalItems: 0,
-    limit: 10,
-  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState(2);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = useCallback(async (page: number, searchTerm: string, role: number | null) => {
+  useEffect(() => {
     try {
-      setLoading(true);
-      let usersRes = await getUsers(page, pageData.limit, searchTerm, role);
-      setUsers(usersRes?.data?.data?.data || []);
-      setPageData(prevPageData => ({
-        ...prevPageData,
-        totalPages: usersRes?.data?.data?.pagination?.totalPages || 0,
-        totalItems: usersRes?.data?.data?.pagination?.totalItems || 0,
-      }));
+      dispatch(fetchUserData({ page: currentPage, limit: pageData?.limit, search, role: roleFilter }));
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching user data:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }, [pageData.limit]);
-
-  console.log(users);
-
-  useEffect(() => {
-    fetchData(currentPage, search, roleFilter);
-  }, [currentPage, search, roleFilter, fetchData]);
-
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      setCurrentPage(1);
-    }, 500);
-
-    return () => clearTimeout(debounceTimer);
-  }, [search, roleFilter]);
+  }, [dispatch, currentPage, search, roleFilter, pageData?.limit]);
 
   const handleSearchChange = (value: string) => {
     setSearch(value);
+    setCurrentPage(1);
   };
 
   const handlePageChange = (page: number) => {
@@ -66,6 +43,7 @@ const UsersPage = () => {
 
   const handleRoleFilterChange = (role: number) => {
     setRoleFilter(role);
+    setCurrentPage(1);
   };
 
   if (!isAuthenticated) {
@@ -92,10 +70,10 @@ const UsersPage = () => {
         <div className="p-4 ">
           <Pagination
             currentPage={currentPage}
-            totalPages={pageData.totalPages}
-            totalItems={pageData.totalItems}
+            totalPages={pageData?.totalPages}
+            totalItems={pageData?.totalItems}
             onPageChange={handlePageChange}
-            limit={pageData.limit}
+            limit={pageData?.limit}
           />
         </div>
       </div>
