@@ -73,7 +73,7 @@ const PaymentsPageContent = () => {
                 <section className="flex items-center mb-[2em] justify-start gap-[12.313em] ">
                     <div className="flex flex-col items-start space-y-1">
                         <Image src={PendingIcon} alt="Users Icon" width={40} height={40} />
-                        <h1 className="text-[1.625rem] leading-[2.438rem] font-bold pt-[0.313rem]">${formatAmount(stripeBalanceData.pending)}</h1>
+                        <h1 className="text-[1.625rem] leading-[2.438rem] font-bold pt-[0.313rem]">${formatAmount(stripeBalanceData?.pending)}</h1>
 
                         <div className="flex flex-row gap-2 items-center">
                             <p className="text-[0.875rem] leading-[1.313rem] my-3 text-subTitleColor">
@@ -96,7 +96,7 @@ const PaymentsPageContent = () => {
 
                     <div className="flex flex-col items-start space-y-1 ml-4">
                         <Image src={CompletedIcon} alt="Users Icon" width={42} height={42} />
-                        <h1 className="text-[1.625rem] leading-[2.438rem] font-bold pt-[0.313rem]">${formatAmount(stripeBalanceData.available)}</h1>
+                        <h1 className="text-[1.625rem] leading-[2.438rem] font-bold pt-[0.313rem]">${formatAmount(stripeBalanceData?.available)}</h1>
                         <p className="text-[0.875rem] leading-[1.313rem] text-subTitleColor">
                             Total Available Amount
                         </p>
@@ -130,8 +130,8 @@ const PaymentsPageContent = () => {
                     ) : null }
                 </div>
 
-                {/* megablast + task add request + subscription + application fee = goollooper ammount */}
-                    {/* stripe api for availble ammount and pending ammount, stripebalance */}
+                {/* megablast + task add request + subscription + application fee = goollooper amount */}
+                    {/* stripe api for available amount and pending amount, stripebalance */}
             </div>
         </DashboardLayout>
     );
