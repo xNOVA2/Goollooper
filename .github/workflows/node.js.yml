@@ -24,6 +24,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
+    - run: npm i
     - run: npm run build 
+    - run: /home/ubuntu/.nvm/versions/node/v18.20.4/bin/pm2 restart nextjs-app 
     
