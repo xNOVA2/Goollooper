@@ -101,9 +101,6 @@ export default function Pagination({
     <div className="flex justify-between items-center">
       <div>
         <p className="text-sm text-subTitleColor">{`Showing 1 to ${limit} of ${totalItems} entries`}</p>
-        {/* <p className="text-sm text-subTitleColor">{`Showing ${
-          (currentPage - 1) * 5 + 1
-        } of ${totalItems} entries`}</p> */}
       </div>
       <div className="flex items-center gap-1">
         <button

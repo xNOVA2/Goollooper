@@ -9,14 +9,13 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import Image from "next/image";
-
 interface ConfirmationModalProps {
   isAccept?: boolean;
   userID?: string;
   amount?: number;
   isDelete?: boolean;
   taskID?: string;
-  onAccept?: (id: any) => void;
+  onAccept?: (idOrAmount: any) => void;
 }
 
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -30,31 +29,31 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleAccept = () => {
-    if (onAccept && userID && isAccept) {
-      onAccept(userID);
+    console.log("Accepting...");
+    if (onAccept) {
+      if (isDelete && taskID) {
+        onAccept(taskID); // Handle deletion
+      } else if (!isAccept && amount) {
+        onAccept(amount); // Handle withdrawal
+      } else if (isAccept && userID) {
+        onAccept(userID); // Handle acceptance
+      }
     }
-    if (onAccept && amount && !isAccept) {
-        onAccept(amount);
-    }
-    if (onAccept && taskID && isDelete) {
-      onAccept(taskID);
-    }
-    setIsOpen(false);
+    setIsOpen(false); // Close modal after action
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {isDelete ? (
-            <Button className="bg-backGroundColor px-[0.85rem] py-[1.5rem] rounded-sm">
-              <Image
+          <Button className="bg-backGroundColor px-[0.85rem] py-[1.5rem] rounded-sm">
+            <Image
               src={"/assets/Image/trash.svg"}
-              alt=""
+              alt="Trash Icon"
               width={24}
               height={24}
-              onClick={() => setIsOpen(!isOpen)}
-              />  
-            </Button>
+            />
+          </Button>
         ) : (
           <Button
             className="text-white rounded-full bg-PrimaryColor"
@@ -72,12 +71,18 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         </div>
         <div>
           <DialogDescription className="text-[1.125rem] leading-[1.688rem] font-medium text-black text-center">
-            {isDelete ? "Are you sure you want to delete this category?" : !isAccept ? "Are you sure you want to withdraw?" : "Are you sure you want to accept this request?"}
+            {isDelete
+              ? "Are you sure you want to delete this category?"
+              : !isAccept
+              ? "Are you sure you want to withdraw?"
+              : "Are you sure you want to accept this request?"}
           </DialogDescription>
         </div>
         <div className="flex flex-col gap-1 justify-center items-center">
           <Button
-            className={`h-[2.375rem] w-[20.875rem] text-[0.875rem] leading-[1.25rem] ${isDelete ? "bg-deleleColor" : "bg-PrimaryColor"} text-white rounded-full`}
+            className={`h-[2.375rem] w-[20.875rem] text-[0.875rem] leading-[1.25rem] ${
+              isDelete ? "bg-deleleColor" : "bg-PrimaryColor"
+            } text-white rounded-full`}
             onClick={handleAccept}
           >
             {isDelete ? "Delete" : !isAccept ? "Withdraw" : "Accept"}

@@ -1,68 +1,14 @@
+import { ApiResponse, FetchPaymentsParams, PaymentState, Transaction } from "@/types/type";
 import { Api } from "@/api/Middleware";
 import { getStats, getSubadmin, getUsers } from "@/api";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "@/types/type";
-
-interface UserPayment {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: number;
-  profileImage?: string;
-}
-
-interface Transaction {
-  _id: string;
-  user: UserPayment;
-  wallet: string;
-  amount: number;
-  type: string;
-  status: string;
-  task?: string;
-  isCredit: boolean;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-interface ApiResponse {
-  code: number;
-  status: boolean;
-  msg: string;
-  data: Transaction[];
-}
-
-interface StripBalance {
-  available: number;
-  pending: number;
-}
-
-interface PageData {
-  totalPages: number;
-  totalItems: number;
-  limit: number;
-}
-
-interface PaymentState {
-  payments: Transaction[];
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
-  stripeBalance: StripBalance | null;
-  currentActiveChat: string | null;
-  users: User[];
-  subadmins: User[];
-  userCount: number;
-  taskCount: number;
-  loading: boolean;
-  pageData: PageData;
-}
 
 const initialState: PaymentState = {
   payments: [],
   status: "idle",
   error: null,
   stripeBalance: null,
+  goollooperBalance: 0,
   currentActiveChat: null,
   users: [],
   subadmins: [],
@@ -75,11 +21,6 @@ const initialState: PaymentState = {
     limit: 10,
   },
 };
-
-interface FetchPaymentsParams {
-  page: number;
-  limit: number;
-}
 
 export const fetchUserData = createAsyncThunk(
   "user/fetchUserData",
@@ -125,9 +66,8 @@ export const fetchPayments = createAsyncThunk(
   async ({ page, limit }: FetchPaymentsParams, { rejectWithValue }) => {
     try {
       const response = await Api.get<ApiResponse>(
-        `/transaction?page=${page}&limit=${limit}&type=Withdraw`
+        `/transaction?page=${page}&limit=${limit}&type=Withdraw&status=pending`
       );
-      // console.log("API Response:", response);
       return response.data.data;
     } catch (error: any) {
       console.error("API Error:", error);
@@ -141,7 +81,6 @@ export const stripeBalance = createAsyncThunk(
   async () => {
     try {
       const response = await Api.get<any>(`/stripe/balance`);
-      console.log("Stripe Balance:", response);
       return {
         available: response.data.data.available[0].amount,
         pending: response.data.data.pending[0].amount,
@@ -185,7 +124,35 @@ export const withdrawPayment = createAsyncThunk(
     }
   }
 );
-
+export const goollooperBalance = createAsyncThunk(
+  "payment/goollooper-balance",
+  async () => {
+    try {
+      const response = await Api.get<any>(`stripe/goollooper-balance`);
+      console.log("Goollooper Balance:", response.data.data);
+      return response.data.data;
+    } catch (error: any) {
+      console.error("Goollooper Balance Error:", error);
+      return error.response?.data?.msg || "An error occurred";
+    }
+  }
+);
+export const withdrawGoollooperBalance = createAsyncThunk(
+  "payment/withdraw-goollooper-balance",
+  async (amount: number, { rejectWithValue }) => {
+    try {
+      const response = await Api.post<any>("/stripe/platform-payout", {
+        amount: Number(amount),
+      });
+      console.log("Withdraw Goollooper Balance:", response);
+      
+      return response.data.data;
+    } catch (error: any) {
+      console.error("API Error:", error);
+      return rejectWithValue(error.response?.data?.msg || "An error occurred");
+    }
+  }
+);
 const paymentSlice = createSlice({
   name: "payment",
   initialState,
@@ -251,6 +218,20 @@ const paymentSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(withdrawPayment.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload as string;
+      })
+      .addCase(goollooperBalance.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(
+        goollooperBalance.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.status = "succeeded";
+          state.goollooperBalance = action.payload as number;
+        }
+      )
+      .addCase(goollooperBalance.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;
       })

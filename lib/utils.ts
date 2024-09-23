@@ -15,3 +15,10 @@ export function calculateAge(dob: string | Date) {
   }
   return age ? age?.toString() : age;
 }
+
+export const formatAmount = (amount: number): string => {
+  if (amount === undefined || amount === null) {
+      return '0.00';
+  }
+  return amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};

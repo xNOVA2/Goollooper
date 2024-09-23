@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
@@ -8,7 +8,7 @@ import AmountIcon from "@/public/assets/Image/dollar.png";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
-import { fetchPayments, stripeBalance } from "@/store/Slices/PaymentSlice";
+import { fetchPayments, goollooperBalance, stripeBalance, withdrawGoollooperBalance } from "@/store/Slices/PaymentSlice";
 import {
     Tooltip,
     TooltipContent,
@@ -18,27 +18,21 @@ import {
 import { AlertCircleIcon } from "lucide-react";
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
-import { Button } from "@/components/ui/button";
 import { ConfirmationModal } from "@/components/ConfirmationModal";
 import DashboardLayout from "@/app/layouts/DashboardLayout";
+import { formatAmount } from "@/lib/utils";
 
-const formatAmount = (amount: number): string => {
-    if (amount === undefined || amount === null) {
-        return '0.00';
-    }
-    return amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-};
 
 const PaymentsPageContent = () => {
     const dispatch = useDispatch<AppDispatch>();
     const payments = useSelector((state: RootState) => state.payment.payments);
     const stripeBalanceData = useSelector((state: RootState) => state.payment.stripeBalance);
+    const goollooperBalanceData = useSelector((state: RootState) => state.payment.goollooperBalance);
     const status = useSelector((state: RootState) => state.payment.status);
     const error = useSelector((state: RootState) => state.payment.error);
-    console.log(stripeBalanceData);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState<number>(1);    
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageData, setPageData] = useState({
         totalPages: 0,
         totalItems: 0,
@@ -48,22 +42,32 @@ const PaymentsPageContent = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await dispatch(fetchPayments({ page: currentPage, limit: pageData.limit })).unwrap();
-                console.log("Fetched payments:", result);
-                const { available, pending } = await dispatch(stripeBalance()).unwrap();
+                await dispatch(fetchPayments({ page: currentPage, limit: pageData.limit })).unwrap();
+                await dispatch(stripeBalance()).unwrap();
+                await dispatch(goollooperBalance()).unwrap();
+                console.log("Fetched payments:", goollooperBalanceData);
             } catch (error) {
                 console.error("Error fetching payments:", error);
             } finally {
                 setIsLoading(false);
             }
         };
-    
+
         fetchData();
     }, [dispatch, currentPage, pageData.limit]);
 
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
+    };
+
+    const withdrawGoollooper = async () => {
+        try {
+            await dispatch(withdrawGoollooperBalance(parseInt(goollooperBalanceData))).unwrap();
+            console.log("Withdrawal successful");
+        } catch (error) {
+            console.error("Error withdrawing goollooper balance:", error);
+        }
     };
 
     return (
@@ -81,11 +85,11 @@ const PaymentsPageContent = () => {
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <AlertCircleIcon size={15} className="cursor-pointer"/>
+                                        <AlertCircleIcon size={15} className="cursor-pointer" />
                                     </TooltipTrigger>
                                     <TooltipContent className="w-80">
                                         <p>
-                                            The pending amount will automatically be transferred in 4 to 5 business days.
+                                            The pending amount will automatically be transferred to available balance in 4 to 5 business days.
                                         </p>
                                     </TooltipContent>
                                 </Tooltip>
@@ -106,8 +110,12 @@ const PaymentsPageContent = () => {
                     <div className="flex flex-col items-start space-y-1 ml-4">
                         <Image src={AmountIcon} alt="Users Icon" width={42} height={42} />
                         <div className="flex flex-row gap-4">
-                            <h1 className="text-[1.625rem] leading-[2.438rem] font-bold pt-[0.313rem]">${formatAmount(39908)}</h1>
-                            <ConfirmationModal isAccept={false} />
+                            <h1 className="text-[1.625rem] leading-[2.438rem] font-bold pt-[0.313rem]">
+                                {typeof goollooperBalanceData === "number"
+                                    ? `$${formatAmount(goollooperBalanceData)}`
+                                    : "$0"}
+                            </h1>
+                            <ConfirmationModal isAccept={false} onAccept={withdrawGoollooper} amount={goollooperBalanceData} />
                         </div>
                         <p className="text-[0.875rem] leading-[1.313rem] text-subTitleColor">
                             Total Goollooper&apos;s Amount
@@ -116,9 +124,9 @@ const PaymentsPageContent = () => {
                 </section>
 
                 <div>
-                    { payments.length > 0 ? (
+                    {payments?.result?.length > 0 ? (
                         <>
-                            <Users users={payments} isSubAdmin={false} isPayment={true} />
+                            <Users users={payments.result} isSubAdmin={false} isPayment={true} />
                             <Pagination
                                 currentPage={currentPage}
                                 totalPages={pageData.totalPages}
@@ -127,8 +135,8 @@ const PaymentsPageContent = () => {
                                 limit={pageData.limit}
                             />
                         </>
-                        
-                    ) : null }
+
+                    ) : null}
                 </div>
             </div>
         </DashboardLayout>

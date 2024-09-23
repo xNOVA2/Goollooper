@@ -231,3 +231,66 @@ export interface Service {
   type: string;
   subServices?: SubServices[];
 }
+
+
+export interface UserPayment {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: number;
+  profileImage?: string;
+}
+
+export interface Transaction {
+  _id: string;
+  user: UserPayment;
+  wallet: string;
+  amount: number;
+  type: string;
+  status: string;
+  task?: string;
+  isCredit: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface ApiResponse {
+  code: number;
+  status: boolean;
+  msg: string;
+  data: Transaction[];
+}
+
+export interface StripBalance {
+  available: number;
+  pending: number;
+}
+
+export interface PageData {
+  totalPages: number;
+  totalItems: number;
+  limit: number;
+}
+
+export interface PaymentState {
+  payments: Transaction[];
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
+  stripeBalance: StripBalance | null;
+  goollooperBalance: number | null;
+  currentActiveChat: string | null;
+  users: User[];
+  subadmins: User[];
+  userCount: number;
+  taskCount: number;
+  loading: boolean;
+  pageData: PageData;
+}
+
+
+export interface FetchPaymentsParams {
+  page: number;
+  limit: number;
+}

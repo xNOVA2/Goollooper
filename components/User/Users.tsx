@@ -28,28 +28,6 @@ import { AppDispatch } from "@/store/store";
 import { useDispatch } from "react-redux";
 import { ConfirmationModal } from "../ConfirmationModal";
 
-// const TableHeaderr = [
-//   {
-//     FullName: "Full Name",
-//     emailAddress: "Email Address",
-//     phoneNumber: "Phone Number",
-//     gender: "Gender",
-//     userSince: "User Since",
-//     Status: "Status",
-//   },
-// ];
-// const TableHeaderrForUsers = [
-//   {
-//     FullName: "Full Name",
-//     emailAddress: "Email Address",
-//     PremiumUser: "Premium User",
-//     Tasker: "Tasker",
-//     phoneNumber: "Phone Number",
-//     gender: "Gender",
-//     userSince: "User Since",
-//     Status: "Status",
-//   },
-// ];
 export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
 
   const dispatch = useDispatch<AppDispatch>();
