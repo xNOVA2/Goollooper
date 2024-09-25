@@ -113,6 +113,10 @@ export const addService = function (body: any) {
   return Api.post("/admin/service/create", body);
 };
 
+export const updateService = function (body: any) {
+  return Api.put("/admin/service/update", body);
+}
+
 export const deleteService = function (id: string) {
   return Api.delete(`/admin/service/delete/${id}`);
 };

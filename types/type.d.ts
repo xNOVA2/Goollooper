@@ -263,6 +263,12 @@ export interface ApiResponse {
   data: Transaction[];
 }
 
+export interface ServiceApiResponse {
+  code: number;
+  status: boolean;
+  msg: string;
+  data: Service[];
+}
 export interface StripBalance {
   available: number;
   pending: number;
@@ -285,6 +291,10 @@ export interface PaymentState {
   subadmins: User[];
   userCount: number;
   taskCount: number;
+  industries: Industry[];
+  services: Service[];
+  singleService: Service | null;
+  servicePagination: Pagination | null;
   loading: boolean;
   pageData: PageData;
 }
@@ -294,3 +304,55 @@ export interface FetchPaymentsParams {
   page: number;
   limit: number;
 }
+
+export interface FetchServicesParams {
+  page: number;
+  limit: number;
+  type: string;
+}
+
+export interface Service {
+  _id: string;
+  title: string;
+  type: string;
+  industry: string;
+  parent: string | null;
+  keyWords: string[];
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  hasSubCategory: boolean;
+}
+
+export interface Pagination {
+  totalItems: number;
+  perPage: number;
+  currentPage: number;
+  totalPages: number;
+  pagingCounter: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  prevPage: number | null;
+  nextPage: number | null;
+}
+
+export interface ServicesResponse {
+  data: Service[];
+  pagination: Pagination;
+}
+
+type Industry = {
+  _id: string;
+  name: string;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type GetIndustriesResponse = {
+  code: number;
+  msg: string;
+  status: boolean;
+  data: Industry[];
+};
