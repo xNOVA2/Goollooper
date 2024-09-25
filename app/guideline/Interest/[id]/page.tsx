@@ -3,28 +3,32 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DashboardLayout from "@/app/layouts/DashboardLayout";
 import GuidelineLayout from "@/app/layouts/GuidelineLayout";
-import { useCallback, useEffect, useState } from "react";
+import { Key, useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { addService, deleteService, getService } from "@/api";
+// import { addService, deleteService, getService } from "@/api";
 import { SubServices } from "@/types/type";
 import { Category } from "@/components/Category";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { getService } from "@/store/Slices/PaymentSlice";
 
 export default function InterestSubpage({ params }: any) {
+  const dispatch = useDispatch<AppDispatch>();
+  const subServices = useSelector((state: RootState) => state.payment.singleService);
+
   const [loading, setLoading] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [subServices, setSubServices] = useState<SubServices[]>([]);
+  // const [name, setName] = useState<string>("");
+  // const [title, setTitle] = useState<string>("");
+  // const [subServices, setSubServices] = useState<SubServices[]>([]);
 
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      let seervicesRes = await getService(params?.id);
+      await dispatch(getService(params?.id)).unwrap();
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    } finally {
       setLoading(false);
-      setName(seervicesRes?.data?.data?.title);
-      setSubServices(seervicesRes?.data?.data?.subServices);
-    } catch (error: Error | any) {
-      setLoading(false);
-      console.log(error);
     }
   }, [params?.id]); 
 
@@ -89,6 +93,8 @@ export default function InterestSubpage({ params }: any) {
     }
   };
 
+  console.log(subServices);
+
   return (
     <>
       <DashboardLayout>
@@ -118,7 +124,7 @@ export default function InterestSubpage({ params }: any) {
                   <Button className="w-[10.625rem] h-[2.375rem] text-[0.875rem] leading-[1.25rem] font-medium bg-PrimaryColor rounded-full">Add keywords</Button>
                 </div>
                 <div className="flex flex-wrap gap-5 mt-6">
-                  {subServices?.map((item) => (
+                  {subServices?.subServices.map((item: any) => (
                     <Category
                       key={item?._id}
                       id={item?._id}
@@ -136,7 +142,7 @@ export default function InterestSubpage({ params }: any) {
                 <Input
                   placeholder="type here"
                   className="h-[4.125rem] mt-[1rem] mb-[1.25rem] pl-[2.375rem] pt-[1.313rem] pb-[1.313rem] text-[0.875rem] leading-[1.313rem] shadow-custom bg-white border border-border focus-visible:outline-none focus-visible:ring-0"
-                  value={title}
+                  // value={title}
                   onChange={(event) => setTitle(event.target.value)}
                 />
               </div>
@@ -150,7 +156,7 @@ export default function InterestSubpage({ params }: any) {
               </div>
 
               <div className="flex flex-wrap gap-5 mt-6">
-                {subServices?.map((item) => (
+                {subServices?.subServices?.map((item: any) => (
                   <Category
                     key={item?._id}
                     id={item?._id}
