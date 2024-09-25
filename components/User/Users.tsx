@@ -27,6 +27,7 @@ import { updatePaymentStatus,withdrawPayment } from "@/store/Slices/PaymentSlice
 import { AppDispatch } from "@/store/store";
 import { useDispatch } from "react-redux";
 import { ConfirmationModal } from "../ConfirmationModal";
+import { CircleEllipsis, EllipsisVertical } from "lucide-react";
 
 export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
 
@@ -161,7 +162,9 @@ export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
                 />
               </TableCell>
             ) : (
-              <TableCell>|</TableCell>
+              <TableCell>
+                <EllipsisVertical size={20}/>
+              </TableCell>
             )}
           </TableRow>
         ))}
