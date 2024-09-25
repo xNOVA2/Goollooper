@@ -138,7 +138,11 @@ export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
               </>
             )}
             <TableCell>
-              {new Date(user?.createdAt)?.toLocaleDateString()}
+              {new Date(user?.createdAt)?.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+              })}
             </TableCell>
             {isPayment ? (
               <TableCell>{user?.status}</TableCell>
