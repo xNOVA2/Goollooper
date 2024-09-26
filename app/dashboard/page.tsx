@@ -11,11 +11,7 @@ import UserIcon from "@/public/assets/Image/IconPNG.png";
 import TaskIcon from "@/public/assets/Image/Task.svg";
 
 import RoleGuard from '@/components/RoleGuard';
-import { useAuth } from '@/components/WithAuth/withAuth';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/reducers/rootReducer';
-import { fetchUserData } from '@/store/Slices/PaymentSlice';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAuth } from '@/components/WithAuth/withAuth';;
 import DashboardData from '@/components/DashboardData';
 
 function DashboardPage() {

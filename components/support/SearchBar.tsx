@@ -8,7 +8,7 @@ export const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) =
         <div className="relative">
           <Input
             className=" bg-backGroundSecondaryColor  px-9"
-            placeholder="Searching"
+            placeholder="Search"
             onChange={(e) => onSearch(e.target.value)}
           />
           <Image

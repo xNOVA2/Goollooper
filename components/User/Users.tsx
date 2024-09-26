@@ -27,9 +27,9 @@ import { updatePaymentStatus,withdrawPayment } from "@/store/Slices/PaymentSlice
 import { AppDispatch } from "@/store/store";
 import { useDispatch } from "react-redux";
 import { ConfirmationModal } from "../ConfirmationModal";
-import { CircleEllipsis, EllipsisVertical } from "lucide-react";
+import { EllipsisVertical } from "lucide-react";
 
-export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
+export function Users({ users, isSubAdmin, isPayment, isUser }: UsersProps) {
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -65,7 +65,7 @@ export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
           ) : (
             <>
               <TableHead>Email Address</TableHead>
-              {!isSubAdmin ? (
+              { isUser ? (
                 <>
                   <TableHead>Premium User</TableHead>
                   <TableHead>Tasker</TableHead>
@@ -121,8 +121,8 @@ export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
             {!isPayment && (
               <>
                 <TableCell className="font-medium">{user.email}</TableCell>
-                {!isSubAdmin && <TableCell className="">Yes</TableCell>}
-                {!isSubAdmin && (
+                { isUser && <TableCell className="">Yes</TableCell>}
+                { isUser && (
                   <TableCell>{user?.role === 3 ? "Yes" : "No"}</TableCell>
                 )}
               </>

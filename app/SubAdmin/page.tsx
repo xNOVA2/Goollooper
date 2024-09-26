@@ -61,7 +61,7 @@ const SubadminPage = () => {
             {/* Adding overflow-auto to handle the content overflow */}
             {/* <Users users={dummyUsers2}  isSubAdmin={true}/> */}
             {subadmins?.length ? (
-              <Users users={subadmins} isSubAdmin={true} />
+              <Users users={subadmins} isSubAdmin={true} isPayment={false} isUser={false} />
             ) : null}
           </div>
         </div>

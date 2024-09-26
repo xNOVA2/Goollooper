@@ -62,7 +62,7 @@ const UsersPage = () => {
           <Search isSubAdmin={false} onRoleFilterChange={handleRoleFilterChange} roleFilter={roleFilter} value={search} onChange={handleSearchChange} />
           <div className="flex flex-col items-stretch space-y-14 flex-grow overflow-auto">
             {/* Adding overflow-auto to handle the content overflow */}
-            {users?.length ? <Users users={users} isSubAdmin={false} /> : null}
+            {users?.length ? <Users users={users} isUser={true} isSubAdmin={false} isPayment={false} /> : null}
           </div>
         </div>
 
