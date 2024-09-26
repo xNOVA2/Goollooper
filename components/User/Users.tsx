@@ -86,6 +86,7 @@ export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
             <TableCell className="flex items-center gap-3 cursor-pointer">
               <Dialog>
                 <DialogTrigger className="flex items-center gap-2">
+                <div className="rounded-full overflow-hidden w-[30px] h-[30px]">
                   <Image
                     src={
                       isPayment
@@ -99,8 +100,9 @@ export function Users({ users, isSubAdmin, isPayment }: UsersProps) {
                     alt="User-Profile-Pic"
                     width={30}
                     height={30}
-                    className="rounded-full"
+                    className="object-cover w-full h-full"
                   />
+                </div>
                   <p className="text-xs">
                     {isPayment ? user?.user?.firstName : user.firstName} 
                     {isPayment ? user?.user?.lastName : user.lastName}
