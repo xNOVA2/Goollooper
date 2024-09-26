@@ -16,12 +16,12 @@ const AuthLayout: React.FC<AuthModule> = ({
   return (
     <div className="flex justify-start h-screen overflow-hidden">
       <section className="w-1/2 h-full">
-        <Image alt="" className=" " src={Picture} placeholder="blur"/>
+        <Image alt="login-cover-image" width={728} height={1024} src="/assets/Image/login-bg.svg"/>
       </section>
 
       <section className="w-1/2 bg-backGroundColor flex items-center justify-center">
-        <div className="fixed top-0 right-0 flex justify-end pt-[3.125em] pr-[3.5em]">
-          <Image width={100} height={100} src={Logo} alt="Logo" className="w-[7.438em] h-[7.438em]" />
+        <div className="fixed top-0 right-0 flex justify-end pt-[2em] pr-[2.5em]">
+          <Image width={100} height={100} src={Logo} alt="Logo" className="w-[5em] h-[5em]" />
         </div>
         <div className="w-[24.688em] px-[1.75em] bg-white border border-border rounded-md ">
             <div className="pt-[2em] mb-[1.688em] pb-[1.688em] border-b border-border">
