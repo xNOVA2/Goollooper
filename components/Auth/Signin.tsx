@@ -62,7 +62,7 @@ function Signin() {
               {...register("email")}
               type="email"
               placeholder="@mail.com"
-              className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-gray-400 h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
+              className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-black h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
             />
             <div className="absolute ">
               {errors.email?.message && (
@@ -80,7 +80,7 @@ function Signin() {
               {...register("password")}
               type="password"
               placeholder="********"
-              className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-gray-400 h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
+              className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-black h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
             />
             <div className="absolute">
               {errors.password?.message && (
@@ -99,7 +99,7 @@ function Signin() {
 
           <div>
             <Link className="text-red-600 text-[0.875rem] leading-[1.313rem] font-normal " href={"/forget"}>
-              Forget Password
+              Forgot Password?
             </Link>
           </div>
         </div>
