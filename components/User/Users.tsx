@@ -181,7 +181,7 @@ function UserModal({ user }: { user: User }) {
   return (
     <DialogContent className="h-[85%] w-[30%] overflow-auto">
       <DialogHeader>
-        <DialogTitle className="mx-auto pb-4">Users Profile</DialogTitle>
+        <DialogTitle className="mx-auto pb-4">User&#8217;s Profile</DialogTitle>
         <hr className="" />
         <DialogDescription>
           <div className="flex flex-col justify-between item h-[420px]">
@@ -231,18 +231,24 @@ function UserModal({ user }: { user: User }) {
             {user?.role === 2 ? (
               <div className="mt-6">
                 <h1 className="text-xl font-bold text-black mb-3">Gallery</h1>
-                <div className="flex flex-wrap gap-3">
-                  {user?.gallery?.map((image: string) => (
-                    <Image
-                      key={user._id + image}
-                      src={IMAGE_URL + image}
-                      alt="user Picture"
-                      width={150}
-                      height={150}
-                      className="rounded-2xl"
-                    />
-                  ))}
-                </div>
+
+                {user?.gallery?.length ? (
+                  <div className="flex flex-wrap gap-3">
+                    {user?.gallery?.map((image: string) => (
+                      <Image
+                        key={user._id + image}
+                        src={IMAGE_URL + image}
+                        alt="user Picture"
+                        width={150}
+                        height={150}
+                        className="rounded-2xl"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <h4 className="text-center">No Images</h4>
+                )}
+                
               </div>
             ) : (
               <>
