@@ -20,7 +20,7 @@ export const Filter: React.FC<FilterProps> = ({ options, value, onChange }) => {
       <DropdownMenuTrigger className="outline-none">
         <div className="flex items-center px-7 bg-backGroundSecondaryColor py-2 gap-2 rounded-lg">
           <Image
-            src={"/assets/Image/filter.svg"}
+            src={"/assets/Image/Filter.svg"}
             alt="Filter Icon"
             width={14}
             height={10}
