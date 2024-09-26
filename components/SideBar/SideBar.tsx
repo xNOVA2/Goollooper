@@ -160,7 +160,7 @@ export default function SideBar({
                 return (
                   <div className="space-y-3" key={item.id}>
                     <Link
-                      className={`flex transform items-center px-[1.5em] py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 ${ basePath === item.path ? "border-r-4 border-PrimaryColor" : "" }`}
+                      className={`flex transform items-center px-[1.5em] py-3 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 ${ basePath === item.path ? "border-r-4 border-PrimaryColor" : "" }`}
                       href={item.path}
                     >
                       <Image
@@ -168,13 +168,13 @@ export default function SideBar({
                         alt="Icon"
                         width={21}
                         height={21}
-                        className="fill-red-700"
+                        className={ basePath === item.path ? "opacity-100" : "opacity-10" }
                         style={{ fill: "red", color: "red" }}
                       />
 
                       <span
-                        className={`mx-2 text-[0.875rem] leading-[1.313rem] font-normal ${
-                          basePath === item.path ? "text-PrimaryColor" : null
+                        className={`mx-2 text-[0.875rem] leading-[1.313rem] opacity-10 font-normal ${
+                          basePath === item.path ? "text-PrimaryColor opacity-100" : null
                         }`}
                       >
                         {item.category}
