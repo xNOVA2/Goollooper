@@ -26,7 +26,7 @@ const AuthLayout: React.FC<AuthModule> = ({
         <div className="w-[24.688em] px-[1.75em] bg-white border border-border rounded-md ">
             <div className="pt-[2em] mb-[1.688em] pb-[1.688em] border-b border-border">
               <h1 className="text-3xl font-bold ">{title}</h1>
-              <p className="text-sm text-gray-400 pt-3">{subText}</p>
+              <p className="text-sm text-black pt-3">{subText}</p>
             </div>
 
             <div>
