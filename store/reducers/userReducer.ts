@@ -10,7 +10,7 @@ interface UserState {
 
 const initialState: UserState = {
   user: null,
-  accessToken: null,
+  accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmY0ZTgxMTM4YjFkZmRlZDBkZTZlMmMiLCJyb2xlIjoxLCJpYXQiOjE3MjczMjYyODUsImV4cCI6MTcyNzQxMjY4NX0.N2Mhq2j2HV2C_5c7g5USMrmHOgf0z6bOHo7xsDqTrx0",
   refreshToken: null,
 };
 
