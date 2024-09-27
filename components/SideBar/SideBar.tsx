@@ -38,6 +38,7 @@ import ProfileDropdownIcon from "@/public/assets/Image/ProfileDropdownIcon.svg";
 import { removeUser } from "@/store/actions/userAction";
 import { RootState } from "@/store/reducers/rootReducer";
 import { logout } from "@/api";
+import { IMAGE_URL } from "@/lib/constants";
 
 export default function SideBar({
   children,
@@ -52,6 +53,7 @@ export default function SideBar({
     (state: RootState) => state.user.refreshToken
   );
 
+  const user = useSelector((state: RootState) => state.user.user);
   const userRole = useSelector((state: RootState) => state.user.user?.role);
 
   const [isClient, setIsClient] = useState(false);
@@ -145,6 +147,8 @@ export default function SideBar({
     }
   };
 
+  console.log(user);
+
   return (
     <>
       <aside className="fixed min-h-screen w-[15.688em] flex-col pt-[1.438em] pb-8 z-10 bg-white border-r border-border">
@@ -196,7 +200,7 @@ export default function SideBar({
             <DropdownMenuTrigger className="outline-none flex items-center gap-3">
               <Avatar className="cursor-pointer">
                 <AvatarImage
-                  src="https://github.com/shadcn.png"
+                  src={`${IMAGE_URL}${user?.profileImage}`}
                   alt="@shadcn"
                 />
                 <AvatarFallback>CN</AvatarFallback>
@@ -207,14 +211,14 @@ export default function SideBar({
               <div className="flex w-full justify-center">
                 <Avatar className="w-[4.188em] h-[4.188em] mb-3 mt-4">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={`${IMAGE_URL}${user?.profileImage}`}
                     alt="@shadcn"
                     className="w-[4.188em] h-[4.188em]"
                   />
                   <AvatarFallback className="w-[4.188em] h-[4.188em]">CN</AvatarFallback>
                 </Avatar>
               </div>
-              <DropdownMenuLabel className="text-[0.875rem]">Talan Smith</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-[0.875rem]">{`${user?.firstName} ${user?.lastName}`}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="my-1 mx-10 text-md flex text-[0.875rem] justify-center" style={{ backgroundColor: 'transparent', cursor: 'pointer' }}>
                 <Link href={"/change-password"}>Change Password</Link>
