@@ -135,8 +135,7 @@ const NotificationPage = () => {
 
           <div className="mt-[0.875em] bg-white border border-border rounded-lg">
             <div className="mt-[0.688em]">
-              <QuillToolbar />
-              <Editor value={content} onChange={setContent} />
+              <textarea className="h-calc-editor-screen w-full px-[1.4rem] pt-2" placeholder="Please write your notification content" onChange={(e) => setContent(e.target.value)} />
             </div>
 
             <div className="flex justify-end mt-2 pr-4 pb-4">

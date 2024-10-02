@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import AddSubAdmin from "./AddSubAdmin";
 import { Filter } from "../Filter/Filter";
+import { User } from "@/types/type";
+import { downloadCSV } from "@/lib/utils";
 
 interface SearchProps {
   isSubAdmin: boolean;
@@ -19,9 +21,10 @@ interface SearchProps {
   onChange?: (e: string) => void;
   onRoleFilterChange?: (role: number) => void;
   roleFilter?: number | null;
+  users: User[];
 }
 
-export default function Search({ isSubAdmin, value, onChange, onRoleFilterChange, roleFilter }: SearchProps) {
+export default function Search({ isSubAdmin, value, onChange, onRoleFilterChange, roleFilter, users }: SearchProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const onToggle = () => {
@@ -32,6 +35,10 @@ export default function Search({ isSubAdmin, value, onChange, onRoleFilterChange
     if (onRoleFilterChange && role !== null) {
       onRoleFilterChange(role);
     }
+  };
+
+  const handleDownloadCSV = () => {
+    downloadCSV(users);
   };
 
   return (
@@ -63,7 +70,9 @@ export default function Search({ isSubAdmin, value, onChange, onRoleFilterChange
       </div>
       <div>
         {!isSubAdmin ? (
-          <button className="flex items-center px-7 bg-backGroundSecondaryColor py-2 gap-2 rounded-lg">
+          <button className="flex items-center px-7 bg-backGroundSecondaryColor py-2 gap-2 rounded-lg"
+            onClick={handleDownloadCSV}
+          >
             <Image
               src={"/assets/Image/Csv.jpg"}
               alt="Filter Icon"

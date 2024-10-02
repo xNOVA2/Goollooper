@@ -5,6 +5,8 @@ import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { IMAGE_URL } from "@/lib/constants";
 import { AlertCircle } from "lucide-react";
+import ImagePreview from "./ImagePreview";
+import SendMessageInputField from "./SendMessageInputField";
 
 const groupMessagesByTime = (messages: Message[]): [string, Message[]][] => {
   const groups: { [key: string]: Message[] } = {};
@@ -39,12 +41,16 @@ export const MessageScreen = ({
   }) => {
     const fileInputRef = useRef<any>(null);
     const [message, setMessage] = useState<string>("");
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     const groupedMessages = useMemo(() => groupMessagesByTime(messages), [messages]);
   
-    const handleSendMessage = () => {
+    const handleSendMessage = (image: any, message: string) => {
+      if (!message && !image) return;
+      if (image) {
+        onSend(image, "image");
+      }
       onSend(message, "message");
-      setMessage("");
     };
   
     const handleFileInputChange = (event: any) => {
@@ -53,6 +59,14 @@ export const MessageScreen = ({
       if (!event.target.files.length) return;
       onSend(event.target.files[0], "image");
       // setSelectedFile(event.target.files[0]);
+    };
+
+    const handleImageClick = (mediaUrl: string) => {
+      setPreviewImage(IMAGE_URL + mediaUrl);
+    };
+  
+    const closePreview = () => {
+      setPreviewImage(null);
     };
   
     return (
@@ -81,7 +95,8 @@ export const MessageScreen = ({
                       alt=""
                       width={150}
                       height={150}
-                      className="rounded"
+                      className="rounded cursor-pointer"
+                      onClick={() => handleImageClick(media)}
                     />
                   </div>
                 ))}
@@ -111,27 +126,6 @@ export const MessageScreen = ({
           })}
             </div>
           ))}
-          {/* <div className="flex items-start mb-4 ">
-            <div className="">
-              <p className="bg-PrimaryColor text-white rounded-xl p-2 text-sm flex flex-wrap w-[70%]">
-                Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt
-                qui esse pariatur duis deserunt mollit dolore cillum minim
-                temporsadads
-              </p>
-            </div>
-          </div>
-  
-          <div className="flex items-start mb-4 ">
-            <div className="">
-              <p className="bg-PrimaryColor rounded-xl p-2 text-white text-sm flex flex-wrap w-[70%]">
-                Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt
-                qui esse pariatur duis deserunt mollit dolore cillum minim
-                temporsadads
-              </p>
-            </div>
-          </div> */}
-  
-          {/* User Messages on the right (placeholder) */}
         </ScrollArea>
   
         {/* Admin Input Field at the bottom */}
@@ -144,41 +138,11 @@ export const MessageScreen = ({
               </p>
             </div>
           ) : (
-            <div className="flex items-center">
-            <Image
-              src={"/assets/Image/Link.svg"}
-              alt="Message Icon"
-              width={18}
-              height={17}
-              className="mr-2 cursor-pointer"
-              onClick={() => fileInputRef?.current?.click()}
-            />
-            <input
-              type="file"
-              onChange={handleFileInputChange}
-              accept="image/*"
-              style={{ display: "none" }}
-              // id="fileInput"
-              ref={fileInputRef}
-            />
-            <Input
-              type="text"
-              placeholder="Type a message..."
-              className="bg-backGroundColor rounded-full flex-grow h-[1.875rem] mx-[0.75rem] pl-[1rem] py-[0.313rem] border text-[0.75rem] leading-[1.25rem]"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <Image
-              src={"/assets/Image/send.svg"}
-              alt="Message Icon"
-              width={17}
-              height={17}
-              className="cursor-pointer"
-              onClick={handleSendMessage}
-            />
-          </div>
+            <SendMessageInputField handleSendMessage={handleSendMessage} />
           )}
         </div>
+        
+        {previewImage && <ImagePreview src={previewImage} onClose={closePreview} />}
       </div>
     );
   };

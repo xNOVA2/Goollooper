@@ -14,8 +14,6 @@ const initialState: PaymentState = {
   subadmins: [],
   userCount: 0,
   taskCount: 0,
-  industries: [],
-  services: [],
   singleService: null,
   servicePagination: null,
   loading: false,
@@ -158,83 +156,6 @@ export const withdrawGoollooperBalance = createAsyncThunk(
   }
 );
 
-export const getAllServices = createAsyncThunk(
-  "services/getAllServices",
-  async ({page, limit, type}: FetchServicesParams, { rejectWithValue }) => {
-    try {
-      const response = await Api.get<ServiceApiResponse>(`/admin/service?page=${page}&limit=${limit}?type=${type}`);
-      return response.data.data;
-    } catch (error: any) {
-      console.error("API Error:", error);
-      return rejectWithValue(error.response?.data?.msg || "An error occurred");
-    }
-  }
-);
-
-export const getService = createAsyncThunk(
-  "services/getService",
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response = await Api.get<any>(`/admin/service/show/${id}`);
-      return response.data.data;
-    } catch (error: any) {
-      console.error("API Error:", error);
-      return rejectWithValue(error.response?.data?.msg || "An error occurred");
-    }
-  }
-);
-
-export const addService = createAsyncThunk(
-  "services/addService",
-  async (data: any, { rejectWithValue }) => {
-    try {
-      const response = await Api.post<any>("/admin/service/create", data);
-      return response.data.data;
-    } catch (error: any) {
-      console.error("API Error:", error);
-      return rejectWithValue(error.response?.data?.msg || "An error occurred");
-    }
-  }
-);
-
-export const updateService = createAsyncThunk(
-  "services/updateService",
-  async (data: any, { rejectWithValue }) => {
-    try {
-      const response = await Api.patch<any>("/admin/service/update", data);
-      return response.data.data;
-    } catch (error: any) {
-      console.error("API Error:", error);
-      return rejectWithValue(error.response?.data?.msg || "An error occurred");
-    }
-  }
-);
-
-export const deleteService = createAsyncThunk(
-  "services/deleteService",
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response = await Api.delete<any>(`/admin/service/delete/${id}`);
-      return response.data.data;
-    } catch (error: any) {
-      console.error("API Error:", error);
-      return rejectWithValue(error.response?.data?.msg || "An error occurred");
-    }
-  }
-);
-
-export const getIndustries = createAsyncThunk(
-  "services/getIndustries",
-  async (data: any, { rejectWithValue }) => {
-    try {
-      const response = await Api.get<GetIndustriesResponse>("/admin/industry");
-      return response.data.data;
-    } catch (error: any) {
-      console.error("API Error:", error);
-      return rejectWithValue(error.response?.data?.msg || "An error occurred");
-    }
-  }
-);
 
 const paymentSlice = createSlice({
   name: "payment",
@@ -368,88 +289,6 @@ const paymentSlice = createSlice({
         }
       )
       .addCase(fetchUserData.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(getAllServices.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        getAllServices.fulfilled,
-        (state, action: PayloadAction<Service[]>) => {
-          state.loading = false;
-          state.services = action.payload;
-        }
-      )
-      .addCase(getAllServices.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(getService.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getService.fulfilled, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.singleService = action.payload;
-      })
-      .addCase(getService.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(addService.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(addService.fulfilled, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.services.push(action.payload);
-      })
-      .addCase(addService.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(updateService.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(updateService.fulfilled, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.services = state.services.map((service) =>
-          service._id === action.payload.id ? action.payload : service
-        );
-      })
-      .addCase(updateService.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(deleteService.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(deleteService.fulfilled, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.services = state.services.filter(
-          (service) => service._id !== action.payload.id
-        );
-      })
-      .addCase(deleteService.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(getIndustries.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        getIndustries.fulfilled,
-        (state, action: PayloadAction<any>) => {
-          state.loading = false;
-          state.industries = action.payload;
-        }
-      )
-      .addCase(getIndustries.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

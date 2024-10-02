@@ -14,16 +14,7 @@ export const UserList = ({
       <div>
         {chats?.map((msg: any) => (
           <UserAvatar
-          key={msg._id}
-            name={
-              msg?.participants.find((userObj: any) => userObj?._id !== user?._id)
-                ?.firstName
-            }
-            image={
-              msg?.participants?.find(
-                (userObj: any) => userObj?._id !== user?._id
-              )?.profileImage
-            }
+            key={msg._id}
             text={msg?.lastMessage?.body}
             chatData={msg}
             chatId={msg?._id}

@@ -9,6 +9,8 @@ import { onAddSubAdmin } from "@/api";
 import { calculateAge } from "@/lib/utils";
 import GooglePlacesAutocompleteWrapper from "../PlacesAutoComplete";
 import { RadioGroup, RadioItem } from "@radix-ui/react-dropdown-menu";
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
 
 export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,16 +21,8 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
   const [phone, setPhone] = useState<string>("");
   const [dob, setDob] = useState<string>("");
   const [location, setLocation] = useState<any>("");
-  const [selectRole, setSelectRole] = useState('bordered-checkbox-2');
+  const [selectRole, setSelectRole] = useState<number>(0);
 
-  const handleCheckboxChange = (event: any) => {
-    const role = event.target.id;
-    if (role === "admin") {
-      setSelectRole("1");
-    } else {
-      setSelectRole("4");
-    }
-  };
 
   const onSubmit = async () => {
     if (!firstName || !email || !password) {
@@ -45,7 +39,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
         phone: phone || null,
         age: calculateAge(dob) || null,
         location,
-        selectRole,
+        role: selectRole,
       };
       if (location) {
         data = {
@@ -64,7 +58,11 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
             },
           ],
         };
+      } else {
+        delete data.location;
       }
+
+      console.log(data);
 
       let addSubadminRes: any = await onAddSubAdmin(data);
       if (addSubadminRes?.data?.status) {
@@ -92,7 +90,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
         <div className="mt-[1.5em]">
           <h1 className="font-semibold text-2xl mb-7">Personal Data</h1>
           <label htmlFor="" className="font-semibold ">
-            First Name
+            First Name <span className="text-PrimaryColor">*</span>
           </label>
           <Input
             placeholder="Type here"
@@ -102,7 +100,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           />
           <br />
           <label htmlFor="" className="font-semibold ">
-            Last Name
+            Last Name <span className="text-PrimaryColor">*</span>
           </label>
           <Input
             placeholder="Type here"
@@ -112,7 +110,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           />
           <br />
           <label htmlFor="" className="font-semibold ">
-            Date of birth
+            Date of birth <span className="text-PrimaryColor">*</span>
           </label>
           <Input
             type="date"
@@ -136,7 +134,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
         <div className="mt-[1.5em]">
           <h1 className="font-semibold text-2xl mb-7">Account Information</h1>
           <label htmlFor="" className="font-semibold ">
-            Email Address
+            Email Address <span className="text-PrimaryColor">*</span>
           </label>
           <Input
             placeholder="Type here"
@@ -146,7 +144,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           />
           <br />
           <label htmlFor="" className="font-semibold ">
-            Phone Number
+            Phone Number <span className="text-PrimaryColor">*</span>
           </label>
           <Input
             placeholder="Type here"
@@ -156,7 +154,7 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           />
           <br />
           <label htmlFor="" className="font-semibold ">
-            Password
+            Temporary Password <span className="text-PrimaryColor">*</span>
           </label>
           <Input
             placeholder="Type here"
@@ -166,42 +164,27 @@ export default function AddSubAdmin({ onClose }: { onClose: () => void }) {
           />
           <br />
           <label htmlFor="" className="font-semibold ">
-            Role
+            Role <span className="text-PrimaryColor">*</span>
           </label>
-          <div className="mt-2">
-            <div className="flex items-center gap-2 py-1">
-              <input
-                id="admin"
-                type="checkbox"
-                value=""
-                name="checkbox-admin"
-                className="w-4 h-4 outline-none hover:cursor-pointer"
-                checked={selectRole === 'admin'}
-                onChange={handleCheckboxChange}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="terms"
+                className="w-[1.063em] h-[1.063em] rounded-md border-black data-[state=checked]:border-PrimaryColor data-[state=checked]:bg-PrimaryColor"
+                checked={selectRole === 4}
+                onCheckedChange={() => setSelectRole(4)}
               />
-              <label
-                htmlFor="admin"
-                className="w-full text-sm font-semibold text-gray-900"
-              >
-                Admin
-              </label>
+              <Label htmlFor="terms">Admin</Label>
             </div>
-            <div className="flex items-center gap-2">
-              <input
-                id="support"
-                type="checkbox"
-                value=""
-                name="checkbox-support"
-                className="w-4 h-4 outline-none hover:cursor-pointer"
-                checked={selectRole === 'support'}
-                onChange={handleCheckboxChange}
+
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="terms"
+                className="w-[1.063em] h-[1.063em] rounded-md border-black data-[state=checked]:border-PrimaryColor data-[state=checked]:bg-PrimaryColor"
+                checked={selectRole === 5}
+                onCheckedChange={() => setSelectRole(5)}
               />
-              <label
-                htmlFor="support"
-                className="w-full text-sm font-semibold text-gray-900"
-              >
-                Support
-              </label>
+              <Label htmlFor="terms">Support</Label>
             </div>
           </div>
         </div>

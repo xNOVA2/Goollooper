@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -25,8 +26,9 @@ function Signin() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
-  } = useForm<SigninFields>({ resolver: zodResolver(SignInSchema) });
+  } = useForm<SigninFields>({ resolver: zodResolver(SignInSchema), mode: "onChange" });
   const [loading, setLoading] = useState<boolean>(false);
 
   const userRole = useSelector((state: RootState) => state.user.user?.role);
@@ -36,11 +38,11 @@ function Signin() {
       setLoading(true);
       let loginRes: any = await onLogin(data);
       if (loginRes?.data?.code === 200) {
+        if (userRole === 5) router.push("/support");
+        else router.push("/dashboard");
         dispatch(setUser(loginRes?.data));
         toast.success(loginRes?.msg);
         setLoading(false);
-        if (userRole === 5) router.push("/support");
-        else router.push("/dashboard");
       } else {
         toast.warning(loginRes?.msg);
       }
@@ -49,6 +51,9 @@ function Signin() {
       toast.error(error?.response?.data?.data);
     }
   };
+
+  const emailValue = watch("email");
+  const passwordValue = watch("password");
 
   return (
     <>
@@ -62,10 +67,12 @@ function Signin() {
               {...register("email")}
               type="email"
               placeholder="@mail.com"
-              className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-black h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
+              className={`rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-black h-[4.125em] focus-visible:outline-none focus-visible:ring-0 ${
+                errors.email && emailValue ? 'border-red-500' : ''
+              }`}
             />
             <div className="absolute ">
-              {errors.email?.message && (
+              {errors.email?.message && emailValue && (
                 <Tooltip message={errors.email?.message as string} />
               )}
             </div>
@@ -80,11 +87,13 @@ function Signin() {
               {...register("password")}
               type="password"
               placeholder="********"
-              className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-black h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
+              className={`rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-black h-[4.125em] focus-visible:outline-none focus-visible:ring-0 ${
+                errors.password && passwordValue ? 'border-red-500' : ''
+              }`}
             />
             <div className="absolute">
-              {errors.password?.message && (
-                <Tooltip message={errors.password?.message} />
+              {errors.password?.message && passwordValue && (
+                <Tooltip message={errors.password?.message as string} />
               )}
             </div>
           </div>
@@ -104,10 +113,11 @@ function Signin() {
           </div>
         </div>
         <Button
-          className="w-full h-[4.125rem] text-[1.125rem] mb-[1.875rem] rounded-full bg-SecondaryColor"
+          className={`w-full h-[4.125rem] text-[1.125rem] mb-[1.875rem] rounded-full bg-SecondaryColor`}
           type="submit"
+          disabled={!(emailValue && passwordValue && !errors.email && !errors.password)}
         >
-          Login
+          {isSubmitting ? 'Logging in...' : 'Login'}
         </Button>
       </form>
     </>
