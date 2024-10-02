@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { UserAvatar } from "./UserAvatar";
 import { MessageScreen } from "./MessageScreen";
 import { useDispatch } from "react-redux";
@@ -22,13 +22,23 @@ export const ChatDetails = (
 ) => {
     const dispatch = useDispatch();
 
+    const [isChecked, setIsChecked] = useState<boolean>(chatData?.isTicketClosed);
+
+    const onCheckboxChange = (checked: boolean, chatId: string, currentUserId: string) => {
+      setIsChecked(checked);
+      if (handleMarkAsComplete && chatId && currentUserId) {
+        handleMarkAsComplete(currentUserId, chatId);
+      }
+    };
+
     useEffect(() => {
         if (chatData && chatData._id) {
             dispatch(setCurrentActiveChat(chatData._id));
         }
+        setIsChecked(chatData?.isTicketClosed);
     }, [chatData, dispatch]);
     
-    console.log({user});
+    console.log({chatData});
 
     return (
         <>
@@ -36,21 +46,13 @@ export const ChatDetails = (
           <div className="flex-grow">
             <div className="flex gap-1 border-b border-border pt-[1.438em] pb-[1.25em] pl-[1.75em]">
               <UserAvatar
-                    name={
-                      chatData?.participants?.find(
-                        (userObj: any) => userObj?._id !== user?._id
-                      )?.firstName
-                }
-                    image={
-                      chatData?.participants?.find(
-                        (userObj: any) => userObj?._id !== user?._id
-                      )?.profileImage
-                    }
-                isTicketClosed={chatData?.isTicketClosed}
-                handleMarkAsComplete={handleMarkAsComplete}
+                isTicketClosed={isChecked}
+                handleMarkAsComplete={onCheckboxChange}
                 chatId={chatData?._id}
                 isList={false}
                 currentUserId={user?._id}
+                groupId={chatData?.groupName}
+                chatData={chatData}
               />
             </div>
 
@@ -58,7 +60,7 @@ export const ChatDetails = (
               messages={messages}
                   user={user}
                   onSend={handleSendMessage}
-                  isTicketClosed={chatData?.isTicketClosed}
+                  isTicketClosed={isChecked}
                 />
               </div>
             )}

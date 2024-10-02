@@ -292,8 +292,6 @@ export interface PaymentState {
   subadmins: User[];
   userCount: number;
   taskCount: number;
-  industries: Industry[];
-  services: Service[];
   singleService: Service | null;
   servicePagination: Pagination | null;
   loading: boolean;
@@ -357,3 +355,12 @@ type GetIndustriesResponse = {
   status: boolean;
   data: Industry[];
 };
+
+type Category = {
+  title: string;
+  type: string;
+  parent?: string | null;
+  industry: string;
+  keyWords?: string[];
+  subCategories: Category[];
+}

@@ -1,3 +1,5 @@
+"use client";
+import { useState, useCallback } from "react";
 import { IMAGE_URL } from "@/lib/constants";
 import { Chat } from "@/types/type";
 import Image from "next/image";
@@ -8,30 +10,34 @@ import { useSelector } from "react-redux";
 const selectCurrentActiveChat = (state: RootState) => state.payment.currentActiveChat;
 
 export const UserAvatar = ({
-    name,
-    image,
     text,
     chatData,
     chatId,
-    isList = false,
+    isList = false, 
     isTicketClosed,
     onUserClick,
     currentUserId,
+    groupId,
     handleMarkAsComplete,
   }: {
-    name: string;
-    image?: string;
     text?: string;
-    chatData?: Chat;
+    chatData?: any;
     chatId?: string;
     isList: boolean;
     isTicketClosed?: boolean;
     currentUserId?: string;
+    groupId?: string;
     onUserClick?: (chatData: Chat | null) => void;
-    handleMarkAsComplete?: (userId: string, chatId: string) => void;
+    handleMarkAsComplete?: (checked: boolean, chatId: string, currentUserId: string) => void;
   }) => {
     const currentActiveChat = useSelector(selectCurrentActiveChat);
     
+    const chatDetailsData = chatData?.participants?.find(
+      (userObj: any) => userObj?._id === chatData?.createdBy
+    );
+    
+    console.log(`${IMAGE_URL}${chatDetailsData?.profileImage}`);
+
     return (
       <div
         className={`flex items-center 
@@ -40,8 +46,8 @@ export const UserAvatar = ({
         onClick={() => (isList && onUserClick ? onUserClick(chatData || null) : {})}
       >
         <Image
-          src={image ? IMAGE_URL + image : "/assets/Image/userPhoto.png"}
-          alt="prfilePicture"
+          src={chatDetailsData?.profileImage ? `${IMAGE_URL}${chatDetailsData?.profileImage}` : "/assets/Image/userPhoto.png"}
+          alt={isList ? "ListAvatar" : "DetailAvatar"}
           width={isList ? 38 : 48}
           height={isList ? 38 : 48}
           className="rounded-full"
@@ -49,10 +55,10 @@ export const UserAvatar = ({
         <div>
           <div className={isList ? "flex flex-col" : "flex flex-row items-center gap-[0.25em]"}>
             <h3 className={isList ? "text-[0.875rem] leading-[1.313rem] font-normal" : "text-[1.125rem] leading-[1.688rem] font-medium"}>
-              {isList ? name : `${name} -`}
+              {isList ? `${chatDetailsData?.firstName} ${chatDetailsData?.lastName}` : `${chatDetailsData?.firstName} ${chatDetailsData?.lastName} -`}
             </h3>
             <p className={isList ? "text-[0.75rem] leading-[1.125rem] font-normal text-[#1C1C1CA6]" : "text-[1.125rem] leading-[1.688rem] text-[#F48C06] font-medium uppercase"}>
-              {isList ? text : chatId?.slice(-12)}
+              {isList ? text : groupId}
             </p>
           </div>
           {!isList && (
@@ -60,12 +66,13 @@ export const UserAvatar = ({
               <Checkbox
                 id="login-checkbox"
                 className="w-[1.063em] h-[1.063em] rounded-md border-border data-[state=checked]:bg-PrimaryColor"
-                checked={isTicketClosed}
-                onCheckedChange={ () => {
+                onCheckedChange={(checked) => {
                   if (handleMarkAsComplete && chatId && currentUserId) {
-                    handleMarkAsComplete(currentUserId, chatId);
+                    handleMarkAsComplete(checked as boolean, chatId, currentUserId);
                   }
                 }}
+                checked={isTicketClosed}
+                disabled={isTicketClosed}
               />
               <label htmlFor="login-checkbox" className="text-[0.875rem] leading-[1.313rem]">
                 Mark as complete

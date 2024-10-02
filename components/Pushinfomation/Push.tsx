@@ -42,7 +42,7 @@ export default function PushInfomation({
                 checked={selectedCheckbox === "all"}
                 onCheckedChange={() => setSelectedCheckbox("all")}
               />
-              <Label htmlFor="terms">All users</Label>
+              <Label htmlFor="terms">All users <span className="text-PrimaryColor">*</span></Label>
             </div>
 
             <div className="flex items-center space-x-2">
@@ -52,14 +52,14 @@ export default function PushInfomation({
                 checked={selectedCheckbox === "selected"}
                 onCheckedChange={() => setSelectedCheckbox("selected")}
               />
-              <Label htmlFor="terms">Selected Taskers</Label>
+              <Label htmlFor="terms">Selected Taskers <span className="text-PrimaryColor">*</span></Label>
             </div>
           </div>
         </div>
       </div>
       <div className="mt-[2em]">
         <div className="relative">
-          <p className="absolute text-xm text-PrimaryColor pl-[1.313rem] mt-2">Title</p>
+          <p className="absolute text-xm text-PrimaryColor pl-[1.313rem] mt-2">Title <span className="text-PrimaryColor">*</span></p>
           <div className="flex">
             <Input
               type="text"
@@ -73,7 +73,7 @@ export default function PushInfomation({
         </div>
         { selectedCheckbox === "selected" && (
           <div className="relative mt-[1.5em] ">
-            <p className="absolute text-xm text-PrimaryColor mb-2">To</p>
+            <p className="absolute text-xm text-PrimaryColor mb-2">To <span className="text-PrimaryColor">*</span></p>
             <div>
               <SelectInput
                 options={options}

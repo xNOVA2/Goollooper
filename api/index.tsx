@@ -102,21 +102,21 @@ export const getServices = function (
   limit: number = 10,
   type?: string
 ) {
-  return Api.get(`/admin/service?page=${page}&limit=${limit}&type=${type}`);
+  return Api.get(`/service?page=${page}&limit=${limit}&type=${type}`);
 };
 
 export const getService = function (id: string) {
-  return Api.get(`/admin/service/show/${id}`);
+  return Api.get(`/service/show/${id}`);
 };
 
 export const addService = function (body: any) {
-  return Api.post("/admin/service/create", body);
+  return Api.post("/service/create", body);
 };
 
-export const updateService = function (body: any) {
-  return Api.put("/admin/service/update", body);
+export const updateService = function (id: string, body: any) {
+  return Api.put(`/service/update${id}`, body);
 }
 
 export const deleteService = function (id: string) {
-  return Api.delete(`/admin/service/delete/${id}`);
+  return Api.delete(`/service/delete/${id}`);
 };

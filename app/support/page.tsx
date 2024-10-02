@@ -87,10 +87,9 @@ const SupportPage = () => {
     };
   }, [chatData, user?._id]);
 
-  console.log({ user });
   const onUserClick = useCallback((chatDataObj: Chat | null) => {
     if (!chatDataObj) return;
-    console.log({ chatDataObj });
+    // console.log({ chatDataObj });
 
     const reqData = {
       userId: user?._id,

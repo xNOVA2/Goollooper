@@ -28,7 +28,6 @@ const GuidelineLinks = [
 export default function GuidelineLayout({ children }: { children: ReactNode }) {
   const currentActivePath = usePathname();
   const basePath = currentActivePath.split('/').slice(0, 3).join('/');
-  console.log(basePath);
 
   return (
     <>
@@ -51,7 +50,7 @@ export default function GuidelineLayout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Right Content */}
-        <div className="flex-grow">
+        <div className="flex-1">
             {children}
         </div>
 

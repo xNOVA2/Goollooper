@@ -4,9 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "goollooper2.s3.us-east-2.amazonaws.com",
-        port: "",
-        pathname: "/uploads/**",
+        hostname: "**"
       },
     ],
   },

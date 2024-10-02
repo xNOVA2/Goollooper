@@ -1,117 +1,45 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
 
+import React, { useCallback, useEffect, useState } from "react";
 import Task from "@/components/Task";
 import Pagination from "@/components/User/Pagination/Pagination";
 import DashboardLayout from "@/app/layouts/DashboardLayout";
 import GuidelineLayout from "@/app/layouts/GuidelineLayout";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-import { addService, deleteService, getServices } from "@/api";
 import { Service } from "@/types/type";
-import { toast } from "react-toastify";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { selectServices, removeService, fetchServices } from "@/store/Slices/ServiceSlice";
 
 export default function VolunteerPage() {
+  const dispatch = useDispatch<AppDispatch>();
+  const services = useSelector(selectServices);
+  
   const [loading, setLoading] = useState<boolean>(false);
-  const [services, setServices] = useState<Service[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageData, setPageData] = useState({
     totalPages: 0,
     totalItems: 0,
     limit: 10,
   });
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>("");
 
-  const fetchData = useCallback(async (page: number) => {
-    try {
-      setLoading(true);
-      let seervicesRes = await getServices(page, pageData.limit, "volunteer");
-      setServices(seervicesRes?.data?.data?.data);
-      setPageData({
-        ...pageData,
-        totalPages: seervicesRes?.data?.data?.pagination?.totalPages,
-        totalItems: seervicesRes?.data?.data?.pagination?.totalItems,
-      });
-      setLoading(false);
-    } catch (error: Error | any) {
-      setLoading(false);
-    }
-  }, [pageData]);
-
+  const fetchData = useCallback(async (page: number, limit: number) => {
+    dispatch(fetchServices({ page, limit, type: "volunteer" }));
+  }, [dispatch])
+  
   useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage, fetchData]);
+    fetchData(currentPage, pageData.limit);
+  }, [currentPage, fetchData, pageData.limit]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const onSubmit = async () => {
-    if (!title) return toast.warning("Please enter title");
-    try {
-      let data = {
-        title,
-        type: "volunteer",
-      };
-      setLoading(true);
-      let addServiceRes: any = await addService(data);
-      if (addServiceRes?.data?.status) {
-        fetchData(currentPage);
-        toast.success(addServiceRes?.data?.msg);
-        setIsOpen(false);
-        setTitle("");
-        setLoading(false);
-      } else {
-        toast.warning(addServiceRes?.msg);
-      }
-      setLoading(false);
-    } catch (error: Error | any) {
-      setLoading(false);
-      if (typeof error?.response?.data?.data === "object") {
-        error?.response?.data?.data?.map((err: string) => {
-          toast.error(err);
-        });
-      } else {
-        toast.error(error?.response?.data?.msg);
-      }
-    }
-  };
+  const handleDeleteCategory = useCallback((id: string) => {
+    dispatch(removeService(id));
+  }, [dispatch]);
 
-  const onDeleteCategory = async (id: string) => {
-    try {
-      setLoading(true);
-      let deleteServiceRes: any = await deleteService(id);
-      if (deleteServiceRes?.data?.status) {
-        setLoading(false);
-        toast.success(deleteServiceRes?.data?.msg);
-        setServices(services.filter((service) => service._id !== id));
-      } else {
-        toast.warning(deleteServiceRes?.msg);
-      }
-      setLoading(false);
-    } catch (error: Error | any) {
-      setLoading(false);
-      if (typeof error?.response?.data?.data === "object") {
-        error?.response?.data?.data?.map((err: string) => {
-          toast.error(err);
-        });
-      } else {
-        toast.error(error?.response?.data?.msg);
-      }
-    }
-  };
+  // console.log(services);
 
   return (
     <DashboardLayout>
@@ -119,50 +47,21 @@ export default function VolunteerPage() {
         <div className="bg-white h-full mr-2 px-[1.754em] border border-border rounded-md  ">
           <div className="flex justify-between">
             <h1 className="font-bold text-[1.875rem] leading-[3rem] mt-[1.754rem]">Volunteer</h1>
-            <Dialog open={isOpen}>
-              <DialogTrigger asChild>
-                <button
-                  className="w-[16.125rem] h-[2.375rem] mt-[1.313rem] text-[0.875rem] leading-[1.25rem] rounded-full bg-PrimaryColor text-white"
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  Add
-                </button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Add Volunteer</DialogTitle>
-                  <DialogDescription>
-                    You can add Volunteer from here
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="Title" className="text-right">
-                      Title
-                    </Label>
-                    <Input
-                      id="Title"
-                      value={title}
-                      onChange={(event) => setTitle(event.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button onClick={onSubmit}>Add</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <Link href="/guideline/Volunteer/add"
+              className="w-[16.125rem] h-[2.375rem] mt-[1.313rem] text-[0.875rem] leading-[1.25rem] rounded-full bg-PrimaryColor text-white text-center flex items-center justify-center"
+            >
+              Add
+            </Link>
           </div>
           <div className="flex flex-col gap-[0.5em] mt-[1.188em]">
-            {services?.length
-              ? services.map((service: Service) => (
+            {services?.data?.length
+              ? services?.data?.map((service: Service) => (
                   <Task
                     key={service._id}
                     title={service.title}
                     id={service._id}
                     link={`/guideline/Volunteer`}
-                    onDelete={onDeleteCategory}
+                    onDelete={handleDeleteCategory}
                   />
                 ))
               : null}

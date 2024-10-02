@@ -147,7 +147,6 @@ export default function SideBar({
     }
   };
 
-  console.log(user);
 
   return (
     <>

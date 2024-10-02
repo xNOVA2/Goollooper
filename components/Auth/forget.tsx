@@ -18,8 +18,9 @@ export default function ForgetPassword() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
-  } = useForm<ForgetFields>({ resolver: zodResolver(ForgetSchema) });
+  } = useForm<ForgetFields>({ resolver: zodResolver(ForgetSchema), mode: "onChange" });
   const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<ForgetFields> = async (data) => {
@@ -41,6 +42,8 @@ export default function ForgetPassword() {
     }
   };
 
+  const emailValue = watch("email");
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative mt-3">
@@ -52,10 +55,12 @@ export default function ForgetPassword() {
             {...register("email")}
             type="email"
             placeholder="example@mail.com"
-            className="rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-black h-[4.125em] focus-visible:outline-none focus-visible:ring-0"
+            className={`rounded-lg bg-backGroundColor text-[0.875rem] leading-[1.313rem] pt-[2.188em] pl-[1.313em] text-black h-[4.125em] focus-visible:outline-none focus-visible:ring-0 ${
+              errors.email && emailValue ? 'border-red-500' : ''
+            }`}
           />
           <div className="absolute">
-            {errors.email?.message && (
+            {errors.email?.message && emailValue && (
               <Tooltip message={errors.email?.message} />
             )}
           </div>
@@ -64,6 +69,7 @@ export default function ForgetPassword() {
       <Button
         className="w-full h-[4.125rem] text-[1.125rem] mt-[1.688rem] mb-[0.75rem] rounded-full bg-SecondaryColor"
         type="submit"
+        disabled={!(!errors.email && emailValue)}
       >
         Send Email
       </Button>
