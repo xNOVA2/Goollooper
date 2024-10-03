@@ -1,9 +1,15 @@
 "use client";
 
+// This component is responsible for managing the volunteer subpage within the guideline section of the application.
+// It allows users to view, add, update, and remove categories and subcategories related to volunteer services.
+// The component uses Redux for state management and dispatches various actions to handle the service data.
+// It also includes UI components for displaying and interacting with the service data, such as buttons, inputs, and chips.
+// By Bilal Khalil Khankhail
+
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/app/layouts/DashboardLayout";
 import GuidelineLayout from "@/app/layouts/GuidelineLayout";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { SubServices } from "@/types/type";
 import { Chips } from "@/components/Chips";
@@ -26,16 +32,24 @@ import {
   handleSetType,
   addSubService,
   deleteSubService,
+  removeService,
+  updateSubService,
+  fetchServices,
+  selectServices,
+  selectSubServices,
 } from "@/store/Slices/ServiceSlice";
 import { useParams } from "next/navigation";
-import { deleteService } from "@/api";
 
 export default function VolunteerSubpage() {
   const params = useParams();
-  const serviceId = Array.isArray(params.id) ? params.id[0] : params.id;
+  let serviceId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+
+  const [category, setCategory] = useState<string>("");
 
   const dispatch = useDispatch<AppDispatch>();
   const service = useSelector(selectService);
+  const services = useSelector(selectServices);
+  const subServices = useSelector(selectSubServices);
   const loading = useSelector(selectLoading);
   const singleSubCategory = useSelector(selectSingleSubCategory);
 
@@ -43,6 +57,7 @@ export default function VolunteerSubpage() {
     dispatch(handleSetType("volunteer"));
     if (serviceId !== "add") {
       dispatch(fetchService(serviceId));
+      dispatch(fetchServices({ page: 1, limit: 10, type: "volunteer" }));
     }
   }, [dispatch, serviceId]);
 
@@ -54,17 +69,33 @@ export default function VolunteerSubpage() {
     };
   }, [fetchData, dispatch]);
 
-  const handleAddSubCategoryClick = () => {
-    dispatch(handleAddSubCategory(singleSubCategory));
+  useEffect(() => {
+    const categoryTitle = services?.find(
+      (serv: any) => serv._id === service?.subCategories?.[0]?.parent
+    )?.title;
+    dispatch(handleCategory(categoryTitle));
+  }, [services, service, dispatch]);
 
-    const body = {
-      title: singleSubCategory,
-    };
-    dispatch(addSubService({ serviceId, body }));
+  const handleAddSubCategoryClick = () => {
+    if (service?.title) {
+      if (serviceId === "add") {
+        serviceId = subServices[0]?.data?._id;
+      }
+      dispatch(
+        addSubService({
+          serviceId,
+          title: singleSubCategory,
+          type: "volunteer",
+        })
+      );
+      dispatch(handleAddSubCategory(singleSubCategory));
+    } else {
+      toast.error("Please add category first");
+    }
   };
 
   const handleCategoryChange = (value: string) => {
-    dispatch(handleCategory(value));
+    setCategory(value);
   };
 
   const handleSingleSubCategoryChange = (value: string) => {
@@ -72,21 +103,11 @@ export default function VolunteerSubpage() {
   };
 
   const handleRemoveSubCategoryClick = (value: string) => {
-    const subCategory = service.subCategories.find(
+    const subCategory = service?.subCategories?.find(
       (category: SubServices) => category.title === value
     );
-    console.log(subCategory._id, subCategory.parent);
-    const body = {
-      title: subCategory.title,
-    };
 
-    dispatch(
-      deleteSubService({
-        serviceId,
-        id: subCategory._id,
-        body,
-      })
-    );
+    dispatch(removeService(subCategory?._id));
     dispatch(handleRemoveSubCategory(value));
   };
 
@@ -94,27 +115,33 @@ export default function VolunteerSubpage() {
     dispatch(handleCurrentSubCategory(index));
   };
 
-  const handleSave = () => {
-    if (serviceId !== "add") {
+  const handleUpdateCategory = () => {
+    dispatch(handleCategory(category));
+
+    if (service?.title) {
+      if (serviceId === "add") {
+        serviceId = subServices[0]?.data?._id;
+      }
+
       dispatch(
-        saveService({
-          service: service,
+        updateSubService({
+          id: serviceId,
+          title: category,
+          type: "volunteer",
+          parent: null,
         })
       );
     } else {
       dispatch(
-        editService({
-          service: service,
-          id: serviceId,
-        })
+        addSubService({ serviceId: null, title: category, type: "volunteer" })
       );
     }
-
-    console.log("Saving service:", service);
-    toast.success("Service saved successfully");
+    dispatch(handleCategory(category));
+    setCategory("");
   };
 
-  console.log(service);
+  console.log(subServices);
+  console.log(services);
 
   return (
     <DashboardLayout>
@@ -125,19 +152,25 @@ export default function VolunteerSubpage() {
               <h1 className="text-[1.875em] leading-[2.813] font-bold">
                 Volunteer
               </h1>
-              <Button
-                className="w-[7.75rem] h-[2.375rem] text-[0.875rem] leading-[1.25rem] font-medium bg-PrimaryColor rounded-full"
-                onClick={handleSave}
-              >
-                Save
-              </Button>
+              <h1 className="text-[1.875em] font-bold text-PrimaryColor">
+                {service?.title}
+              </h1>
             </div>
 
             <ServiceInput
               title="Category"
-              value={service.title}
+              value={category}
               onChange={handleCategoryChange}
             />
+            <div className="mt-5 flex justify-end">
+              <Button
+                className="w-[10.625rem] h-[2.375rem] text-[0.875rem] leading-[1.25rem] font-medium bg-PrimaryColor rounded-full"
+                onClick={handleUpdateCategory}
+              >
+                {service?.title ? "Update Category" : "Add Category"}
+              </Button>
+            </div>
+
             <ServiceInput
               title="Sub Category"
               value={singleSubCategory}

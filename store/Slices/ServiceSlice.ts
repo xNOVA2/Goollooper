@@ -85,7 +85,7 @@ export const fetchServices = createAsyncThunk(
   async ({ page, limit, type }: FetchServicesParams, { rejectWithValue }) => {
     try {
       const response = await getServices(page, limit, type);
-      return response.data;
+      return response.data.data;
     } catch (error: any) {
       console.error("API Error:", error);
       return rejectWithValue(error.response?.data?.msg || "An error occurred");
@@ -110,21 +110,8 @@ export const saveService = createAsyncThunk(
   async ({ service }: { service: Category }, { rejectWithValue }) => {
     try {
       const response = await addService(service);
-      if (response.data.status) {
-        toast.success(response.data.msg);
-        return response.data.data;
-      } else {
-        toast.warning(response.data.msg);
-        return rejectWithValue(response.data.msg);
-      }
+      return response.data.data;
     } catch (error: any) {
-      if (typeof error.response.data.data === "object") {
-        error.response.data.data.forEach((err: string) => {
-          toast.error(err);
-        });
-      } else {
-        toast.error(error.response.data.msg);
-      }
       return rejectWithValue(error.response.data);
     }
   }
@@ -173,14 +160,20 @@ export const getIndustries = createAsyncThunk(
 export const addSubService = createAsyncThunk(
   "services/addSubService",
   async (
-    { serviceId, body }: { serviceId: string; body: any },
+    {
+      serviceId,
+      title,
+      type,
+    }: { serviceId: string | null; title: string; type: string },
     { rejectWithValue }: { rejectWithValue: (value: any) => void }
   ) => {
     try {
-      const response = await Api.post(
-        `/service/sub-service/create/${serviceId}`,
-        body
-      );
+      const body = {
+        title: title,
+        type: type,
+        parent: serviceId,
+      };
+      const response = await addService(body);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -191,14 +184,21 @@ export const addSubService = createAsyncThunk(
 export const updateSubService = createAsyncThunk(
   "services/updateSubService",
   async (
-    { serviceId, id, body }: { serviceId: string; id: string; body: any },
+    {
+      id,
+      title,
+      type,
+      parent,
+    }: { id: string; title: string; type: string; parent: string | null },
     { rejectWithValue }: { rejectWithValue: (value: any) => void }
   ) => {
     try {
-      const response = await Api.patch(
-        `/service/sub-service/update/${serviceId}/${id}`,
-        body
-      );
+      const body = {
+        title: title,
+        type: type,
+        parent: parent,
+      };
+      const response = await Api.patch(`/service/update/${id}`, body);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -229,11 +229,17 @@ const serviceSlice = createSlice({
   initialState,
   reducers: {
     handleSetType(state, action: PayloadAction<string>) {
-      state.service.type = action.payload;
+      state.service = {
+        ...state.service,
+        type: action.payload,
+      };
     },
     handleSelectIndustry(state, action: PayloadAction<string>) {
-      state.service.industry = action.payload;
-      state.service.parent = action.payload;
+      state.service = {
+        ...state.service,
+        industry: action.payload,
+        parent: action.payload,
+      };
     },
     handleAddSubCategory: (state, action: PayloadAction<string>) => {
       const newSubCategory = action.payload;
@@ -273,7 +279,6 @@ const serviceSlice = createSlice({
     handleCurrentSubCategory(state, action: PayloadAction<number>) {
       state.subCategoryIndex = action.payload;
     },
-
     handleAddNestedSubCategory: (
       state,
       action: PayloadAction<{
@@ -368,6 +373,11 @@ const serviceSlice = createSlice({
     setSubCategoryLevel4Index: (state, action: PayloadAction<number>) => {
       state.subCategoryLevel4Index = action.payload;
     },
+    handleRemoveServices: (state, action: PayloadAction<string>) => {
+      state.services = state.services.filter(
+        (service) => service._id !== action.payload
+      );
+    },
     resetServiceState: () => initialState,
   },
   extraReducers: (builder) => {
@@ -445,6 +455,17 @@ const serviceSlice = createSlice({
       .addCase(getIndustries.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(addSubService.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addSubService.fulfilled, (state, action) => {
+        state.loading = false;
+        state.subServices.push(action.payload);
+      })
+      .addCase(addSubService.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
@@ -465,6 +486,7 @@ export const {
   setSubCategoryLevel2Index,
   setSubCategoryLevel3Index,
   setSubCategoryLevel4Index,
+  handleRemoveServices,
 } = serviceSlice.actions;
 
 export const selectService = (state: RootState) => state.service.service;
