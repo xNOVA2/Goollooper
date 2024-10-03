@@ -15,7 +15,6 @@ export default function VolunteerPage() {
   const dispatch = useDispatch<AppDispatch>();
   const services = useSelector(selectServices);
   
-  const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageData, setPageData] = useState({
     totalPages: 0,

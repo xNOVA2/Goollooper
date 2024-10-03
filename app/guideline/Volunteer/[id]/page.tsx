@@ -11,7 +11,6 @@ import DashboardLayout from "@/app/layouts/DashboardLayout";
 import GuidelineLayout from "@/app/layouts/GuidelineLayout";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { SubServices } from "@/types/type";
 import { Chips } from "@/components/Chips";
 import ServiceInput from "@/components/services/ServiceInput";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,6 +36,7 @@ import {
   fetchServices,
   selectServices,
   selectSubServices,
+  SubService,
 } from "@/store/Slices/ServiceSlice";
 import { useParams } from "next/navigation";
 
@@ -104,10 +104,10 @@ export default function VolunteerSubpage() {
 
   const handleRemoveSubCategoryClick = (value: string) => {
     const subCategory = service?.subCategories?.find(
-      (category: SubServices) => category.title === value
+      (category: SubService) => category.title === value
     );
 
-    dispatch(removeService(subCategory?._id));
+    dispatch(removeService(subCategory?._id as string));
     dispatch(handleRemoveSubCategory(value));
   };
 
@@ -188,11 +188,11 @@ export default function VolunteerSubpage() {
             <div className="w-full flex flex-wrap gap-5 mt-6">
               {service?.subCategories &&
                 service.subCategories.map(
-                  (item: SubServices, index: number) => (
+                  (item: SubService, index: number) => (
                     <Chips
-                      key={item.title}
+                      key={item?.title}
                       id={index}
-                      text={item.title}
+                      text={item?.title}
                       isSubCategory={true}
                       onSubCategoryClick={handleRemoveSubCategoryClick}
                       currentSelected={handleCurrentSubCategoryClick}

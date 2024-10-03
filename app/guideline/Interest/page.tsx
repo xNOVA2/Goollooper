@@ -9,13 +9,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { AppDispatch } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { fetchServices, removeService, selectServices } from "@/store/Slices/ServiceSlice";
+import {
+  fetchServices,
+  handleRemoveServices,
+  removeService,
+  selectServices,
+} from "@/store/Slices/ServiceSlice";
 
 export default function InterestPage() {
   const dispatch = useDispatch<AppDispatch>();
   const services = useSelector(selectServices);
-  
-  const [loading, setLoading] = useState<boolean>(false);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageData, setPageData] = useState({
     totalPages: 0,
@@ -23,10 +27,13 @@ export default function InterestPage() {
     limit: 10,
   });
 
-  const fetchData = useCallback(async (page: number, limit: number) => {
-    dispatch(fetchServices({ page, limit, type: "interest" }));
-  }, [dispatch])
-  
+  const fetchData = useCallback(
+    async (page: number, limit: number) => {
+      dispatch(fetchServices({ page, limit, type: "interest" }));
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     fetchData(currentPage, pageData.limit);
   }, [currentPage, fetchData, pageData.limit]);
@@ -35,9 +42,15 @@ export default function InterestPage() {
     setCurrentPage(page);
   };
 
-  const handleDeleteCategory = useCallback((id: string) => {
-    dispatch(removeService(id));
-  }, [dispatch]);
+  const handleDeleteCategory = useCallback(
+    (id: string) => {
+      const serviceId = services.find((service: any) => service?._id === id)
+        ?.categories[0]._id;
+      dispatch(handleRemoveServices(id));
+      dispatch(removeService(serviceId));
+    },
+    [dispatch]
+  );
 
   console.log(services);
 
@@ -46,21 +59,24 @@ export default function InterestPage() {
       <GuidelineLayout>
         <div className="bg-white border border-border px-[1.754em] h-full mr-2 rounded-md  ">
           <div className="flex justify-between">
-            <h1 className="font-bold text-[1.875rem] leading-[3rem] mt-[1.754rem]">Task Interests (Categories)</h1>
-            <Link href="/guideline/Interest/add"
+            <h1 className="font-bold text-[1.875rem] leading-[3rem] mt-[1.754rem]">
+              Task Interests (Categories)
+            </h1>
+            <Link
+              href="/guideline/Interest/add"
               className="w-[16.125rem] h-[2.375rem] mt-[1.313rem] text-[0.875rem] leading-[1.25rem] rounded-full bg-PrimaryColor text-white text-center flex items-center justify-center"
             >
               Add
             </Link>
           </div>
           <ScrollArea className="flex flex-col h-calc-interest-list-screen mt-[1.188em]">
-            {services?.data?.length
-              ? services?.data?.map((service: Service) => (
+            {services?.length
+              ? services?.map((service: Service) => (
                   <Task
                     key={service._id}
                     title={service.industry}
                     id={service._id}
-                    link={`/guideline/Volunteer`}
+                    link={`/guideline/Interest`}
                     onDelete={handleDeleteCategory}
                   />
                 ))

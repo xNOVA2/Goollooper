@@ -30,7 +30,8 @@ interface ServiceResponse {
   };
 }
 
-interface SubService {
+export interface SubService {
+  _id?: string;
   title: string;
   keyWords: string[];
   industry: string;
@@ -238,7 +239,6 @@ const serviceSlice = createSlice({
       state.service = {
         ...state.service,
         industry: action.payload,
-        parent: action.payload,
       };
     },
     handleAddSubCategory: (state, action: PayloadAction<string>) => {
@@ -489,7 +489,8 @@ export const {
   handleRemoveServices,
 } = serviceSlice.actions;
 
-export const selectService = (state: RootState) => state.service.service;
+export const selectService = (state: RootState): Category =>
+  state.service.service;
 export const selectServices = (state: RootState) => state.service.services;
 export const selectLoading = (state: RootState) => state.service.loading;
 export const selectError = (state: RootState) => state.service.error;
