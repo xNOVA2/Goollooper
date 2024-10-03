@@ -213,14 +213,14 @@ export default function InterestSubpage() {
   }
 
   const handleSaveService = () => {
-    // dispatch(saveService({ service }))
-    //   .unwrap()
-    //   .then(() => {
-    //     router.push('/services');
-    //   })
-    //   .catch((error) => {
-    //     console.error("Failed to save service:", error);
-    //   });
+    dispatch(saveService({ service }))
+      .unwrap()
+      .then(() => {
+        router.push('/guideline/Interest');
+      })
+      .catch((error: any) => {
+        console.error("Failed to save service:", error);
+      });
   };
 
   console.log(service);
