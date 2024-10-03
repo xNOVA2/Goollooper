@@ -9,7 +9,7 @@ import { Service } from "@/types/type";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/store/store";
-import { selectServices, removeService, fetchServices } from "@/store/Slices/ServiceSlice";
+import { selectServices, removeService, fetchServices, handleRemoveServices } from "@/store/Slices/ServiceSlice";
 
 export default function VolunteerPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,10 +36,9 @@ export default function VolunteerPage() {
   };
 
   const handleDeleteCategory = useCallback((id: string) => {
+    dispatch(handleRemoveServices(id));
     dispatch(removeService(id));
   }, [dispatch]);
-
-  // console.log(services);
 
   return (
     <DashboardLayout>
@@ -54,8 +53,8 @@ export default function VolunteerPage() {
             </Link>
           </div>
           <div className="flex flex-col gap-[0.5em] mt-[1.188em]">
-            {services?.data?.length
-              ? services?.data?.map((service: Service) => (
+            {services?.length
+              ? services?.map((service: Service) => (
                   <Task
                     key={service._id}
                     title={service.title}
