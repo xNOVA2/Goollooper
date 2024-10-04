@@ -6,11 +6,12 @@ import { ConfirmationModal } from "./ConfirmationModal";
 interface ServiceProps {
   title: string;
   id: string;
-  link: string;
+  link?: string;
+  isIndustry?: boolean;
   onDelete: (id: string) => void;
 }
 
-const Task: React.FC<ServiceProps> = ({ title, id, link, onDelete }) => {
+const Task: React.FC<ServiceProps> = ({ title, id, link, isIndustry, onDelete }) => {
 
   return (
     <div className="flex justify-between rounded-sm mt-[0.5em] h-[3.5em] bg-backGroundSecondaryColor items-center pl-[1.063em] pr-[0.25em]">
@@ -18,16 +19,18 @@ const Task: React.FC<ServiceProps> = ({ title, id, link, onDelete }) => {
         <p className="text-[0.875rem] leading-[1.116rem] text-subTitleColor font-semibold">{title}</p>
       </div>
       <div className="flex gap-[0.3em]">
-        <Button className="bg-backGroundColor px-[0.85rem] py-[1.5rem] rounded-sm">
-          <Link href={`${link}/${id}?title=${title}`}>
-            <Image
-              src={"/assets/Image/Pancel.svg"}
-              alt=""
-              width={24}
-              height={24}
-            />
-          </Link>
-        </Button>
+        {!isIndustry &&
+          <Button className="bg-backGroundColor px-[0.85rem] py-[1.5rem] rounded-sm">
+            <Link href={`${link}/${id}?title=${title}`}>
+              <Image
+                src={"/assets/Image/Pancel.svg"}
+                alt=""
+                width={24}
+                height={24}
+              />
+            </Link>
+          </Button>
+        }
         <ConfirmationModal isDelete={true} taskID={id} onAccept={onDelete} />
       </div>
     </div>

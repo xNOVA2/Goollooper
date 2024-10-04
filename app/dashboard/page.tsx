@@ -1,18 +1,15 @@
 "use client";
 import dynamic from 'next/dynamic';
 import Image from "next/image";
-import { useEffect, useState } from "react";
-
+import React, { useState } from "react";
+import RoleGuard from '@/components/RoleGuard';
+import DashboardLayout from "../layouts/DashboardLayout";
+import DashboardData from '@/components/DashboardData';
 import { Users } from "@/components/User/Users";
 import Pagination from "@/components/User/Pagination/Pagination";
-import DashboardLayout from "../layouts/DashboardLayout";
-
 import UserIcon from "@/public/assets/Image/IconPNG.png";
 import TaskIcon from "@/public/assets/Image/Task.svg";
-
-import RoleGuard from '@/components/RoleGuard';
-import { useAuth } from '@/components/WithAuth/withAuth';;
-import DashboardData from '@/components/DashboardData';
+import { useAuth } from '@/components/WithAuth/withAuth';
 
 function DashboardPage() {
   const [dashboardData, setDashboardData] = useState<{ 

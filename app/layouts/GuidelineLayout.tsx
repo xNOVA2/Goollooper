@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 const GuidelineLinks = [
   {
@@ -22,6 +23,10 @@ const GuidelineLinks = [
   {
     title: "Volunteer",
     link: "/guideline/Volunteer",
+  },
+  {
+    title: "Industry",
+    link: "/guideline/Industry",
   },
 ];
 

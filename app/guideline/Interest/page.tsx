@@ -49,7 +49,7 @@ export default function InterestPage() {
       dispatch(handleRemoveServices(id));
       dispatch(removeService(serviceId));
     },
-    [dispatch]
+    [dispatch, services]
   );
 
   console.log(services);
