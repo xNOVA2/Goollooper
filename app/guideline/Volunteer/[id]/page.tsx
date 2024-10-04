@@ -17,8 +17,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import {
   fetchService,
-  saveService,
-  editService,
   handleAddSubCategory,
   handleCategory,
   handleSingleSubCategory,
@@ -30,7 +28,6 @@ import {
   resetServiceState,
   handleSetType,
   addSubService,
-  deleteSubService,
   removeService,
   updateSubService,
   fetchServices,
@@ -38,10 +35,12 @@ import {
   selectSubServices,
   SubService,
 } from "@/store/Slices/ServiceSlice";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 export default function VolunteerSubpage() {
+  const searchParams = useSearchParams();
   const params = useParams();
+  let volunteerTitle = searchParams.get("title");
   let serviceId = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
   const [category, setCategory] = useState<string>("");
@@ -70,11 +69,10 @@ export default function VolunteerSubpage() {
   }, [fetchData, dispatch]);
 
   useEffect(() => {
-    const categoryTitle = services?.find(
-      (serv: any) => serv._id === service?.subCategories?.[0]?.parent
-    )?.title;
-    dispatch(handleCategory(categoryTitle));
-  }, [services, service, dispatch]);
+    if (volunteerTitle) {
+      dispatch(handleCategory(volunteerTitle));
+    }
+  }, [dispatch, volunteerTitle]);
 
   const handleAddSubCategoryClick = () => {
     if (service?.title) {
@@ -121,6 +119,11 @@ export default function VolunteerSubpage() {
     if (service?.title) {
       if (serviceId === "add") {
         serviceId = subServices[0]?.data?._id;
+      } else {
+        // changes the URL query parameter to reflect the updated category
+        const newSearchParams = new URLSearchParams(searchParams.toString());
+        newSearchParams.set("title", category);
+        window.history.replaceState(null, "", `?${newSearchParams.toString()}`);
       }
 
       dispatch(
@@ -140,7 +143,6 @@ export default function VolunteerSubpage() {
     setCategory("");
   };
 
-  console.log(subServices);
   console.log(services);
 
   return (
@@ -187,18 +189,16 @@ export default function VolunteerSubpage() {
 
             <div className="w-full flex flex-wrap gap-5 mt-6">
               {service?.subCategories &&
-                service.subCategories.map(
-                  (item: SubService, index: number) => (
-                    <Chips
-                      key={item?.title}
-                      id={index}
-                      text={item?.title}
-                      isSubCategory={true}
-                      onSubCategoryClick={handleRemoveSubCategoryClick}
-                      currentSelected={handleCurrentSubCategoryClick}
-                    />
-                  )
-                )}
+                service.subCategories.map((item: SubService, index: number) => (
+                  <Chips
+                    key={item?.title}
+                    id={index}
+                    text={item?.title}
+                    isSubCategory={true}
+                    onSubCategoryClick={handleRemoveSubCategoryClick}
+                    currentSelected={handleCurrentSubCategoryClick}
+                  />
+                ))}
             </div>
           </div>
         </div>

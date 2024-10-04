@@ -19,7 +19,7 @@ const Task: React.FC<ServiceProps> = ({ title, id, link, onDelete }) => {
       </div>
       <div className="flex gap-[0.3em]">
         <Button className="bg-backGroundColor px-[0.85rem] py-[1.5rem] rounded-sm">
-          <Link href={`${link}/${id}`}>
+          <Link href={`${link}/${id}?title=${title}`}>
             <Image
               src={"/assets/Image/Pancel.svg"}
               alt=""
