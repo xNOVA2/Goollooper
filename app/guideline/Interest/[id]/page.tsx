@@ -39,8 +39,10 @@ import {
   selectSubCategoryLevel4Index,
   saveService,
   handleSetType,
+  SubService,
 } from "@/store/Slices/ServiceSlice";
 import { useParams, useRouter } from "next/navigation";
+import CopyToModal from "@/components/services/CopyToModal";
 
 export default function InterestSubpage() {
   const params = useParams();
@@ -66,6 +68,8 @@ export default function InterestSubpage() {
     2: "",
     3: "",
   });
+  const [filteredContent, setFilteredContent] = useState<SubService[]>([]);
+
 
   const fetchData = useCallback(() => {
     if (serviceId !== "add") {
@@ -139,7 +143,7 @@ export default function InterestSubpage() {
       toast.warning(`Please select level ${level + 1} category`);
       return;
     }
-    
+
     dispatch(
       handleAddNestedSubCategory({
         parentIndex: subCategoryIndex,
@@ -216,7 +220,7 @@ export default function InterestSubpage() {
     dispatch(saveService({ service }))
       .unwrap()
       .then(() => {
-        router.push('/guideline/Interest');
+        router.push("/guideline/Interest");
       })
       .catch((error: any) => {
         console.error("Failed to save service:", error);
@@ -311,15 +315,22 @@ export default function InterestSubpage() {
 
                 <ServiceInput
                   title="Keyword"
-                  value={singleKeyword}
+                  value={singleKeyword} 
                   onChange={handleSingleKeywordChange}
                 />
-                <div className="flex justify-end">
+                <div className="flex items-center justify-between">
+                  <CopyToModal
+                    buttonTitle="Copy Keywords"
+                    title="Select subcategories to copy keywords to"
+                    content={service?.subCategories}
+                    aditionalContent={service?.subCategories[subCategoryIndex]?.keyWords}
+                    currentIndex={subCategoryIndex}
+                  />
                   <Button
                     className="w-[10.625rem] h-[2.375rem] text-[0.875rem] leading-[1.25rem] font-medium bg-PrimaryColor rounded-full"
                     onClick={handleAddKeywordClick}
                   >
-                    Add keywords
+                    Add Keywords
                   </Button>
                 </div>
                 <div className="flex flex-wrap gap-5 mt-6">
@@ -331,7 +342,9 @@ export default function InterestSubpage() {
                         text={keyword}
                         selected={subCategoryIndex}
                         isSubCategory={false}
-                        onKeywordClick={(index, name) => handleRemoveKeywordClick(index, name)}
+                        onKeywordClick={(index, name) =>
+                          handleRemoveKeywordClick(index, name)
+                        }
                       />
                     )
                   )}

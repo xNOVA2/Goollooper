@@ -53,6 +53,7 @@ interface ServiceState {
   service: Category;
   services: Category[];
   industries: Industry[];
+  copyKeywordsSubList: number[];
   loading: boolean;
   error: string | null;
   subServices: SubService[];
@@ -74,6 +75,7 @@ const initialState: ServiceState = {
   },
   services: [],
   industries: [],
+  copyKeywordsSubList: [],
   loading: false,
   error: null,
   subServices: [],
@@ -346,7 +348,6 @@ const serviceSlice = createSlice({
       keywords.push(value);
       toast.success(`${value} Keyword added successfully`);
     },
-
     handleRemoveKeyword: (
       state,
       action: PayloadAction<{ subCategoryIndex: number; value: string }>
@@ -357,6 +358,22 @@ const serviceSlice = createSlice({
         (keyword) => keyword !== value
       );
       toast.success(`${value} Keyword removed successfully`);
+    },
+    copyKeyword: (state, action: PayloadAction<string[]>) => {
+      state.service.subCategories.forEach(
+        (subCategory: SubService, index: number) => {
+          if (state.copyKeywordsSubList.includes(index)) {
+            const newKeywords = action.payload.filter(
+              (keyword) => !subCategory.keyWords.includes(keyword)
+            );
+            subCategory.keyWords = [...subCategory.keyWords, ...newKeywords];
+          }
+        }
+      );
+    },
+    setCopyKeywordsSubList: (state, action: PayloadAction<number[]>) => {
+      state.copyKeywordsSubList = action.payload;
+      console.log(state.copyKeywordsSubList);
     },
     setSubCategoryLevel1Index: (state, action: PayloadAction<number>) => {
       state.subCategoryLevel1Index = action.payload;
@@ -487,6 +504,8 @@ export const {
   setSubCategoryLevel3Index,
   setSubCategoryLevel4Index,
   handleRemoveServices,
+  copyKeyword,
+  setCopyKeywordsSubList,
 } = serviceSlice.actions;
 
 export const selectService = (state: RootState): Category =>

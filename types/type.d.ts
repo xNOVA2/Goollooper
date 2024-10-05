@@ -231,6 +231,7 @@ export interface Service {
   title: string;
   type: string;
   subServices?: SubServices[];
+  categories?: Category[];
 }
 
 
