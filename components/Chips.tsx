@@ -1,37 +1,43 @@
 export const Chips = ({
     id,
+    index,
     text,
     selected,
     isMultipleSelected,
     isSubCategory,
     hideCross,
+    isDeleteId,
     onSubCategoryClick,
     onKeywordClick,
     currentSelected,
   }: {
-    id: number;
+    id: string;
+    index: number;
     text: string;
     selected?: number | number[];
     isMultipleSelected?: boolean;
     isSubCategory: boolean;
     hideCross?: boolean;
+    isDeleteId?: boolean;
     onSubCategoryClick?: (name: string) => void;
     onKeywordClick?: (index: number, name: string) => void;
     currentSelected?: (index: number) => void;
   }) => {
-    const isSelected = Array.isArray(selected) ? selected.includes(id) : (isSubCategory && selected === id);
+    const isSelected = Array.isArray(selected) ? selected.includes(index) : (isSubCategory && selected === index);
     return (
       <div 
         className={`${isSelected ? "bg-PrimaryColor text-white" : "bg-white"} relative inline-block px-4 py-3 m-2 shadow-custom border border-border rounded-md cursor-pointer`}
-        onClick={() => (isSubCategory || isMultipleSelected) &&  currentSelected && currentSelected(id)}
+        onClick={() => (isSubCategory || isMultipleSelected) &&  currentSelected && currentSelected(index)}
       >
         <span>{text}</span>
         <svg
           onClick={() => {
-            if (isSubCategory && onSubCategoryClick) {
+            if (isSubCategory && onSubCategoryClick && !isDeleteId) {
               onSubCategoryClick(text);
             } else if (onKeywordClick) {
-              onKeywordClick(id, text);
+              onKeywordClick(index, text);
+            } else if (isDeleteId && onSubCategoryClick) {
+              onSubCategoryClick(id);
             }
           }}
           xmlns="http://www.w3.org/2000/svg"

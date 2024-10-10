@@ -3,7 +3,6 @@ import { RootState } from "../store";
 import { toast } from "react-toastify";
 import {
   addService,
-  deleteService,
   getService,
   getServices,
   updateService,
@@ -38,6 +37,7 @@ export interface SubService {
   parent?: string | null;
   type?: string | null;
   subCategories: SubService[];
+  hasSubCategory?: boolean;
 }
 
 interface Category {
@@ -46,6 +46,8 @@ interface Category {
   type: string;
   industry: string | null;
   parent: string | null;
+  isDeleted?: boolean;
+  hasSubCategory?: boolean;
   subCategories: SubService[];
 }
 
@@ -63,6 +65,10 @@ interface ServiceState {
   subCategoryLevel2Index?: number;
   subCategoryLevel3Index?: number;
   subCategoryLevel4Index?: number;
+  fetchedLevel1SubCategoryList?: Category[];
+  fetchedLevel2SubCategoryList?: Category[];
+  fetchedLevel3SubCategoryList?: Category[];
+  fetchedLevel4SubCategoryList?: Category[];
 }
 
 const initialState: ServiceState = {
@@ -81,6 +87,14 @@ const initialState: ServiceState = {
   subServices: [],
   singleSubCategory: "",
   subCategoryIndex: 0,
+  subCategoryLevel1Index: 0,
+  subCategoryLevel2Index: 0,
+  subCategoryLevel3Index: 0,
+  subCategoryLevel4Index: 0,
+  fetchedLevel1SubCategoryList: [],
+  fetchedLevel2SubCategoryList: [],
+  fetchedLevel3SubCategoryList: [],
+  fetchedLevel4SubCategoryList: [],
 };
 
 export const fetchServices = createAsyncThunk(
@@ -108,6 +122,54 @@ export const fetchService = createAsyncThunk(
   }
 );
 
+export const fetchLevel1SubCategoryList = createAsyncThunk(
+  "service/fetchLevel1SubCategoryList",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await getService(id);
+      return response.data.data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchLevel2SubCategoryList = createAsyncThunk(
+  "service/fetchLevel2SubCategoryList",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await getService(id);
+      return response.data.data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchLevel3SubCategoryList = createAsyncThunk(
+  "service/fetchLevel3SubCategoryList",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await getService(id);
+      return response.data.data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchLevel4SubCategoryList = createAsyncThunk(
+  "service/fetchLevel4SubCategoryList",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await getService(id);
+      return response.data.data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const saveService = createAsyncThunk(
   "service/addSubService",
   async ({ service }: { service: Category }, { rejectWithValue }) => {
@@ -123,7 +185,7 @@ export const saveService = createAsyncThunk(
 export const editService = createAsyncThunk(
   "service/updateService",
   async (
-    { id, service }: { id: string; service: Category },
+    { id, service }: { id: string; service: any },
     { rejectWithValue }
   ) => {
     try {
@@ -139,7 +201,7 @@ export const removeService = createAsyncThunk(
   "service/deleteService",
   async (id: string, { rejectWithValue }) => {
     try {
-      const response = await deleteService(id);
+      const response = await Api.delete(`/service/delete/${id}`);
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -192,7 +254,12 @@ export const updateSubService = createAsyncThunk(
       title,
       type,
       parent,
-    }: { id: string; title: string; type: string; parent: string | null },
+    }: {
+      id: string | null;
+      title: string;
+      type: string | null;
+      parent: string | null;
+    },
     { rejectWithValue }: { rejectWithValue: (value: any) => void }
   ) => {
     try {
@@ -271,6 +338,10 @@ const serviceSlice = createSlice({
     },
     handleSingleSubCategory(state, action: PayloadAction<string>) {
       state.singleSubCategory = action.payload;
+    },
+    handleUpdateSubCategory: (state, action: PayloadAction<string>) => {
+      state.service.subCategories[state.subCategoryIndex].title =
+        action.payload;
     },
     handleRemoveSubCategory(state, action: PayloadAction<string>) {
       state.service.subCategories = state.service.subCategories.filter(
@@ -395,9 +466,15 @@ const serviceSlice = createSlice({
         (service) => service._id !== action.payload
       );
     },
+    pushSubCategories: (state, action: PayloadAction<{ index: number; data: SubService[] }>) => {
+      state.service.subCategories[action.payload.index] = {
+        ...state.service.subCategories[action.payload.index],
+        subCategories: [...action.payload.data],
+      };
+    },
     resetServiceState: () => initialState,
-  },
-  extraReducers: (builder) => {
+    },
+    extraReducers: (builder) => {
     builder
       .addCase(fetchService.pending, (state) => {
         state.loading = true;
@@ -406,8 +483,12 @@ const serviceSlice = createSlice({
         state.loading = false;
         if (state.service.type === "volunteer") {
           state.service.subCategories = action.payload;
-        } else {
-          state.service = action.payload;
+        }
+        if (state.service.subCategories.length === 0) {
+          action.payload.map((item: Category) => {
+            item.subCategories = [];
+          });
+          state.service.subCategories = action.payload;
         }
       })
       .addCase(fetchService.rejected, (state, action) => {
@@ -483,6 +564,42 @@ const serviceSlice = createSlice({
       .addCase(addSubService.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(fetchLevel1SubCategoryList.fulfilled, (state, action) => {
+        action.payload.map((item: Category) => {
+          item.subCategories = [];
+        });
+        state.fetchedLevel1SubCategoryList = action.payload;
+      })
+      .addCase(fetchLevel1SubCategoryList.rejected, (state, action) => {
+        state.error = action.payload as string;
+      }) 
+      .addCase(fetchLevel2SubCategoryList.fulfilled, (state, action) => {
+        action.payload.map((item: Category) => {
+          item.subCategories = [];
+        });
+        state.fetchedLevel2SubCategoryList = action.payload;
+      })
+      .addCase(fetchLevel2SubCategoryList.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      .addCase(fetchLevel3SubCategoryList.fulfilled, (state, action) => {
+        action.payload.map((item: Category) => {
+          item.subCategories = [];
+        });
+        state.fetchedLevel3SubCategoryList = action.payload;
+      })
+      .addCase(fetchLevel3SubCategoryList.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      .addCase(fetchLevel4SubCategoryList.fulfilled, (state, action) => {
+        action.payload.map((item: Category) => {
+          item.subCategories = [];
+        });
+        state.fetchedLevel4SubCategoryList = action.payload;
+      })
+      .addCase(fetchLevel4SubCategoryList.rejected, (state, action) => {
+        state.error = action.payload as string;
       });
   },
 });
@@ -493,6 +610,7 @@ export const {
   handleAddSubCategory,
   handleCategory,
   handleSingleSubCategory,
+  handleUpdateSubCategory,
   handleRemoveSubCategory,
   handleCurrentSubCategory,
   resetServiceState,
@@ -506,10 +624,19 @@ export const {
   handleRemoveServices,
   copyKeyword,
   setCopyKeywordsSubList,
+  pushSubCategories,
 } = serviceSlice.actions;
 
-export const selectService = (state: RootState): Category =>
-  state.service.service;
+export const selectService = (state: RootState) => state.service.service;
+export const selectLevel1SubCategoryList = (state: RootState) =>
+  state.service.fetchedLevel1SubCategoryList;
+export const selectLevel2SubCategoryList = (state: RootState) =>
+  state.service.fetchedLevel2SubCategoryList;
+export const selectLevel3SubCategoryList = (state: RootState) =>
+  state.service.fetchedLevel3SubCategoryList;
+export const selectLevel4SubCategoryList = (state: RootState) =>
+  state.service.fetchedLevel4SubCategoryList;
+export const selectState = (state: RootState) => state.service;
 export const selectServices = (state: RootState) => state.service.services;
 export const selectLoading = (state: RootState) => state.service.loading;
 export const selectError = (state: RootState) => state.service.error;
